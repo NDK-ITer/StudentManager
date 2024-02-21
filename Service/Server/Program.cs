@@ -1,11 +1,21 @@
+using Application.Services;
+using Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using SendMail.ClassDefine;
+using SendMail.Interfaces;
+using Server.FileMethods;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("ConnectString");
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-
+builder.Services.AddDbContext<UserDbContext>(option => option.UseSqlServer(connectionString));
+builder.Services.AddTransient<IUnitOfWork_Service, UnitOfWork_Service>();
+builder.Services.AddTransient<ImageMethod>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("myCorsPolicy", builder =>
