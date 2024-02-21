@@ -90,6 +90,7 @@ namespace Application.Services
                 };
                 unitOfWork.userRepository.Add(user);
                 unitOfWork.SaveChange();
+                //var result = GetJwtUser(user.PresentEmail, registerModel.Password);
                 return new Tuple<string, User?>("Register successful", user);
             }
             catch (Exception e)
@@ -190,12 +191,12 @@ namespace Application.Services
             }
         }
 
-        public Tuple<string, bool> VerifyEmail(string email)
+        public Tuple<string, bool> VerifyEmail(string id)
         {
             try
             {
-                if (email.IsNullOrEmpty()) return new Tuple<string, bool>("parameter is null",false);
-                var result = GetUserByEmail(email);
+                if (id.IsNullOrEmpty()) return new Tuple<string, bool>("parameter is null",false);
+                var result = GetUserById(id);
                 if (result.Item2 == null) return new Tuple<string, bool>(result.Item1, false);
                 var user = result.Item2;
                 user.VerifiedDate = DateTime.Now;

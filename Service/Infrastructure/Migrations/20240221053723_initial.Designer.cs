@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20240221035259_initial")]
+    [Migration("20240221053723_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -53,14 +53,14 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0cf907b4-b2d8-47ec-ace2-8d01b4116e69",
+                            Id = "a7b67950-d20f-4e99-a9f0-560835b20cff",
                             Description = "",
                             Name = "ADMIN",
                             NormalizeName = "Admin"
                         },
                         new
                         {
-                            Id = "0d067067-dba6-4a6d-94fd-1050dbf64184",
+                            Id = "2ec60b31-4ff8-4ed1-99db-1ed978e546ea",
                             Description = "",
                             Name = "USER",
                             NormalizeName = "User"
@@ -105,11 +105,6 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("LinkAvatar")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -153,21 +148,20 @@ namespace Infrastructure.Migrations
                         {
                             Id = "2c75293b-f8e5-4862-9b13-5894a64895cd",
                             Avatar = "",
-                            Birthday = new DateTime(2024, 2, 21, 10, 52, 59, 366, DateTimeKind.Local).AddTicks(5587),
-                            CreatedDate = new DateTime(2024, 2, 21, 10, 52, 59, 366, DateTimeKind.Local).AddTicks(5599),
+                            Birthday = new DateTime(2024, 2, 21, 12, 37, 22, 758, DateTimeKind.Local).AddTicks(6638),
+                            CreatedDate = new DateTime(2024, 2, 21, 12, 37, 22, 758, DateTimeKind.Local).AddTicks(6652),
                             FirstEmail = "admin001@gmail.com",
                             FirstName = "Admin",
                             IsLock = false,
                             IsVerified = true,
                             LastName = "account",
-                            LinkAvatar = "",
                             PasswordHash = "OupciF/ZKYnt4U0xYizqoQ==",
                             PhoneNumber = "0123456789",
                             PresentEmail = "admin001@gmail.com",
-                            RoleId = "0cf907b4-b2d8-47ec-ace2-8d01b4116e69",
-                            TokenAccess = "DA48E4E4180A3E6DFC3E4F171C9C083AC6076633AB8AC825AEDF596F902F1573A5FA9003E7E7F239F566C24BE05B1DAF88A273C8DBD19E5B8712ADD97B76A9A9",
+                            RoleId = "a7b67950-d20f-4e99-a9f0-560835b20cff",
+                            TokenAccess = "68848E65B924C51EE2B5BDB51F1B9CA37D95410378B2D8BCF61F0AF3426B5EDBC1FD3204F8F680C1CF15821AA88421A4967BD9BC0A7423B7C66BF54A000EBBAB",
                             UserName = "adminVersion_0001",
-                            VerifiedDate = new DateTime(2024, 2, 21, 10, 52, 59, 366, DateTimeKind.Local).AddTicks(5825)
+                            VerifiedDate = new DateTime(2024, 2, 21, 12, 37, 22, 758, DateTimeKind.Local).AddTicks(6911)
                         });
                 });
 

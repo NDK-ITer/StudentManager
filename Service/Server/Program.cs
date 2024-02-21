@@ -14,6 +14,7 @@ var connectionString = builder.Configuration.GetConnectionString("ConnectString"
 
 builder.Services.AddControllers();
 builder.Services.AddMemoryCache();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<UserDbContext>(opt => opt.UseSqlServer(connectionString));
 builder.Services.AddTransient<IUnitOfWork_Service, UnitOfWork_Service>();
 builder.Services.AddTransient<ImageMethod>();

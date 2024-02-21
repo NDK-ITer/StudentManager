@@ -46,7 +46,6 @@ namespace Infrastructure.Migrations
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsLock = table.Column<bool>(type: "bit", nullable: false),
                     RoleId = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    LinkAvatar = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Avatar = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
@@ -65,14 +64,14 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "Description", "Name", "NormalizeName" },
                 values: new object[,]
                 {
-                    { "0cf907b4-b2d8-47ec-ace2-8d01b4116e69", "", "ADMIN", "Admin" },
-                    { "0d067067-dba6-4a6d-94fd-1050dbf64184", "", "USER", "User" }
+                    { "2ec60b31-4ff8-4ed1-99db-1ed978e546ea", "", "USER", "User" },
+                    { "a7b67950-d20f-4e99-a9f0-560835b20cff", "", "ADMIN", "Admin" }
                 });
 
             migrationBuilder.InsertData(
                 table: "User",
-                columns: new[] { "Id", "Avatar", "Birthday", "CreatedDate", "FirstEmail", "FirstName", "IsLock", "IsVerified", "LastName", "LinkAvatar", "PasswordHash", "PhoneNumber", "PresentEmail", "RoleId", "TokenAccess", "UserName", "VerifiedDate" },
-                values: new object[] { "2c75293b-f8e5-4862-9b13-5894a64895cd", "", new DateTime(2024, 2, 21, 10, 52, 59, 366, DateTimeKind.Local).AddTicks(5587), new DateTime(2024, 2, 21, 10, 52, 59, 366, DateTimeKind.Local).AddTicks(5599), "admin001@gmail.com", "Admin", false, true, "account", "", "OupciF/ZKYnt4U0xYizqoQ==", "0123456789", "admin001@gmail.com", "0cf907b4-b2d8-47ec-ace2-8d01b4116e69", "DA48E4E4180A3E6DFC3E4F171C9C083AC6076633AB8AC825AEDF596F902F1573A5FA9003E7E7F239F566C24BE05B1DAF88A273C8DBD19E5B8712ADD97B76A9A9", "adminVersion_0001", new DateTime(2024, 2, 21, 10, 52, 59, 366, DateTimeKind.Local).AddTicks(5825) });
+                columns: new[] { "Id", "Avatar", "Birthday", "CreatedDate", "FirstEmail", "FirstName", "IsLock", "IsVerified", "LastName", "PasswordHash", "PhoneNumber", "PresentEmail", "RoleId", "TokenAccess", "UserName", "VerifiedDate" },
+                values: new object[] { "2c75293b-f8e5-4862-9b13-5894a64895cd", "", new DateTime(2024, 2, 21, 12, 37, 22, 758, DateTimeKind.Local).AddTicks(6638), new DateTime(2024, 2, 21, 12, 37, 22, 758, DateTimeKind.Local).AddTicks(6652), "admin001@gmail.com", "Admin", false, true, "account", "OupciF/ZKYnt4U0xYizqoQ==", "0123456789", "admin001@gmail.com", "a7b67950-d20f-4e99-a9f0-560835b20cff", "68848E65B924C51EE2B5BDB51F1B9CA37D95410378B2D8BCF61F0AF3426B5EDBC1FD3204F8F680C1CF15821AA88421A4967BD9BC0A7423B7C66BF54A000EBBAB", "adminVersion_0001", new DateTime(2024, 2, 21, 12, 37, 22, 758, DateTimeKind.Local).AddTicks(6911) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_RoleId",
