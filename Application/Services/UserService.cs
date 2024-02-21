@@ -1,0 +1,214 @@
+﻿using Application.Models.ModelsOfUser;
+using Domain.Entities;
+using Infrastructure;
+using Infrastructure.Context;
+using Infrastructure.Repositories;
+using JwtAuthenticationManager;
+using JwtAuthenticationManager.Models;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.IdentityModel.Tokens;
+
+namespace Application.Services
+{
+    public interface IUserService
+    {
+        Tuple<string, CombineJwtModel?> GetJwtUser(string email, string password);
+        Tuple<string, User?> CreatedUser(RegisterModel registerModel);
+        Tuple<string, User?> EditUser(EditUserModel editUserModel);
+        Tuple<string, bool> VerifyEmail(string email);
+        Tuple<string, User?> LockUserUser(string idUser, bool isLock);
+        Tuple<string, User?> ResetPassword(string idUser, string newPassword);
+        Tuple<string, User?> GetUserById(string id);
+        Tuple<string, User?> GetUserByEmail(string email);
+    }
+    public class UserService : IUserService
+    {
+        private readonly IUnitOfWork unitOfWork;
+        public UserService(UserDbContext context, IMemoryCache cache)
+        {
+            unitOfWork = new UnitOfWork(context, cache);
+        }
+
+        public Tuple<string, CombineJwtModel?> GetJwtUser(string email, string password)
+        {
+            var user = unitOfWork.userRepository.Find(e => e.PresentEmail == email).FirstOrDefault();
+            if (user == null) { return new Tuple<string, CombineJwtModel?>($"Not exist user with email {email}", null); }
+            if (!SecurityMethods.CheckPassword(password, user.PasswordHash))
+            {
+                return new Tuple<string, CombineJwtModel?>($"Password invalid", null);
+            }
+            if (user.IsLock == true)
+            {
+                return new Tuple<string, CombineJwtModel?>($"User with email {email} have been lock", null);
+            }
+            if (user.IsVerified == false)
+            {
+                return new Tuple<string, CombineJwtModel?>($"User with email {email} haven't been verify", null);
+            }
+            user.Role = unitOfWork.roleRepository.GetRoleById(user.RoleId);
+            var jwtUserInfor = new UserInfomationModel()
+            {
+                Id = user.Id,
+                Email = user.PresentEmail,
+                Avatar = $"{user.LinkAvatar}/{user.Avatar}",
+                Fullname = user.FirstName + " " + user.LastName,
+                Role = user.Role.Name
+            };
+            var jwtModel = JwtTokenHandler.GenerateJwtToken(jwtUserInfor);
+            return new Tuple<string, CombineJwtModel?>("Login Successful", jwtModel);
+        }
+
+        public Tuple<string, User?> CreatedUser(RegisterModel registerModel)
+        {
+            try
+            {
+                var role = unitOfWork.roleRepository.GetRoleByName("USER");
+                var checkEmailExist = unitOfWork.userRepository.Find(e => e.PresentEmail == registerModel.Email || e.FirstEmail == registerModel.Email).FirstOrDefault();
+                if (checkEmailExist != null)
+                {
+                    return new Tuple<string, User?>("Email have existed", null);
+                }
+                var user = new User()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserName = registerModel.UserName,
+                    FirstName = registerModel.FirstName,
+                    LastName = registerModel.LastName,
+                    FirstEmail = registerModel.Email,
+                    PhoneNumber = registerModel.PhoneNumber,
+                    Avatar = registerModel.AvatarFile,
+                    LinkAvatar = string.Empty,
+                    PresentEmail = registerModel.Email,
+                    Birthday = registerModel.Birthday,
+                    PasswordHash = SecurityMethods.HashPassword(registerModel.Password),
+                    CreatedDate = DateTime.Now,
+                    IsLock = false,
+                    RoleId = role.Id,
+                    TokenAccess = SecurityMethods.CreateRandomToken(),
+                    VerifiedDate = null,
+                    IsVerified = false,
+                    Role = role
+                };
+                unitOfWork.userRepository.Add(user);
+                unitOfWork.SaveChange();
+                return new Tuple<string, User?>("Register successful", user);
+            }
+            catch (Exception e)
+            {
+                return new Tuple<string, User?>(e.Message, null);
+            }
+        }
+
+        public Tuple<string, User?> GetUserById(string id)
+        {
+            try
+            {
+                if (id.IsNullOrEmpty()) return new Tuple<string, User?>("parameter was null or empty", null);
+                var user = unitOfWork.userRepository.GetById(id);
+                if (user == null) return new Tuple<string, User?>($"User with id {id} is not exist", null);
+                return new Tuple<string, User?>(string.Empty, user);
+            }
+            catch (Exception e)
+            {
+                return new Tuple<string, User?>(e.Message, null);
+            }
+        }
+
+        public Tuple<string, User?> GetUserByEmail(string email)
+        {
+            try
+            {
+                if (email.IsNullOrEmpty()) return new Tuple<string, User?>("parameter was null or empty", null);
+                var user = unitOfWork.userRepository.Find(e => e.PresentEmail == email).FirstOrDefault();
+                if (user == null) return new Tuple<string, User?>($"User with email {email} is not exist", null);
+                return new Tuple<string, User?>(string.Empty, user);
+            }
+            catch (Exception e)
+            {
+                return new Tuple<string, User?>(e.Message, null);
+            }
+        }
+
+        public Tuple<string, User?> EditUser(EditUserModel eum)
+        {
+            try
+            {
+                if (eum is null) return new Tuple<string, User?>("parameter was null or empty", null);
+                var user = unitOfWork.userRepository.GetById(eum.IdUser);
+                if (user == null) return new Tuple<string, User?>($"User with email {eum.IdUser} is not exist", null);
+
+                if (!eum.Email.IsNullOrEmpty()) { user.PresentEmail = eum.Email; }
+                if (!eum.UserName.IsNullOrEmpty()) { user.UserName = eum.UserName; }
+                if (!eum.FirstName.IsNullOrEmpty()) { user.FirstName = eum.FirstName; }
+                if (!eum.LastName.IsNullOrEmpty()) { user.LastName = eum.LastName; }
+                if (!eum.PhoneNumber.IsNullOrEmpty()) { user.PhoneNumber = eum.PhoneNumber; }
+                if (!eum.LinkAvatar.IsNullOrEmpty()) { user.PresentEmail = eum.LinkAvatar; }
+                if (!eum.Avatar.IsNullOrEmpty()) { user.Avatar = eum.Avatar; }
+
+                unitOfWork.userRepository.Update(user);
+                unitOfWork.SaveChange();
+                return new Tuple<string, User?>(string.Empty, user);
+            }
+            catch (Exception e)
+            {
+                return new Tuple<string, User?>(e.Message, null);
+            }
+        }
+
+        public Tuple<string, User?> LockUserUser(string idUser, bool isLock)
+        {
+            try
+            {
+                if (idUser.IsNullOrEmpty()) return new Tuple<string, User?>("parameter was null or empty", null);
+                var user = unitOfWork.userRepository.GetById(idUser);
+                if (user == null) return new Tuple<string, User?>($"User with id {idUser} is not exist", null);
+                user.IsLock = isLock;
+                unitOfWork.userRepository.Update(user);
+                unitOfWork.SaveChange();
+                return new Tuple<string, User?>($"Locking User with email {user.PresentEmail} is successful", user);
+            }
+            catch (Exception e)
+            {
+                return new Tuple<string, User?>(e.Message, null);
+            }
+        }
+
+        public Tuple<string, User?> ResetPassword(string idUser, string newPassword)
+        {
+            try
+            {
+                if (idUser.IsNullOrEmpty()) return new Tuple<string, User?>("parameter was null or empty", null);
+                var user = unitOfWork.userRepository.GetById(idUser);
+                if (user == null) return new Tuple<string, User?>($"User with id {idUser} is not exist", null);
+                user.PasswordHash = SecurityMethods.HashPassword(newPassword);
+                unitOfWork.userRepository.Update(user);
+                unitOfWork.SaveChange();
+                return new Tuple<string, User?>($"Locking User with email {user.PresentEmail} is successful", user);
+            }
+            catch (Exception e)
+            {
+                return new Tuple<string, User?>(e.Message, null);
+            }
+        }
+
+        public Tuple<string, bool> VerifyEmail(string email)
+        {
+            try
+            {
+                if (email.IsNullOrEmpty()) return new Tuple<string, bool>("parameter is null",false);
+                var result = GetUserByEmail(email);
+                if (result.Item2 == null) return new Tuple<string, bool>(result.Item1, false);
+                var user = result.Item2;
+                user.VerifiedDate = DateTime.Now;
+                user.IsVerified = true;
+                unitOfWork.userRepository.Update(user);
+                unitOfWork.SaveChange();
+                return new Tuple<string, bool>("successful", true);
+            }
+            catch (Exception)
+            {
+                return new Tuple<string, bool>("Error", false);
+            }
+        }
+    }
+}
