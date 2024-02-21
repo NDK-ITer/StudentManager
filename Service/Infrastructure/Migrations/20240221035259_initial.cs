@@ -14,21 +14,6 @@ namespace Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ClassroomInformation",
-                columns: table => new
-                {
-                    IdClassroom = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Avatar = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    LinkAvatar = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ClassroomInformation", x => x.IdClassroom);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Role",
                 columns: table => new
                 {
@@ -75,44 +60,19 @@ namespace Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "UserClassroom",
-                columns: table => new
-                {
-                    IdClassroom = table.Column<string>(type: "nvarchar(200)", nullable: false),
-                    IdUser = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsAdmin = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserClassroom", x => x.IdClassroom);
-                    table.ForeignKey(
-                        name: "FK_UserClassroom_ClassroomInformation_IdClassroom",
-                        column: x => x.IdClassroom,
-                        principalTable: "ClassroomInformation",
-                        principalColumn: "IdClassroom",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserClassroom_User_IdClassroom",
-                        column: x => x.IdClassroom,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "Role",
                 columns: new[] { "Id", "Description", "Name", "NormalizeName" },
                 values: new object[,]
                 {
-                    { "bb803edd-bb9c-48e9-b4c1-7239c03d3d10", "", "ADMIN", "Admin" },
-                    { "e5369c05-1d6f-411f-ba68-ae443db26ca3", "", "USER", "User" }
+                    { "0cf907b4-b2d8-47ec-ace2-8d01b4116e69", "", "ADMIN", "Admin" },
+                    { "0d067067-dba6-4a6d-94fd-1050dbf64184", "", "USER", "User" }
                 });
 
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "Avatar", "Birthday", "CreatedDate", "FirstEmail", "FirstName", "IsLock", "IsVerified", "LastName", "LinkAvatar", "PasswordHash", "PhoneNumber", "PresentEmail", "RoleId", "TokenAccess", "UserName", "VerifiedDate" },
-                values: new object[] { "2c75293b-f8e5-4862-9b13-5894a64895cd", "", new DateTime(2023, 12, 16, 12, 25, 47, 846, DateTimeKind.Local).AddTicks(103), new DateTime(2023, 12, 16, 12, 25, 47, 846, DateTimeKind.Local).AddTicks(116), "admin001@gmail.com", "Admin", false, true, "account", "", "OupciF/ZKYnt4U0xYizqoQ==", "0123456789", "admin001@gmail.com", "bb803edd-bb9c-48e9-b4c1-7239c03d3d10", "6BA1DAE738733E81136F375E2B2A2FBC4A6F362538E46FCA5AF7414EFCD8FA93616FC2225FE2A197C66727FD6EC9F9E54C46912C39E1EEA752DDC262F813DF99", "adminVersion_0001", new DateTime(2023, 12, 16, 12, 25, 47, 846, DateTimeKind.Local).AddTicks(350) });
+                values: new object[] { "2c75293b-f8e5-4862-9b13-5894a64895cd", "", new DateTime(2024, 2, 21, 10, 52, 59, 366, DateTimeKind.Local).AddTicks(5587), new DateTime(2024, 2, 21, 10, 52, 59, 366, DateTimeKind.Local).AddTicks(5599), "admin001@gmail.com", "Admin", false, true, "account", "", "OupciF/ZKYnt4U0xYizqoQ==", "0123456789", "admin001@gmail.com", "0cf907b4-b2d8-47ec-ace2-8d01b4116e69", "DA48E4E4180A3E6DFC3E4F171C9C083AC6076633AB8AC825AEDF596F902F1573A5FA9003E7E7F239F566C24BE05B1DAF88A273C8DBD19E5B8712ADD97B76A9A9", "adminVersion_0001", new DateTime(2024, 2, 21, 10, 52, 59, 366, DateTimeKind.Local).AddTicks(5825) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_RoleId",
@@ -123,12 +83,6 @@ namespace Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "UserClassroom");
-
-            migrationBuilder.DropTable(
-                name: "ClassroomInformation");
-
             migrationBuilder.DropTable(
                 name: "User");
 

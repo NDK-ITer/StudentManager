@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20231216052548_initial")]
+    [Migration("20240221035259_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -24,37 +24,6 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Domain.Entities.ClassroomInformation", b =>
-                {
-                    b.Property<string>("IdClassroom")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Avatar")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LinkAvatar")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("IdClassroom");
-
-                    b.ToTable("ClassroomInformation", (string)null);
-                });
 
             modelBuilder.Entity("Domain.Entities.Role", b =>
                 {
@@ -84,14 +53,14 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "bb803edd-bb9c-48e9-b4c1-7239c03d3d10",
+                            Id = "0cf907b4-b2d8-47ec-ace2-8d01b4116e69",
                             Description = "",
                             Name = "ADMIN",
                             NormalizeName = "Admin"
                         },
                         new
                         {
-                            Id = "e5369c05-1d6f-411f-ba68-ae443db26ca3",
+                            Id = "0d067067-dba6-4a6d-94fd-1050dbf64184",
                             Description = "",
                             Name = "USER",
                             NormalizeName = "User"
@@ -184,8 +153,8 @@ namespace Infrastructure.Migrations
                         {
                             Id = "2c75293b-f8e5-4862-9b13-5894a64895cd",
                             Avatar = "",
-                            Birthday = new DateTime(2023, 12, 16, 12, 25, 47, 846, DateTimeKind.Local).AddTicks(103),
-                            CreatedDate = new DateTime(2023, 12, 16, 12, 25, 47, 846, DateTimeKind.Local).AddTicks(116),
+                            Birthday = new DateTime(2024, 2, 21, 10, 52, 59, 366, DateTimeKind.Local).AddTicks(5587),
+                            CreatedDate = new DateTime(2024, 2, 21, 10, 52, 59, 366, DateTimeKind.Local).AddTicks(5599),
                             FirstEmail = "admin001@gmail.com",
                             FirstName = "Admin",
                             IsLock = false,
@@ -195,28 +164,11 @@ namespace Infrastructure.Migrations
                             PasswordHash = "OupciF/ZKYnt4U0xYizqoQ==",
                             PhoneNumber = "0123456789",
                             PresentEmail = "admin001@gmail.com",
-                            RoleId = "bb803edd-bb9c-48e9-b4c1-7239c03d3d10",
-                            TokenAccess = "6BA1DAE738733E81136F375E2B2A2FBC4A6F362538E46FCA5AF7414EFCD8FA93616FC2225FE2A197C66727FD6EC9F9E54C46912C39E1EEA752DDC262F813DF99",
+                            RoleId = "0cf907b4-b2d8-47ec-ace2-8d01b4116e69",
+                            TokenAccess = "DA48E4E4180A3E6DFC3E4F171C9C083AC6076633AB8AC825AEDF596F902F1573A5FA9003E7E7F239F566C24BE05B1DAF88A273C8DBD19E5B8712ADD97B76A9A9",
                             UserName = "adminVersion_0001",
-                            VerifiedDate = new DateTime(2023, 12, 16, 12, 25, 47, 846, DateTimeKind.Local).AddTicks(350)
+                            VerifiedDate = new DateTime(2024, 2, 21, 10, 52, 59, 366, DateTimeKind.Local).AddTicks(5825)
                         });
-                });
-
-            modelBuilder.Entity("Domain.Entities.UserClassroom", b =>
-                {
-                    b.Property<string>("IdClassroom")
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("IdUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit");
-
-                    b.HasKey("IdClassroom");
-
-                    b.ToTable("UserClassroom");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -230,38 +182,9 @@ namespace Infrastructure.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Domain.Entities.UserClassroom", b =>
-                {
-                    b.HasOne("Domain.Entities.User", "User")
-                        .WithMany("ListUserClassroom")
-                        .HasForeignKey("IdClassroom")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.ClassroomInformation", "Classroom")
-                        .WithMany("ListUserClassroom")
-                        .HasForeignKey("IdClassroom")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Classroom");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.ClassroomInformation", b =>
-                {
-                    b.Navigation("ListUserClassroom");
-                });
-
             modelBuilder.Entity("Domain.Entities.Role", b =>
                 {
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("Domain.Entities.User", b =>
-                {
-                    b.Navigation("ListUserClassroom");
                 });
 #pragma warning restore 612, 618
         }
