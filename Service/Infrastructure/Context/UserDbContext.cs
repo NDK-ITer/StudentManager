@@ -16,13 +16,11 @@ namespace Infrastructure.Context
         {
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
-            modelBuilder.ApplyConfiguration(new ClassroomInformationConfiguration());
             modelBuilder.SeedData();
             //base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<ClassroomInformation> ClassroomInformation { get; set; }
     }
 }

@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="PublicFIle\" />
+    <Folder Include="PublicFile\" />
   </ItemGroup>
 
   <ItemGroup>

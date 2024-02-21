@@ -23,12 +23,6 @@ namespace Infrastructure.Configurations
             builder.Property(x => x.Avatar).HasMaxLength(100);
             builder.Property(x => x.LinkAvatar).HasMaxLength(100);
 
-            builder.HasMany(p => p.ListClassroom)
-                .WithMany(p => p.ListUser)
-                .UsingEntity<UserClassroom>(
-                    l => l.HasOne(e => e.Classroom).WithMany(e => e.ListUserClassroom).HasForeignKey(e => e.IdClassroom),
-                    r => r.HasOne(e => e.User).WithMany(e => e.ListUserClassroom).HasForeignKey(e => e.IdClassroom));
-
             builder.HasOne<Role>(user => user.Role)
                 .WithMany(role => role.Users)
                 .HasForeignKey(fk => fk.RoleId);

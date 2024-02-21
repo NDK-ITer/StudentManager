@@ -1,5 +1,4 @@
-﻿using Application.Models.ModelsOfClassroom;
-using Domain.Entities;
+﻿using Domain.Entities;
 
 namespace Application.Models.ModelsOfUser
 {
@@ -14,7 +13,6 @@ namespace Application.Models.ModelsOfUser
         public string? Role { get; set; }
         public string? Avatar { get; set; }
         public DateTime Birthday { get; set; }
-        public List<ClassroomModel> listClassroom { get; set; }
 
         public UserModel()
         {
@@ -22,7 +20,6 @@ namespace Application.Models.ModelsOfUser
         }
         public UserModel(User user)
         {
-            listClassroom = new List<ClassroomModel>();
             this.Id = user.Id;
             this.Birthday = user.Birthday;
             this.Email = user.PresentEmail;
@@ -32,10 +29,6 @@ namespace Application.Models.ModelsOfUser
             this.FirstName = user.FirstName;
             this.CreateDate = user.CreatedDate;
             this.Avatar = $"{user.LinkAvatar}/{user.Avatar}";
-            foreach (var item in user.ListClassroom)
-            {
-                listClassroom.Add(new ClassroomModel(item, user.Id));
-            }
         }
     }
 }
