@@ -50,7 +50,7 @@ namespace Application.Services
             {
                 Id = user.Id,
                 Email = user.PresentEmail,
-                Avatar = $"{user.LinkAvatar}/{user.Avatar}",
+                Avatar = user.Avatar,
                 Fullname = user.FirstName + " " + user.LastName,
                 Role = user.Role.Name
             };
@@ -77,7 +77,6 @@ namespace Application.Services
                     FirstEmail = registerModel.Email,
                     PhoneNumber = registerModel.PhoneNumber,
                     Avatar = registerModel.AvatarFile,
-                    LinkAvatar = string.Empty,
                     PresentEmail = registerModel.Email,
                     Birthday = registerModel.Birthday,
                     PasswordHash = SecurityMethods.HashPassword(registerModel.Password),

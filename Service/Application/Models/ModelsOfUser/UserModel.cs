@@ -28,7 +28,6 @@ namespace Application.Models.ModelsOfUser
             this.LastName = user.LastName;
             this.FirstName = user.FirstName;
             this.CreateDate = user.CreatedDate;
-            this.Avatar = $"{user.LinkAvatar}/{user.Avatar}";
         }
     }
 }

@@ -37,13 +37,10 @@ namespace Server.Middleware
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
                 var userId = jwtToken.Claims.First(x => x.Type == "Id").Value;
-
-                // Gán thông tin người dùng vào context
                 context.Items["UserId"] = userId;
             }
             catch
             {
-                // Xử lý khi token không hợp lệ
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
             }
         }

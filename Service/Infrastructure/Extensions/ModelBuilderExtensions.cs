@@ -43,7 +43,6 @@ namespace Infrastructure.Extensions
                     IsVerified = true,
                     PhoneNumber = "0123456789",
                     Avatar = string.Empty,
-                    LinkAvatar = string.Empty,
                     PasswordHash = SecurityMethods.HashPassword("AdminAccount123456789"),
                 }
             );
