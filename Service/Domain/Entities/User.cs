@@ -16,8 +16,13 @@
         public DateTime Birthday { get; set; }
         public DateTime CreatedDate { get; set; }
         public bool IsLock { get; set; }
-        public string RoleId { get; set; }
         public string Avatar { get; set; }
+        //FK
+        public string RoleId { get; set; }
         public Role Role { get; set; }
+        public string FacultyID { get; set; }
+        public Faculty Faculty { get; set; }
+        public List<Post> ListPost { get; set; }
+        public List<Comment> ListComment { get; set; }
     }
 }

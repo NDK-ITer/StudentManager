@@ -16,11 +16,13 @@ namespace Infrastructure.Context
         {
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new PostConfiguration());
             //modelBuilder.SeedData();
             //base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Post> Posts { get; set; }
     }
 }

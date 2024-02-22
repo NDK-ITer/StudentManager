@@ -22,9 +22,10 @@ namespace Infrastructure.Configurations
             builder.Property(x => x.PhoneNumber).HasMaxLength(20);
             builder.Property(x => x.Avatar).HasMaxLength(100);
 
-            builder.HasOne<Role>(user => user.Role)
+            builder.HasOne(user => user.Role)
                 .WithMany(role => role.Users)
                 .HasForeignKey(fk => fk.RoleId);
+
         }
     }
 }

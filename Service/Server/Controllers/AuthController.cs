@@ -24,7 +24,7 @@ namespace Server.Controllers
             this.uow = uow;
             this.sentEmail = sentEmail;
             var request = httpContextAccessor.HttpContext.Request;
-            this.baseUrl = $"{request.Scheme}://{request.Host}";
+            baseUrl = $"{request.Scheme}://{request.Host}";
         }
 
         [HttpPost]
