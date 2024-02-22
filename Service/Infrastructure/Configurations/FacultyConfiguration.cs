@@ -10,10 +10,6 @@ namespace Infrastructure.Configurations
         {
             builder.ToTable(nameof(Faculty));
             builder.HasKey(x => x.Id);
-
-            builder.HasOne<User>(faculty => faculty.Admin)
-                .WithOne(user => user.Faculty)
-                .HasForeignKey<Faculty>(fk => fk.AdminId);
         }
     }
 }

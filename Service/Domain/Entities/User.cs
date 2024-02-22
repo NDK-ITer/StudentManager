@@ -20,9 +20,9 @@
         //FK
         public string RoleId { get; set; }
         public Role Role { get; set; }
-        public string FacultyID { get; set; }
-        public Faculty Faculty { get; set; }
-        public List<Post> ListPost { get; set; }
+        public string? FacultyID { get; set; }
+        public Faculty? Faculty { get; set; }
+        public List<Post>? ListPost { get; set; }
         public List<Comment> ListComment { get; set; }
     }
 }

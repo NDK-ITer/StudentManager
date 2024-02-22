@@ -12,6 +12,7 @@ namespace Infrastructure.Repositories
         public PostRepository(UserDbContext context, IMemoryCache cache) : base(context, cache)
         {
             _dbSet.Include(u => u.User).Load();
+            _dbSet.Include(u => u.Faculty).Load();
             _keyValueCache = "postWhichHaveBeenGet";
         }
     }

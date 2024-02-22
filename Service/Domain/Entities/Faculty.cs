@@ -4,9 +4,9 @@
     {
         public string Id { get; set; }
         public string Name { get; set; }
+        public bool IsDeleted { get; set; }
         //FK
         public List<Post> ListPost { get; set; }
-        public string AdminId { get; set; }
-        public User Admin { get; set; }
+        public List<User> ListAdmin { get; set; }
     }
 }

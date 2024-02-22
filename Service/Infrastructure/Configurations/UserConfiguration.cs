@@ -24,8 +24,11 @@ namespace Infrastructure.Configurations
 
             builder.HasOne(user => user.Role)
                 .WithMany(role => role.Users)
-                .HasForeignKey(fk => fk.RoleId);
+                .HasForeignKey(user => user.RoleId);
 
+            builder.HasOne(user => user.Faculty)
+                .WithMany(faculty => faculty.ListAdmin)
+                .HasForeignKey(user => user.FacultyID);
         }
     }
 }

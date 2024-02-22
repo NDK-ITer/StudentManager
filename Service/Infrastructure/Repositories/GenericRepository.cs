@@ -21,46 +21,46 @@ namespace Infrastructure.Repositories
             _options.SlidingExpiration = TimeSpan.FromMinutes(10);
             _cache = cache;
         }
-        public void Add(T entity)
+        public virtual void Add(T entity)
         {
            _dbSet.Add(entity);
         }
 
-        public void AddRange(List<T> entities)
+        public virtual void AddRange(List<T> entities)
         {
             _dbSet.AddRange(entities);
         }
 
-        public List<T>? Find(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
+        public virtual List<T>? Find(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
         {
             var result = _dbSet.Where(predicate).ToList();
             if (result == null) { return null; }
             return result;
         }
 
-        public List<T> GetAll()
+        public virtual List<T> GetAll()
         {
             return _dbSet.ToList();
         }
 
-        public T? GetById(string id)
+        public virtual T? GetById(string id)
         {
             var result = _dbSet.Find(id);
             if (result == null) { return null; }
             return result;
         }
 
-        public void Remove(T entity)
+        public virtual void Remove(T entity)
         {
             _dbSet.Remove(entity);
         }
 
-        public void RemoveRange(List<T> entities)
+        public virtual void RemoveRange(List<T> entities)
         {
             _dbSet.RemoveRange(entities);
         }
 
-        public void Update(T entity)
+        public virtual void Update(T entity)
         {
             _dbSet.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;

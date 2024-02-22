@@ -9,6 +9,9 @@ namespace Infrastructure.Repositories
         IUserRepository userRepository { get; }
         IRoleRepository roleRepository { get; }
         IPostRepository postRepository { get; }
+        ICommentRepository commentRepository { get; }
+        IFacultyRepository facultyRepository { get; }
+        
         void SaveChange();
     }
     public class UnitOfWork : IUnitOfWork
@@ -21,11 +24,15 @@ namespace Infrastructure.Repositories
             userRepository = new UserRepository(context, cache);
             roleRepository = new RoleRepository(context, cache);
             postRepository = new PostRepository(context, cache);
+            facultyRepository = new FacultyRepository(context, cache);
+            commentRepository = new CommentRepoitory(context, cache);
         }
 
         public IUserRepository userRepository { get; private set; }
         public IRoleRepository roleRepository { get; private set; }
         public IPostRepository postRepository { get; private set; }
+        public IFacultyRepository facultyRepository { get; private set; }
+        public ICommentRepository commentRepository { get; private set; }
 
         public void SaveChange()
         {
