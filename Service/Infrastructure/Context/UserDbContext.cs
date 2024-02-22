@@ -17,7 +17,7 @@ namespace Infrastructure.Context
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new PostConfiguration());
-            //modelBuilder.SeedData();
+            modelBuilder.SeedData();
             //base.OnModelCreating(modelBuilder);
         }
 

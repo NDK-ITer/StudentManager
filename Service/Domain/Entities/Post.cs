@@ -7,6 +7,7 @@
         public string Content { get; set; }
         public List<string> ListImage {  get; set; }
         public DateTime DatePost { get; set; }
+        public bool isApproved { get; set; }
         //FK
         public string FacultyId {  get; set; }
         public Faculty Faculty { get; set; }
