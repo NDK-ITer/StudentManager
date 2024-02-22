@@ -10,10 +10,10 @@ namespace Server.Controllers
     public class AdminController : ControllerBase
     {
         private readonly string baseUrl;
-        private readonly IUnitOfWork_Service uow;
+        private readonly IUnitOfWorkService uow;
 
         public AdminController(
-            IUnitOfWork_Service uow,
+            IUnitOfWorkService uow,
             IHttpContextAccessor httpContextAccessor
         )
         {

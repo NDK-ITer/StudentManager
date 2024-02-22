@@ -11,12 +11,12 @@ namespace Server.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IUnitOfWork_Service uow;
+        private readonly IUnitOfWorkService uow;
         private readonly IEmailSender sentEmail;
         private readonly string baseUrl;
 
         public AuthController (
-            IUnitOfWork_Service uow,
+            IUnitOfWorkService uow,
             IEmailSender sentEmail,
             IHttpContextAccessor httpContextAccessor
         ) 

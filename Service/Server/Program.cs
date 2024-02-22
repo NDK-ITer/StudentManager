@@ -18,7 +18,7 @@ builder.Services.AddControllers();
 builder.Services.AddMemoryCache();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<UserDbContext>(opt => opt.UseSqlServer(connectionString));
-builder.Services.AddTransient<IUnitOfWork_Service, UnitOfWork_Service>();
+builder.Services.AddTransient<IUnitOfWorkService, UnitOfWorkService>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddTransient<ImageMethod>();
 builder.Services.AddCors(opt =>
