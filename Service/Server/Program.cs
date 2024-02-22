@@ -2,10 +2,12 @@ using Application.Services;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.IdentityModel.Tokens;
 using SendMail.ClassDefine;
 using SendMail.Interfaces;
 using Server.FileMethods;
 using Server.Middleware;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ConnectString");
@@ -17,8 +19,8 @@ builder.Services.AddMemoryCache();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<UserDbContext>(opt => opt.UseSqlServer(connectionString));
 builder.Services.AddTransient<IUnitOfWork_Service, UnitOfWork_Service>();
-builder.Services.AddTransient<ImageMethod>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddTransient<ImageMethod>();
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("myCorsPolicy", builder =>
@@ -35,6 +37,7 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMiddleware<JwtMiddleware>();

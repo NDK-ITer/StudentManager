@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
+using XAct;
 
 namespace Server.Middleware
 {
@@ -23,21 +19,26 @@ namespace Server.Middleware
 
         private void AttachUserToContext(HttpContext context, string token)
         {
-            try
+            try 
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_configuration["Jwt:SecretKey"]);
+                var secretKey = _configuration["Jwt:SecretKey"];
+                var key = Encoding.ASCII.GetBytes(secretKey);
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateLifetime = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
                     ClockSkew = TimeSpan.Zero
                 }, out SecurityToken validatedToken);
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
                 var userId = jwtToken.Claims.First(x => x.Type == "Id").Value;
+                var Role = jwtToken.Claims.First(x => x.Type == "Role").Value;
                 context.Items["UserId"] = userId;
+                context.Items["Role"] = Role;
             }
             catch
             {

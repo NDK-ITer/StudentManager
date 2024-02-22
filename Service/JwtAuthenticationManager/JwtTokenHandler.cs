@@ -18,7 +18,7 @@ namespace JwtAuthenticationManager
             var tokenKey = Encoding.ASCII.GetBytes(JWT_SECURITY_KEY);
             var claimsIdentity = new ClaimsIdentity(new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Name, userAccount.Fullname),
+                new Claim("Id", userAccount.Id),
                 new Claim("Role", userAccount.Role)
             });
 
@@ -40,7 +40,7 @@ namespace JwtAuthenticationManager
             {
                 UserName = userAccount.Fullname,
                 Avatar = userAccount.Avatar,
-                ExpiresIn = (int)tokenExprityTimeStamp.Subtract(DateTime.Now).TotalSeconds,
+                Lifetime = (int)tokenExprityTimeStamp.Subtract(DateTime.Now).TotalSeconds,
                 JwtToken = token,
             };
         }

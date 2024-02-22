@@ -5,6 +5,6 @@
         public string UserName { get; set;}
         public string Avatar { get; set;}
         public string JwtToken { get; set;}
-        public int ExpiresIn { get; set;}
+        public int Lifetime { get; set;}
     }
 }
