@@ -4,6 +4,7 @@
     {
         public string Id { get; set; }
         public string Name { get; set; }
+        public bool IsOpen { get; set; }
         public bool IsDeleted { get; set; }
         //FK
         public List<Post> ListPost { get; set; }

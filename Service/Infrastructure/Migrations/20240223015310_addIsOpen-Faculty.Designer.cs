@@ -4,6 +4,7 @@ using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240223015310_addIsOpen-Faculty")]
+    partial class addIsOpenFaculty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,22 +80,16 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DatePost")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FacultyId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsChecked")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LinkDocument")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ListImage")
                         .IsRequired()
@@ -106,6 +103,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("isApproved")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -144,14 +144,14 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c8c17fbb-731c-405a-bed8-cb22868ef7ca",
+                            Id = "46a7b851-722d-40a2-8ab2-a578583056b6",
                             Description = "",
                             Name = "ADMIN",
                             NormalizeName = "Admin"
                         },
                         new
                         {
-                            Id = "76fda05c-b706-421c-94b7-a0a578c1b93b",
+                            Id = "66c83f38-2377-413e-9135-854ae6dd57ea",
                             Description = "",
                             Name = "USER",
                             NormalizeName = "User"
@@ -244,8 +244,8 @@ namespace Infrastructure.Migrations
                         {
                             Id = "2c75293b-f8e5-4862-9b13-5894a64895cd",
                             Avatar = "",
-                            Birthday = new DateTime(2024, 2, 23, 17, 16, 28, 887, DateTimeKind.Local).AddTicks(1107),
-                            CreatedDate = new DateTime(2024, 2, 23, 17, 16, 28, 887, DateTimeKind.Local).AddTicks(1117),
+                            Birthday = new DateTime(2024, 2, 23, 8, 53, 9, 463, DateTimeKind.Local).AddTicks(7278),
+                            CreatedDate = new DateTime(2024, 2, 23, 8, 53, 9, 463, DateTimeKind.Local).AddTicks(7291),
                             FirstEmail = "admin001@gmail.com",
                             FirstName = "Admin",
                             IsLock = false,
@@ -254,10 +254,10 @@ namespace Infrastructure.Migrations
                             PasswordHash = "OupciF/ZKYnt4U0xYizqoQ==",
                             PhoneNumber = "0123456789",
                             PresentEmail = "admin001@gmail.com",
-                            RoleId = "c8c17fbb-731c-405a-bed8-cb22868ef7ca",
-                            TokenAccess = "C09D185F3313EE93A4FA91598A0F124973C4AE6B7654C179FF13833D70FC5FF0B060F5A9FFAD733B86941B169F62880E6DB42B9C4F4F07C2958CA74BF4F373F7",
+                            RoleId = "46a7b851-722d-40a2-8ab2-a578583056b6",
+                            TokenAccess = "BACCE47D2A3A0EA99AB542334C3B963FF426C084ABD3E7CA5A3A01607A648AFDC5FF3EE1F0A53A887CD6B9736E2F06CBE5EC780AFD411F8DA9AFC10964A64CEE",
                             UserName = "adminVersion_0001",
-                            VerifiedDate = new DateTime(2024, 2, 23, 17, 16, 28, 887, DateTimeKind.Local).AddTicks(1353)
+                            VerifiedDate = new DateTime(2024, 2, 23, 8, 53, 9, 463, DateTimeKind.Local).AddTicks(7711)
                         });
                 });
 

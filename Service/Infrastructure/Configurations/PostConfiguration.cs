@@ -12,7 +12,6 @@ namespace Infrastructure.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).HasMaxLength(200);
             builder.Property(x => x.Title).IsRequired().HasMaxLength(100);
-            builder.Property(x => x.Content).IsRequired();
             builder.Property(x => x.ListImage)
                 .HasConversion(
                     v => string.Join(',', v), // Chuyển List<string> thành một chuỗi ngăn cách bằng dấu ","

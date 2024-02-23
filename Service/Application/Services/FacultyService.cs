@@ -4,7 +4,6 @@ using Infrastructure.Context;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
-using XAct.Users;
 
 namespace Application.Services
 {
@@ -15,6 +14,7 @@ namespace Application.Services
         Tuple<string, bool> Delete(string userId, string id);
         Tuple<string, Faculty?> GetById(string id);
         Tuple<string, List<Faculty?>?> GetAll(string userId);
+        Tuple<string, bool> AlowUploadPost(string userId, string facultyId);
         Tuple<string, List<Faculty?>?> GetPublic();
     }
     public class FacultyService:IFacultyService
@@ -41,6 +41,18 @@ namespace Application.Services
             unitOfWork.facultyRepository.Add(newFaculty);
             unitOfWork.SaveChange();
             return new Tuple<string, Faculty?>("add successful!", newFaculty);
+        }
+
+        public Tuple<string, bool> AlowUploadPost(string userId, string facultyId)
+        {
+            if (userId.IsNullOrEmpty() || facultyId.IsNullOrEmpty()) return new Tuple<string, bool>("parameter is null", false);
+            var user = unitOfWork.userRepository.GetById(userId);
+            var faculty = unitOfWork.facultyRepository.GetById(facultyId);
+            if (!faculty.ListAdmin.Contains(user)) return new Tuple<string, bool>("you cant do it", false);
+            faculty.IsOpen = true;
+            unitOfWork.facultyRepository.Update(faculty);
+            unitOfWork.SaveChange();
+            return new Tuple<string, bool>("open successful", true);
         }
 
         public Tuple<string, bool> Delete(string userId, string id)

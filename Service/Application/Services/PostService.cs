@@ -15,7 +15,8 @@ namespace Application.Services
         Tuple<string, Post?> Update( string idUser,EditPostModel e);
         Tuple<string, bool> Remove(string idUser, string idPost);
         Tuple<string, Post?> GetById(string id);
-        Tuple<string, List<Post?>?> GetAll();
+        Tuple<string, List<Post?>> GetPostOfFaculty(string userId, string facultyId);
+        Tuple<string, List<Post?>?> GetAll(string userId);
         Tuple<string, List<Post?>?> GetPublic();
     }
     public class PostService:IPostService
@@ -33,7 +34,7 @@ namespace Application.Services
             if (post == null) return new Tuple<string, bool>($"not found with idPost: {idPost}", false);
             if (post.Faculty.IsDeleted == true) return new Tuple<string, bool>("Faculty of this post was deleted", false);
             if (post.Faculty.ListAdmin.Find(a => a.Id == idUser) != null) return new Tuple<string, bool>($"user with id {idUser} is not Admin", false);
-            post.isApproved = true;
+            post.IsApproved = true;
             unitOfWork.postRepository.Update(post);
             unitOfWork.SaveChange();
             return new Tuple<string, bool>($"Aapprove post {post.Title} is successful", true);
@@ -46,7 +47,7 @@ namespace Application.Services
             {
                 Id = Guid.NewGuid().ToString(),
                 Title = a.Title,
-                Content = a.Content,
+                DatePost = DateTime.Now,
                 ListImage = a.ListImage,
             };
             unitOfWork.postRepository.Add(newPost);
@@ -54,8 +55,12 @@ namespace Application.Services
             return new Tuple<string, Post?>("Add Successful", newPost);
         }
 
-        public Tuple<string, List<Post?>?> GetAll()
+        public Tuple<string, List<Post?>?> GetAll(string userId)
         {
+            if (userId.IsNullOrEmpty()) return new Tuple<string, List<Post?>?> ("userId not null", null);
+            var user = unitOfWork.userRepository.GetById(userId);
+            if (user == null) return new Tuple<string, List<Post?>?>($"not found with userId: {userId}", null);
+            if (user.Role.Name != "ADMIN") return new Tuple<string, List<Post?>?>("you cant do this", null);
             var allPost = unitOfWork.postRepository.GetAll();
             if (allPost.IsNullOrEmpty()) return new Tuple<string, List<Post?>?>("no post", null);
             return new Tuple<string, List<Post?>?>("", allPost);
@@ -71,7 +76,7 @@ namespace Application.Services
 
         public Tuple<string, List<Post?>?> GetPublic()
         {
-            var postPublic = unitOfWork.postRepository.Find(p => p.isApproved == true);
+            var postPublic = unitOfWork.postRepository.Find(p => p.IsApproved == true);
             if (postPublic.IsNullOrEmpty()) return new Tuple<string, List<Post?>?>("no public post", null);
             return new Tuple<string, List<Post?>?>("", postPublic);
         }
@@ -95,10 +100,18 @@ namespace Application.Services
             if (post == null) return new Tuple<string, Post?>($"not found post with id: {e.Id}", null);
             if (post.Faculty.ListAdmin.Find(a => a.Id == idUser) == null) return new Tuple<string, Post?>("you cant update this post", null);
             post.Title = e.Title;
-            post.Content = e.Content;
             unitOfWork.postRepository.Update(post);
             unitOfWork.SaveChange();
             return new Tuple<string, Post?>("update successful", post);
+        }
+
+        public Tuple<string, List<Post?>?> GetPostOfFaculty(string userId, string facultyId)
+        {
+            if (userId.IsNullOrEmpty() || facultyId.IsNullOrEmpty()) return new Tuple<string, List<Post?>?>("parameter is null", null);
+            var user = unitOfWork.userRepository.GetById(userId);
+            var faculty = unitOfWork.facultyRepository.GetById(facultyId);
+            if (!faculty.ListAdmin.Contains(user)) return new Tuple<string, List<Post?>?>("you cant do it", null);
+            return new Tuple<string, List<Post?>?>("", faculty.ListPost);
         }
     }
 }

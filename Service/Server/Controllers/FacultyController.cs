@@ -50,7 +50,8 @@ namespace Server.Controllers
                     {
                         mess = result.Item1
                     };
-                }else
+                }
+                else
                 {
                     res.State = 1;
                     res.Data = new
@@ -60,7 +61,7 @@ namespace Server.Controllers
                     };
                 }
                 return new JsonResult(res);
-                
+
             }
             catch (Exception e)
             {
@@ -97,7 +98,7 @@ namespace Server.Controllers
                     Id = data.ID,
                     Name = data.Name,
                 };
-                var result = uow.FacultyService.Update(userId,editFaculty);
+                var result = uow.FacultyService.Update(userId, editFaculty);
                 if (result.Item2 == null)
                 {
                     res.State = 0;
@@ -196,7 +197,7 @@ namespace Server.Controllers
                 var result = uow.FacultyService.GetAll(userId);
                 if (result.Item2 == null)
                 {
-                    res.State= 0;
+                    res.State = 0;
                     res.Data = new
                     {
                         mess = result.Item1
@@ -241,7 +242,7 @@ namespace Server.Controllers
                 var result = uow.FacultyService.GetPublic();
                 if (result.Item2.IsNullOrEmpty())
                 {
-                    res.State= 0;
+                    res.State = 0;
                     res.Data = new
                     {
                         mess = result.Item1
@@ -261,6 +262,48 @@ namespace Server.Controllers
                     res.State = 0;
                     res.Data = listFaculty;
                 }
+                return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                res.State = -1;
+                res.Data = new
+                {
+                    mess = e.Message,
+                };
+                return new JsonResult(res);
+            }
+        }
+
+
+        [HttpPut]
+        [HttpOptions]
+        [Route("alow-upload/{facultyId}")]
+        public ActionResult AlowUploadPost([FromRoute] string facultyId)
+        {
+            var res = new Response();
+            try
+            {
+                string userId = string.Empty;
+                if (HttpContext.Items["UserId"] == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = "Login Please!"
+                    };
+                    return new JsonResult(res);
+                }
+                userId = HttpContext.Items["UserId"].ToString();
+                var result = uow.FacultyService.AlowUploadPost(userId, facultyId);
+                if (result.Item2 == false)
+                    res.State = 0;
+                else
+                    res.State = 1;
+                res.Data = new
+                {
+                    mess = result.Item1
+                };
                 return new JsonResult(res);
             }
             catch (Exception e)

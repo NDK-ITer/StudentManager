@@ -44,7 +44,10 @@ namespace Server.Controllers
                 }
 
                 res.State = 1;
-                res.Data = getJWt.Item2;
+                res.Data = new
+                {
+
+                };
                 return new JsonResult(res);
             }
             catch (Exception e)
@@ -66,8 +69,8 @@ namespace Server.Controllers
                 var result = uow.UserService.CreatedUser(new RegisterModel
                 {
                     UserName = register.UserName,
-                    FirstName = register.Firstname,
-                    LastName = register.Lastname,
+                    FirstName = register.FirstName,
+                    LastName = register.LastName,
                     Email = register.Email,
                     Password = register.Password,
                     AvatarFile = string.Empty,
