@@ -3,6 +3,7 @@ using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using SendMail.Interfaces;
 using Server.Requests.Form;
+using System.Dynamic;
 
 namespace Server.Controllers
 {
@@ -32,22 +33,24 @@ namespace Server.Controllers
         [Route("login")]
         public ActionResult Login([FromForm] LoginForm loginForm)
         {
-            var res = new Response();
+            dynamic res = new ExpandoObject();
             try
             {
-                var getJWt = uow.UserService.GetJwtUser(loginForm.email, loginForm.password);
-                if (getJWt.Item2 == null)
+                var result = uow.UserService.GetJwtUser(loginForm.email, loginForm.password);
+                if (result.Item2 == null)
                 {
                     res.State = 0;
-                    res.Data = getJWt.Item1;
+                    res.Data = result.Item1;
                     return new JsonResult(res);
                 }
 
                 res.State = 1;
                 res.Data = new
                 {
-
+                    UserName = result.Item2.UserName,
+                    LinkAvatar = $"{baseUrl}/{result.Item2.Avatar}"
                 };
+                res.jwt = result.Item2.JwtToken;
                 return new JsonResult(res);
             }
             catch (Exception e)
@@ -63,7 +66,7 @@ namespace Server.Controllers
         [Route("register")]
         public ActionResult Register([FromForm] RegisterForm register)
         {
-            var res = new Response();
+            dynamic res = new ExpandoObject();
             try
             {
                 var result = uow.UserService.CreatedUser(new RegisterModel
@@ -104,7 +107,7 @@ namespace Server.Controllers
         [Route("{id}/verify-email/{token}")]
         public ActionResult VerifyEmail([FromRoute] string token, string id)
         {
-            var res = new Response();
+            dynamic res = new ExpandoObject();
             try
             {
                 var user = uow.UserService.GetUserById(id);

@@ -3,6 +3,7 @@ using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Server.Requests.Form;
+using System.Dynamic;
 
 namespace Server.Controllers
 {
@@ -24,7 +25,7 @@ namespace Server.Controllers
         [Route("create")]
         public ActionResult Create([FromForm] CreateFacultyForm data)
         {
-            var res = new Response();
+            dynamic res = new ExpandoObject();
             try
             {
                 string userId = string.Empty;
@@ -79,7 +80,7 @@ namespace Server.Controllers
         [Route("edit")]
         public ActionResult Update([FromForm] EditFacultyForm data)
         {
-            var res = new Response();
+            dynamic res = new ExpandoObject();
             try
             {
                 string userId = string.Empty;
@@ -134,7 +135,7 @@ namespace Server.Controllers
         [Route("del/{id}")]
         public ActionResult Delete([FromRoute] string id)
         {
-            var res = new Response();
+            dynamic res = new ExpandoObject();
             try
             {
                 string userId = string.Empty;
@@ -180,7 +181,7 @@ namespace Server.Controllers
         [Route("get-all")]
         public ActionResult GetAll()
         {
-            var res = new Response();
+            dynamic res = new ExpandoObject();
             try
             {
                 string userId = string.Empty;
@@ -236,7 +237,7 @@ namespace Server.Controllers
         [Route("get-public")]
         public ActionResult GetPublic()
         {
-            var res = new Response();
+            dynamic res = new ExpandoObject();
             try
             {
                 var result = uow.FacultyService.GetPublic();
@@ -281,7 +282,7 @@ namespace Server.Controllers
         [Route("alow-upload/{facultyId}")]
         public ActionResult AlowUploadPost([FromRoute] string facultyId)
         {
-            var res = new Response();
+            dynamic res = new ExpandoObject();
             try
             {
                 string userId = string.Empty;

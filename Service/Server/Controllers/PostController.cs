@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SendMail.Interfaces;
 using Server.Requests.Form;
+using System.Dynamic;
 using XAct.Domain.Repositories;
 
 namespace Server.Controllers
@@ -26,7 +27,7 @@ namespace Server.Controllers
         [Route("upload")]
         public ActionResult Create(UploadPostForm data)
         {
-            var res = new Response();
+            dynamic res = new ExpandoObject();
             try
             {
                 return new JsonResult(res);
