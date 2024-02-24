@@ -44,6 +44,9 @@ const LoginForm = (props) => {
                 loginContext(response)
                 navigate('/')
             }
+            else{
+                toast.error(response.Data.mess);
+            }
             setLoadingAPI(false)
         } catch (error) {
             toast.error('Login error');

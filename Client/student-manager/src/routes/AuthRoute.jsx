@@ -6,6 +6,7 @@ import Alert from 'react-bootstrap/Alert';
 const AuthRoute = (props) => {
     const {user} = useContext(UserContext)
     let navigate = useNavigate()
+    
     if (user && !user.isAuth) {
         navigate('/auth')
         return<>

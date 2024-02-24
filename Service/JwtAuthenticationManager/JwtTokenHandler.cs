@@ -19,7 +19,8 @@ namespace JwtAuthenticationManager
             var claimsIdentity = new ClaimsIdentity(new List<Claim>
             {
                 new Claim("Id", userAccount.Id),
-                new Claim("Role", userAccount.Role)
+                new Claim("Role", userAccount.Role),
+                new Claim("FullName", userAccount.Fullname)
             });
 
             var signingCredentials = new SigningCredentials(

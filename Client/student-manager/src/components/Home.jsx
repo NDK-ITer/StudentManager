@@ -1,17 +1,18 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
+import MainBanner from './banner/MainBanner';
+import '../assets/styles/HomePage.scss'
 
 const HomePage = () => {
     return (
         <>
-        <div className='home-container'>
-            <Container>
-                <div>
-                    Home Page
-                    <h1>Welcome to Our Website</h1>
-                </div>
-            </Container>
-        </div>
+            <div className='banner-header'>
+                <Container>
+                    <div>
+                        <MainBanner/>
+                    </div>
+                </Container>
+            </div>
         </>
     );
 };

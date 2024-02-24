@@ -50,7 +50,7 @@ const UserProvider = ({ children }) =>{
             isAuth: true,
         }))
         Cookies.set('jwt', response.jwt);
-        // Cookies.set('user', JSON.stringify(response.data));
+        Cookies.set('user', JSON.stringify(response.Data));
     }
 
     const logout = () => {

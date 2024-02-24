@@ -2,22 +2,19 @@ import {Routes, Route} from 'react-router-dom';
 import HomePage from '../components/Home'
 import Auth from '../components/auth/Auth';
 import AuthRoute from './AuthRoute';
+import UserInformation from '../components/user/UserInformation';
 
 const AppRoute = () => {
     return(<>
         <Routes>
             <Route path='/' element={<HomePage/>}/>
             <Route path='/auth' element={<Auth/>}/>
-            {/* <Route path='/my-song' element={
+            {/* <Route path='/user-information' element={
                 <AuthRoute>
-                    <MySong/>
-                </AuthRoute>
-            }/>
-            <Route path='/main-information' element={
-                <AuthRoute>
-                    <MainInformation/>
+                    <UserInformation/>
                 </AuthRoute>
             }/> */}
+            <Route path='/user-information' element={<UserInformation/>}/>
         </Routes>
     </>)
 }

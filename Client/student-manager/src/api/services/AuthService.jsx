@@ -19,7 +19,12 @@ const Register = (props) =>{
     })
 }
 
+const GetMyInformation = () =>{
+    return Root.get(`${controllerName}/information`)
+}
+
 export {
     Login,
-    Register
+    Register,
+    GetMyInformation
 }

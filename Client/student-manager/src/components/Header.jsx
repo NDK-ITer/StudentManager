@@ -5,6 +5,8 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import '../assets/styles/Header.scss'
 import UserHeader from './user/UserHeader';
 import { useLocation, Link } from 'react-router-dom';
+import Image from 'react-bootstrap/Image';
+import MainLogo from '../assets/images/main-logo.png'
 
 const Header = () => {
 
@@ -13,7 +15,9 @@ const Header = () => {
     return (<>
         <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
             <Container>
-                <Navbar.Brand as={Link} to='/'>React-Bootstrap</Navbar.Brand>
+                <Navbar.Brand as={Link} to='/'>
+                    <Image src={MainLogo} className='main-logo' />
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto" activeKey={location.pathname}>
