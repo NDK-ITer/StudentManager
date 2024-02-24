@@ -2,8 +2,10 @@
 using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using SendMail.Interfaces;
+using Server.FileMethods;
 using Server.Requests.Form;
 using System.Dynamic;
+using XAct;
 
 namespace Server.Controllers
 {
@@ -14,16 +16,19 @@ namespace Server.Controllers
     {
         private readonly IUnitOfWorkService uow;
         private readonly IEmailSender sentEmail;
+        private readonly ImageMethod imgMethod;
         private readonly string baseUrl;
 
         public AuthController(
             IUnitOfWorkService uow,
             IEmailSender sentEmail,
-            IHttpContextAccessor httpContextAccessor
+            IHttpContextAccessor httpContextAccessor,
+            ImageMethod imgMethod
         )
         {
             this.uow = uow;
             this.sentEmail = sentEmail;
+            this.imgMethod = imgMethod;
             var request = httpContextAccessor.HttpContext.Request;
             baseUrl = $"{request.Scheme}://{request.Host}";
         }
@@ -48,7 +53,7 @@ namespace Server.Controllers
                 res.Data = new
                 {
                     UserName = result.Item2.UserName,
-                    LinkAvatar = $"{baseUrl}/{result.Item2.Avatar}"
+                    LinkAvatar = $"{baseUrl}/public/{result.Item2.Avatar}"
                 };
                 res.jwt = result.Item2.JwtToken;
                 return new JsonResult(res);
@@ -64,11 +69,16 @@ namespace Server.Controllers
         [HttpPost]
         [HttpOptions]
         [Route("register")]
-        public ActionResult Register([FromForm] dynamic register)
+        public ActionResult Register([FromForm] RegisterForm register)
         {
             dynamic res = new ExpandoObject();
             try
             {
+                
+                var imageFile = imgMethod.ReadFile("FileMethods\\ImagesDefault", "default-avatar.png");
+                var avatarName = $"Avatar-{Convert.ToBase64String(register.Email.ToByteArray()).Substring(0, 8)}.png";
+                var avatar = imgMethod.SaveFile("PublicFile", imageFile, avatarName);
+
                 var result = uow.UserService.CreatedUser(new RegisterModel
                 {
                     UserName = register.UserName,
@@ -76,7 +86,7 @@ namespace Server.Controllers
                     LastName = register.LastName,
                     Email = register.Email,
                     Password = register.Password,
-                    AvatarFile = string.Empty,
+                    AvatarFile = avatar,
                     Birthday = DateTime.Now,
                     PhoneNumber = ""
                 });

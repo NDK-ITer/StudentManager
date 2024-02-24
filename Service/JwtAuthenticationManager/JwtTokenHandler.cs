@@ -38,7 +38,7 @@ namespace JwtAuthenticationManager
 
             return new CombineJwtModel
             {
-                UserName = userAccount.Fullname,
+                UserName = userAccount.UserName,
                 Avatar = userAccount.Avatar,
                 Lifetime = (int)tokenExprityTimeStamp.Subtract(DateTime.Now).TotalSeconds,
                 JwtToken = token,

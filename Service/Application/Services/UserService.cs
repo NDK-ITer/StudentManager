@@ -52,6 +52,7 @@ namespace Application.Services
                 Email = user.PresentEmail,
                 Avatar = user.Avatar,
                 Fullname = user.FirstName + " " + user.LastName,
+                UserName = user.UserName,
                 Role = user.Role.Name
             };
             var jwtModel = JwtTokenHandler.GenerateJwtToken(jwtUserInfor);
