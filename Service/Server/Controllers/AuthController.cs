@@ -16,11 +16,11 @@ namespace Server.Controllers
         private readonly IEmailSender sentEmail;
         private readonly string baseUrl;
 
-        public AuthController (
+        public AuthController(
             IUnitOfWorkService uow,
             IEmailSender sentEmail,
             IHttpContextAccessor httpContextAccessor
-        ) 
+        )
         {
             this.uow = uow;
             this.sentEmail = sentEmail;
@@ -64,7 +64,7 @@ namespace Server.Controllers
         [HttpPost]
         [HttpOptions]
         [Route("register")]
-        public ActionResult Register([FromForm] RegisterForm register)
+        public ActionResult Register([FromForm] dynamic register)
         {
             dynamic res = new ExpandoObject();
             try

@@ -43,13 +43,14 @@ const UserProvider = ({ children }) =>{
     })
 
     const loginContext = (response) => {
+        console.log("user context: ",response)
         setUser(() => ({
-            name: response.data.specialName,
-            avatar:response.data.linkAvatar,    
+            name: response.Data.userName,
+            avatar:response.Data.linkAvatar,    
             isAuth: true,
         }))
         Cookies.set('jwt', response.jwt);
-        Cookies.set('user', JSON.stringify(response.data));
+        // Cookies.set('user', JSON.stringify(response.data));
     }
 
     const logout = () => {

@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { toast } from "react-toastify";
 
 const instance = axios.create({
-    baseURL: `http://localhost:9000/api/`,
+    baseURL: `https://localhost:9000/api`,
     timeout: 1000*60*5,
     withCredentials: false
 });

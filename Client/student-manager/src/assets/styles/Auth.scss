@@ -1,0 +1,15 @@
+.btn-submit{
+    display: block;
+    margin: 20px auto;
+    width: 100%;
+}
+
+.show-password{
+    position: relative;
+    i{
+        cursor: pointer;
+        position: absolute;
+        top: -27px;
+        right: 21px;
+    }
+}

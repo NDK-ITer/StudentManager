@@ -41,6 +41,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMiddleware<JwtMiddleware>();
+app.UseMiddleware<BodyToFormMiddleware>();
 
 app.UseStaticFiles(new StaticFileOptions
 {

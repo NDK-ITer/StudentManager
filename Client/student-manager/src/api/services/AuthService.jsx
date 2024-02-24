@@ -1,5 +1,4 @@
 import Root from '../Root';
-import Cookies from 'js-cookie';
 
 const controllerName = `auth`
 
@@ -18,11 +17,6 @@ const Register = (props) =>{
         email: props.email,
         password: props.password
     })
-}
-
-const Logout = () =>{
-    Cookies.set('jwt','')
-    Cookies.set('user','')
 }
 
 export {

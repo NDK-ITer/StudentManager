@@ -25,7 +25,7 @@ namespace Server.Controllers
         [HttpPost]
         [HttpOptions]
         [Route("upload")]
-        public ActionResult Create(UploadPostForm data)
+        public ActionResult Create([FromForm] dynamic data)
         {
             dynamic res = new ExpandoObject();
             try
