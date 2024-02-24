@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../contexts/UserContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import { GetMyInformation } from '../../api/services/AuthService';
 import '../../assets/styles/UserInformation.scss'
@@ -9,7 +9,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import Profile from './information/Profile';
 import { Image, Card } from 'react-bootstrap';
 import 'react-image-crop/dist/ReactCrop.css';
-import CutImage from './information/CutImage';
+import EditAvatar from './information/EditAvatar';
 
 const UserInformation = () => {
 
@@ -40,15 +40,15 @@ const UserInformation = () => {
         }
         getInformation()
         return
-    });
+    },[]);
     return (<>
         {userInformation && (
             <div>
-                <div className='header'>
+                <div className='header' style={{ backgroundImage: `url(${user.avatar})` }}>
                     <div className='line-avatar' >
                         <Card style={{ width: '18rem', borderRadius: '100px' }}>
                             <Card.Body>
-                                <div className="avatar-wrapper ">
+                                <div className="avatar-wrapper">
                                     <Image 
                                         src={user.avatar} 
                                         roundedCircle style={{ width: '100px', height: '100px' }} 
@@ -61,7 +61,7 @@ const UserInformation = () => {
                                     >
                                         <i class="fa-solid fa-pen"></i>
                                     </div>
-                                    <CutImage show ={show} handleClose = {handleClose}/>
+                                    <EditAvatar show ={show} handleClose = {handleClose}/>
                                 </div>
                                 <Card.Title>{userInformation.userName}</Card.Title>
                             </Card.Body>

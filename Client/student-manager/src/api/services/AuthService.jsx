@@ -23,8 +23,15 @@ const GetMyInformation = () =>{
     return Root.get(`${controllerName}/information`)
 }
 
+const UploadAvatar = (props) =>{
+    const formData = new FormData();
+    formData.append('newAvatar', props.uploadAvatar);
+    return Root.post(`${controllerName}/edit-avatar`,formData)
+}
+
 export {
     Login,
     Register,
-    GetMyInformation
+    GetMyInformation,
+    UploadAvatar
 }

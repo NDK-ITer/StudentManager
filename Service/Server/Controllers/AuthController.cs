@@ -231,6 +231,43 @@ namespace Server.Controllers
             dynamic res = new ExpandoObject();
             try
             {
+                string userId = string.Empty;
+                if (HttpContext.Items["UserId"] == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = "Login Please!"
+                    };
+                    return new JsonResult(res);
+                }
+                userId = HttpContext.Items["UserId"].ToString();
+                var getUser = uow.UserService.GetUserById(userId);
+                if (getUser.Item2 == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = getUser.Item1
+                    };
+                    return new JsonResult(res);
+                }
+                var avatarUser = getUser.Item2.Avatar;
+                var newNameAvatar = imgMethod.SaveFile("PublicFile", newAvatar, avatarUser);
+                if (newNameAvatar.IsNullOrEmpty())
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = "Upload avatar is Fail."
+                    };
+                    return new JsonResult(res);
+                }
+                res.State = 1;
+                res.Data = new
+                {
+                    mess = "Your avatar have been update."
+                };
                 return new JsonResult(res);
             }
             catch (Exception e)

@@ -9,12 +9,11 @@ const AppRoute = () => {
         <Routes>
             <Route path='/' element={<HomePage/>}/>
             <Route path='/auth' element={<Auth/>}/>
-            {/* <Route path='/user-information' element={
+            <Route path='/user-information' element={
                 <AuthRoute>
                     <UserInformation/>
                 </AuthRoute>
-            }/> */}
-            <Route path='/user-information' element={<UserInformation/>}/>
+            }/>
         </Routes>
     </>)
 }
