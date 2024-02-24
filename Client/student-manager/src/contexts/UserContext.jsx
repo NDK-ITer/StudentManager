@@ -1,8 +1,8 @@
-import {createContext, useState} from 'react'
+import { createContext, useState } from 'react'
 import Cookies from 'js-cookie';
 
-function IsLogin () {
-    const jwt  = Cookies.get('jwt');
+function IsLogin() {
+    const jwt = Cookies.get('jwt');
     const user = Cookies.get('user');
     if (!user && !jwt) {
         return false
@@ -10,43 +10,42 @@ function IsLogin () {
     return true
 }
 
-function GetUserName(){
+function GetUserName() {
     const user = Cookies.get('user')
     if (user) {
-        return(JSON.parse(user).specialName)
-    }else{
+        return (JSON.parse(user).userName)
+    } else {
         return ''
     }
 }
 
-function GetUserAvatar(){
+function GetUserAvatar() {
     const user = Cookies.get('user')
     if (user) {
-        return(JSON.parse(user).linkAvatar)
-    }else{
+        return (JSON.parse(user).linkAvatar)
+    } else {
         return ''
     }
 }
 
 const UserContext = createContext({
     name: '',
-    avatar:'',
+    avatar: '',
     isAuth: false,
 })
 
-const UserProvider = ({ children }) =>{
+const UserProvider = ({ children }) => {
 
     const [user, setUser] = useState({
         name: GetUserName(),
-        avatar:GetUserAvatar(),
+        avatar: GetUserAvatar(),
         isAuth: IsLogin(),
     })
 
     const loginContext = (response) => {
-        console.log("user context: ",response)
         setUser(() => ({
             name: response.Data.userName,
-            avatar:response.Data.linkAvatar,    
+            avatar: response.Data.linkAvatar,
             isAuth: true,
         }))
         Cookies.set('jwt', response.jwt);
@@ -58,13 +57,13 @@ const UserProvider = ({ children }) =>{
         Cookies.remove('jwt')
         setUser(() => ({
             name: '',
-            avatar:'',
+            avatar: '',
             isAuth: false,
         }))
     }
 
     return (
-        <UserContext.Provider value={{user, loginContext, logout}}>
+        <UserContext.Provider value={{ user, loginContext, logout }}>
             {children}
         </UserContext.Provider>
     )

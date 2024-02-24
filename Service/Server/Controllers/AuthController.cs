@@ -82,7 +82,7 @@ namespace Server.Controllers
 
                 var imageFile = imgMethod.ReadFile("FileMethods\\ImagesDefault", "default-avatar.png");
                 var random = new Random(); int randomNumber = random.Next(1000);
-                var avatarName = $"Avatar-{Guid.NewGuid().ToString().Substring(0, 10)}.png";
+                var avatarName = $"AvatarUser-{Guid.NewGuid().ToString().Substring(0, 10)}.png";
                 var avatar = imgMethod.SaveFile("PublicFile", imageFile, avatarName);
 
                 var result = uow.UserService.CreatedUser(new RegisterModel
@@ -213,6 +213,24 @@ namespace Server.Controllers
                         listPost = listPost
                     };
                 }
+                return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                res.State = -1;
+                res.Data = e.Message;
+                return new JsonResult(res);
+            }
+        }
+
+        [HttpPost]
+        [HttpOptions]
+        [Route("edit-avatar")]
+        public ActionResult EditAvatar([FromForm] IFormFile newAvatar)
+        {
+            dynamic res = new ExpandoObject();
+            try
+            {
                 return new JsonResult(res);
             }
             catch (Exception e)

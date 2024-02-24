@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Card, Image } from 'react-bootstrap';
 import { UserContext } from '../../contexts/UserContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
@@ -8,12 +7,18 @@ import '../../assets/styles/UserInformation.scss'
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Profile from './information/Profile';
+import { Image, Card } from 'react-bootstrap';
+import 'react-image-crop/dist/ReactCrop.css';
+import CutImage from './information/CutImage';
 
 const UserInformation = () => {
 
     const { user } = useContext(UserContext)
     let navigate = useNavigate()
     const [userInformation, setUserInformation] = useState({})
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     const getInformation = async () => {
         try {
@@ -40,15 +45,28 @@ const UserInformation = () => {
         {userInformation && (
             <div>
                 <div className='header'>
-                    <Card style={{ width: '18rem' }}>
-                        <Card.Body>
-                            <div className="avatar-wrapper ">
-                                <Image src={user.avatar} roundedCircle style={{ width: '100px', height: '100px' }} className="avatar-image" />
-                                <div className="edit-overlay"><i class="fa-solid fa-pen-to-square"></i></div>
-                            </div>
-                            <Card.Title>{userInformation.fullName}</Card.Title>
-                        </Card.Body>
-                    </Card>
+                    <div className='line-avatar' >
+                        <Card style={{ width: '18rem', borderRadius: '100px' }}>
+                            <Card.Body>
+                                <div className="avatar-wrapper ">
+                                    <Image 
+                                        src={user.avatar} 
+                                        roundedCircle style={{ width: '100px', height: '100px' }} 
+                                        className="avatar-image" 
+                                        onClick={handleShow}
+                                    />
+                                    <div
+                                        className="edit-overlay"
+                                        onClick={handleShow}
+                                    >
+                                        <i class="fa-solid fa-pen"></i>
+                                    </div>
+                                    <CutImage show ={show} handleClose = {handleClose}/>
+                                </div>
+                                <Card.Title>{userInformation.userName}</Card.Title>
+                            </Card.Body>
+                        </Card>
+                    </div>
                 </div>
                 <div className='body'>
                     <Tabs

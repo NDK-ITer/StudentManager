@@ -1,17 +1,44 @@
-import { Card, Container, Row, Col } from 'react-bootstrap';
+import { Card, Row, Col } from 'react-bootstrap';
 
 
 const Profile = (props) => {
     return (<>
         <div>
             <Row className="justify-content-md-center">
-                <Col md={8}>
+                <Col md={13}>
                     <Card>
                         <Card.Body>
-                            <Card.Title>Email</Card.Title>
-                            <Card.Text>
-                                <p>Email: {props.data.email}</p>
-                            </Card.Text>
+                            <div className="d-flex justify-content-between align-items-center">
+                                <div className='props'>
+                                    <Card.Title><i class="fa-solid fa-signature"></i></Card.Title>
+                                    <Card.Text>
+                                        <p>{props.data.fullName}</p>
+                                    </Card.Text>
+                                </div>
+                                <div className='props'>
+                                    <Card.Title><i class="fa-solid fa-envelope"></i></Card.Title>
+                                    <Card.Text>
+                                        <p>{props.data.email}</p>
+                                    </Card.Text>
+                                </div>
+                            </div>
+                            
+                        </Card.Body>
+                        <Card.Body>
+                            <div className="d-flex justify-content-between align-items-center">
+                                <div className='props'>
+                                    <Card.Title><i class="fa-solid fa-signature"></i></Card.Title>
+                                    <Card.Text>
+                                        <p>{props.data.fullName}</p>
+                                    </Card.Text>
+                                </div>
+                                <div className='props'>
+                                    <Card.Title><i class="fa-solid fa-envelope"></i></Card.Title>
+                                    <Card.Text>
+                                        <p>{props.data.email}</p>
+                                    </Card.Text>
+                                </div>
+                            </div>
                         </Card.Body>
                     </Card>
                 </Col>
