@@ -1,13 +1,15 @@
 import { Form, Button, Modal, Image, Container, Row, Col } from 'react-bootstrap';
 import 'react-image-crop/dist/ReactCrop.css';
 import DefaultImg from '../../../assets/images/default-img.png'
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import { UploadAvatar } from '../../../api/services/AuthService';
+import { UserContext } from '../../../contexts/UserContext';
 
 
 const EditAvatar = ({ show, handleClose }) => {
 
+    let {refreshImage} = useContext(UserContext)
     const [image, setImage] = useState(null);
     const [loadingApi, setLoadingApi] = useState(false)
 
@@ -28,6 +30,7 @@ const EditAvatar = ({ show, handleClose }) => {
             });
             if (res.State === 1) {
                 toast.success(res.Data.mess)
+                refreshImage()
                 handleClose()
             }else{
                 toast.error(res.Data.mess)

@@ -57,8 +57,11 @@ namespace Server.Controllers
                 res.State = 1;
                 res.Data = new
                 {
-                    UserName = result.Item2.UserName,
-                    LinkAvatar = $"{baseUrl}/public/{result.Item2.Avatar}"
+                    userName = result.Item2.UserName,
+                    firstName = result.Item2.FirstName,
+                    lastName = result.Item2.LastName,
+                    email = result.Item2.Email,
+                    linkAvatar = $"{baseUrl}/public/{result.Item2.Avatar}"
                 };
                 res.jwt = result.Item2.JwtToken;
                 return new JsonResult(res);
@@ -209,6 +212,8 @@ namespace Server.Controllers
                     {
                         fullName = $"{result.Item2.FirstName.Trim()} {result.Item2.LastName.Trim()}",
                         userName = result.Item2.UserName,
+                        firstName = result.Item2.FirstName,
+                        lastName = result.Item2.LastName,
                         email = result.Item2.PresentEmail,
                         listPost = listPost
                     };
@@ -267,6 +272,97 @@ namespace Server.Controllers
                 res.Data = new
                 {
                     mess = "Your avatar have been update."
+                };
+                return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                res.State = -1;
+                res.Data = e.Message;
+                return new JsonResult(res);
+            }
+        }
+
+        [HttpPost]
+        [HttpOptions]
+        [Route("change-password")]
+        public ActionResult ChangePassword([FromForm] string newPassword)
+        {
+            dynamic res = new ExpandoObject();
+            try
+            {
+                string userId = string.Empty;
+                if (HttpContext.Items["UserId"] == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = "Login Please!"
+                    };
+                    return new JsonResult(res);
+                }
+                userId = HttpContext.Items["UserId"].ToString();
+                var result = uow.UserService.ResetPassword(userId, newPassword);
+                if (result.Item2 == null)
+                    res.State = 0;
+                res.State = 1;
+                res.Data = new
+                {
+                    mess = result.Item1
+                };
+                return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                res.State = -1;
+                res.Data = e.Message;
+                return new JsonResult(res);
+            }
+        }
+
+        [HttpPost]
+        [HttpOptions]
+        [Route("edit-profile")]
+        public ActionResult EditProfile([FromForm] EditUserForm data)
+        {
+            dynamic res = new ExpandoObject();
+            try
+            {
+                string userId = string.Empty;
+                if (HttpContext.Items["UserId"] == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = "Login Please!"
+                    };
+                    return new JsonResult(res);
+                }
+                userId = HttpContext.Items["UserId"].ToString();
+                var editUserModel = new EditUserModel()
+                {
+                    IdUser = userId,
+                    FirstName = data.firstName,
+                    LastName = data.lastName,
+                    UserName = data.userName,
+                };
+                var result = uow.UserService.EditUser(editUserModel);
+                if (result.Item2 == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = result.Item2
+                    };
+                }
+                    
+                res.State = 1;
+                res.Data = new
+                {
+                    userName = result.Item2.UserName,
+                    firstName = result.Item2.FirstName,
+                    lastName = result.Item2.LastName,
+                    mess = result.Item1
                 };
                 return new JsonResult(res);
             }

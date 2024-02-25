@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { Register } from '../../api/services/AuthService';
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 
 const RegisterForm = () => {
     const [passwordsMatch, setPasswordsMatch] = useState(true);
     const [loadingAPI, setLoadingAPI] = useState(false)
+    const [isShowPassword, setIsShowPassword] = useState(false)
     const [registerData, setRegisterData] = useState({
         firstName: '',
         lastName: '',
@@ -42,7 +43,8 @@ const RegisterForm = () => {
             }
             setLoadingAPI(false)
         } catch (error) {
-            console.error('Register error:', error);
+            toast.error('Register error!');
+            setLoadingAPI(false)
         }
     };
 
@@ -95,18 +97,22 @@ const RegisterForm = () => {
             <Form.Group controlId="formBasicPassword">
                 <Form.Label>Password:</Form.Label>
                 <Form.Control
-                    type="password"
+                    type={isShowPassword === true ? 'text' : 'password'}
                     name="password"
                     value={registerData.password}
                     onChange={handleInputChange}
                     placeholder="password"
                 />
+                <div className='show-password'>
+                    <i className={isShowPassword === true ? "fa-solid fa-eye" : "fa-solid fa-eye-slash"}
+                        onClick={() => setIsShowPassword(!isShowPassword)}></i>
+                </div>
             </Form.Group>
 
             <Form.Group controlId="formBasicConfirmPassword">
                 <Form.Label>Confirm Password:</Form.Label>
                 <Form.Control
-                    type="password"
+                    type={isShowPassword === true ? 'text' : 'password'}
                     name="confirmPassword"
                     value={registerData.confirmPassword}
                     onChange={handleInputChange}
@@ -120,10 +126,9 @@ const RegisterForm = () => {
 
             <Form.Group>
                 <Button variant="primary" type="submit" className='btn-submit'>
-                    {loadingAPI && (<i class="fa-solid fa-sync fa-spin"></i>)}Sign up
+                    {loadingAPI && (<i class="fa-solid fa-sync fa-spin"></i>)} Sign up
                 </Button>
             </Form.Group>
-            <ToastContainer />
         </Form>
     );
 }

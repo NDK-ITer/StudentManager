@@ -25,11 +25,11 @@ const Header = () => {
                             <Nav.Link href="#features">Features</Nav.Link>
                             <Nav.Link href="#pricing">Pricing</Nav.Link>
                             <NavDropdown title="Dropdown" id="collapsible-nav-dropdown">
-                                <NavDropdown.Item as={Link} href="#action/3.1">one</NavDropdown.Item>
-                                <NavDropdown.Item as={Link} href="#action/3.2">two</NavDropdown.Item>
-                                <NavDropdown.Item as={Link} href="#action/3.3">three</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="#action/3.1">one</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="#action/3.2">two</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="#action/3.3">three</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item as={Link} href="#action/3.4">end</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="#action/3.4">end</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
                         <Nav>

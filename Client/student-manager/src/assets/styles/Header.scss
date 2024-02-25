@@ -67,14 +67,17 @@
     background: none;
 }
 
-.bg-body-tertiary{
-    
-}
-
 .main-logo{
     width: 105%;
 }
 
 .navbar-brand{
     width: 10%;
+}
+
+.avatar-image-header {
+    width: 50px;
+    height: 50px;
+    object-fit: cover; 
+    border-radius: 5%;
 }

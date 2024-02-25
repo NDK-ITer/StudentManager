@@ -36,7 +36,9 @@
     cursor: pointer;
     width: 100px;
     height: 100px;
-    transition: filter 0.3s ease; 
+    transition: filter 0.3s ease;
+    object-fit: cover; 
+    border-radius: 50%;
 }
 
 .avatar-wrapper:hover .avatar-image {
@@ -62,4 +64,13 @@
 .props{
     display: block;
     margin: auto;
+}
+
+.btn-edit-user{
+    cursor: pointer;
+    width: 10%;
+    height: 120%;
+    border-radius: 100%;
+    margin: auto;
+    transition: filter 0.3s;
 }

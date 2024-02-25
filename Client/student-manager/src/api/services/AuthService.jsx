@@ -29,9 +29,25 @@ const UploadAvatar = (props) =>{
     return Root.post(`${controllerName}/edit-avatar`,formData)
 }
 
+const ChangePassword = (props) =>{
+    return Root.post(`${controllerName}/change-password`,{
+        newPassword: props.password
+    })
+}
+
+const UpdateProfile = (props) =>{
+    return Root.post(`${controllerName}/edit-profile`,{
+        firstName: props.firstName,
+        lastName: props.lastName,
+        userName: props.userName
+    })
+}
+
 export {
     Login,
     Register,
     GetMyInformation,
-    UploadAvatar
+    UploadAvatar,
+    ChangePassword,
+    UpdateProfile
 }

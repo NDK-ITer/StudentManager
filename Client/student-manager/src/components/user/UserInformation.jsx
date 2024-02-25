@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { GetMyInformation } from '../../api/services/AuthService';
 import '../../assets/styles/UserInformation.scss'
 import Tab from 'react-bootstrap/Tab';
@@ -13,12 +13,14 @@ import EditAvatar from './information/EditAvatar';
 
 const UserInformation = () => {
 
-    const { user } = useContext(UserContext)
     let navigate = useNavigate()
+    const { user ,randomParam, isAuth} = useContext(UserContext)
     const [userInformation, setUserInformation] = useState({})
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const [isEditAvatarShow, setIsEditAvatarShow] = useState(false);
+
+    const handleEditAvatarClose = () => setIsEditAvatarShow(false);
+
+    const handleEditAvatarShow = () => setIsEditAvatarShow(true);
 
     const getInformation = async () => {
         try {
@@ -40,30 +42,30 @@ const UserInformation = () => {
         }
         getInformation()
         return
-    },[]);
+    }, []);
     return (<>
         {userInformation && (
             <div>
-                <div className='header' style={{ backgroundImage: `url(${user.avatar})` }}>
+                <div className='header' style={{ backgroundImage: `url(${user.avatar}?${randomParam})` }}>
                     <div className='line-avatar' >
                         <Card style={{ width: '18rem', borderRadius: '100px' }}>
                             <Card.Body>
                                 <div className="avatar-wrapper">
-                                    <Image 
-                                        src={user.avatar} 
-                                        roundedCircle style={{ width: '100px', height: '100px' }} 
-                                        className="avatar-image" 
-                                        onClick={handleShow}
+                                    <Image
+                                        src={`${user.avatar}?${randomParam}`}
+                                        roundedCircle
+                                        className="avatar-image"
+                                        onClick={handleEditAvatarShow}
                                     />
                                     <div
                                         className="edit-overlay"
-                                        onClick={handleShow}
+                                        onClick={handleEditAvatarShow}
                                     >
                                         <i class="fa-solid fa-pen"></i>
                                     </div>
-                                    <EditAvatar show ={show} handleClose = {handleClose}/>
+                                    <EditAvatar show={isEditAvatarShow} handleClose={handleEditAvatarClose} />
                                 </div>
-                                <Card.Title>{userInformation.userName}</Card.Title>
+                                <Card.Title>{user.userName}</Card.Title>
                             </Card.Body>
                         </Card>
                     </div>
@@ -75,17 +77,21 @@ const UserInformation = () => {
                         className="mb-3"
                         fill
                     >
-                        <Tab eventKey="profile" title="Profile">
-                            <Profile data={userInformation} />
+                        <Tab eventKey="profile"
+                            title="Profile"
+                        >
+                            <Profile data={user} />
                         </Tab>
-                        <Tab eventKey="post" title="Post">
+                        
+                        <Tab eventKey="post"
+                            title="Post"
+                        >
                             <h1>POST</h1>
                         </Tab>
                     </Tabs>
                 </div>
             </div>
         )}
-        <ToastContainer />
     </>)
 }
 export default UserInformation

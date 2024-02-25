@@ -52,6 +52,8 @@ namespace Application.Services
                 Email = user.PresentEmail,
                 Avatar = user.Avatar,
                 Fullname = user.FirstName + " " + user.LastName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 UserName = user.UserName,
                 Role = user.Role.Name
             };
@@ -148,7 +150,7 @@ namespace Application.Services
 
                 unitOfWork.userRepository.Update(user);
                 unitOfWork.SaveChange();
-                return new Tuple<string, User?>(string.Empty, user);
+                return new Tuple<string, User?>("Update profile is successful", user);
             }
             catch (Exception e)
             {
@@ -178,13 +180,13 @@ namespace Application.Services
         {
             try
             {
-                if (idUser.IsNullOrEmpty()) return new Tuple<string, User?>("parameter was null or empty", null);
+                if (idUser.IsNullOrEmpty() || newPassword.IsNullOrEmpty()) return new Tuple<string, User?>("parameter was null or empty", null);
                 var user = unitOfWork.userRepository.GetById(idUser);
                 if (user == null) return new Tuple<string, User?>($"User with id {idUser} is not exist", null);
                 user.PasswordHash = SecurityMethods.HashPassword(newPassword);
                 unitOfWork.userRepository.Update(user);
                 unitOfWork.SaveChange();
-                return new Tuple<string, User?>($"Locking User with email {user.PresentEmail} is successful", user);
+                return new Tuple<string, User?>($"{user.UserName} changing password is successful", user);
             }
             catch (Exception e)
             {
