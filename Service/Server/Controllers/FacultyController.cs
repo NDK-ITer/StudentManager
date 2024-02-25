@@ -23,7 +23,7 @@ namespace Server.Controllers
         [HttpPost]
         [HttpOptions]
         [Route("create")]
-        public ActionResult Create([FromForm] dynamic data)
+        public ActionResult Create([FromForm] CreateFacultyForm data)
         {
             dynamic res = new ExpandoObject();
             try
@@ -78,7 +78,7 @@ namespace Server.Controllers
         [HttpPut]
         [HttpOptions]
         [Route("edit")]
-        public ActionResult Update([FromForm] dynamic data)
+        public ActionResult Update([FromForm] EditFacultyForm data)
         {
             dynamic res = new ExpandoObject();
             try

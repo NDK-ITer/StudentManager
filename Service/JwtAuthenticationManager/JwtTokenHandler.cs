@@ -44,6 +44,7 @@ namespace JwtAuthenticationManager
                 Email = userAccount.Email,
                 LastName = userAccount.LastName,
                 Avatar = userAccount.Avatar,
+                Role = userAccount.Role,
                 Lifetime = (int)tokenExprityTimeStamp.Subtract(DateTime.Now).TotalSeconds,
                 JwtToken = token,
             };

@@ -43,11 +43,16 @@ const UpdateProfile = (props) =>{
     })
 }
 
+const GetAllRole = () =>{
+    return Root.get(`${controllerName}/get-all-role`)
+}
+
 export {
     Login,
     Register,
     GetMyInformation,
     UploadAvatar,
     ChangePassword,
-    UpdateProfile
+    UpdateProfile,
+    GetAllRole
 }

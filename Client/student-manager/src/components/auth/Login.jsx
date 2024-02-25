@@ -53,7 +53,6 @@ const LoginForm = (props) => {
             setLoadingAPI(false)
         }
     };
-
     useEffect(() => {
         const jwt = Cookies.get('jwt');
         if (jwt) {

@@ -20,7 +20,7 @@ function Auth() {
             {isLoginForm ? (
                 <LoginForm/>
             ) : (
-                <RegisterForm/>
+                <RegisterForm toLogin={setIsLoginForm}/>
             )}
             <p className="text-center mt-3">
                 {isLoginForm ? 'Not available account?' : 'available account?'}

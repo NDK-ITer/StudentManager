@@ -7,8 +7,9 @@ namespace Infrastructure.Extensions
     {
         public static void SeedData(this ModelBuilder modelBuilder)
         {
-            var AdminID = Guid.NewGuid().ToString();
-            var UserId = Guid.NewGuid().ToString();
+            var AdminID = "c8c17fbb-731c-405a-bed8-cb22868ef7ca";
+            var ManagerId = "da1ed655-5d7a-4d6d-ac03-540ceac69c91";
+            var UserId = "76fda05c-b706-421c-94b7-a0a578c1b93b";
             modelBuilder.Entity<Role>().HasData(
                 new Role()
                 {
@@ -22,6 +23,13 @@ namespace Infrastructure.Extensions
                     Id = UserId,
                     Name = "USER",
                     NormalizeName = "User",
+                    Description = ""
+                },
+                new Role()
+                {
+                    Id = ManagerId,
+                    Name = "MANAGER",
+                    NormalizeName = "Manager",
                     Description = ""
                 }
                 );

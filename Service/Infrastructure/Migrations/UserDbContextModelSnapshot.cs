@@ -48,7 +48,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comment");
+                    b.ToTable("Comment", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Faculty", b =>
@@ -68,7 +68,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Faculty");
+                    b.ToTable("Faculty", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Post", b =>

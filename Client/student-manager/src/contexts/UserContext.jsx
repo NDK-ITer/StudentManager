@@ -55,12 +55,22 @@ function GetUserEmail() {
     }
 }
 
+function GetUserRole() {
+    const user = Cookies.get('user')
+    if (user) {
+        return (JSON.parse(user).role)
+    } else {
+        return ''
+    }
+}
+
 const UserContext = createContext({
     userName: '',
     avatar: '',
     firstName: '',
     lastName: '',
     email: '',
+    role: '',
     isAuth: false,
 })
 
@@ -73,6 +83,7 @@ const UserProvider = ({ children }) => {
         firstName: GetUserFirstName(),
         lastName: GetUserLastName(),
         email: GetUserEmail(),
+        role: GetUserRole(),
         isAuth: IsLogin(),
     })
 
@@ -101,6 +112,7 @@ const UserProvider = ({ children }) => {
             firstName: response.Data.firstName,
             lastName: response.Data.lastName,
             email: response.Data.email,
+            role: response.Data.role,
             isAuth: true,
         }))
         Cookies.set('jwt', response.jwt);
@@ -123,6 +135,7 @@ const UserProvider = ({ children }) => {
             firstName: GetUserFirstName(),
             lastName: GetUserLastName(),
             email: GetUserEmail(),
+            role: GetUserRole(),
             isAuth: IsLogin(),
             avatar: GetUserAvatar()
         })

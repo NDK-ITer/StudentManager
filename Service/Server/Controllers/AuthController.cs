@@ -61,6 +61,7 @@ namespace Server.Controllers
                     firstName = result.Item2.FirstName,
                     lastName = result.Item2.LastName,
                     email = result.Item2.Email,
+                    role = result.Item2.Role,
                     linkAvatar = $"{baseUrl}/public/{result.Item2.Avatar}"
                 };
                 res.jwt = result.Item2.JwtToken;
@@ -109,7 +110,7 @@ namespace Server.Controllers
                     return new JsonResult(res);
                 }
                 var user = result.Item2;
-                sentEmail.SendEmailAsync("nadade120802@gmail.com", "token access", $"<a href = '{baseUrl}/api/auth/{user.Id}/verify-email/{user.TokenAccess}'>Click here</a> to verify your email.");
+                sentEmail.SendEmailAsync("nguyenduykhuong12ta2@gmail.com", "token access", $"<a href = '{baseUrl}/api/auth/{user.Id}/verify-email/{user.TokenAccess}'>Click here</a> to verify your email.");
                 res.State = 1;
                 res.Data = new
                 {
@@ -364,6 +365,52 @@ namespace Server.Controllers
                     lastName = result.Item2.LastName,
                     mess = result.Item1
                 };
+                return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                res.State = -1;
+                res.Data = e.Message;
+                return new JsonResult(res);
+            }
+        }
+
+        [HttpGet]
+        [HttpOptions]
+        [Route("get-all-role")]
+        public ActionResult GetAllRole()
+        {
+            dynamic res = new ExpandoObject();
+            try
+            {
+                var result = uow.RoleService.GetAll();
+                if (result.Item2 == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = result.Item1
+                    };
+
+                }else
+                {
+                    var listRole = new List<object>();
+                    foreach (var item in result.Item2)
+                    {
+                        listRole.Add(new
+                        {
+                            Id = item.Id,
+                            Name = item.Name,
+                            NormalizeName = item.NormalizeName,
+                            Decription = item.Description,
+                        });
+                    }
+                    res.State = 1;
+                    res.Data = new
+                    {
+                        listRole = listRole
+                    };
+                }
                 return new JsonResult(res);
             }
             catch (Exception e)

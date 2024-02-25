@@ -4,7 +4,7 @@ import { Register } from '../../api/services/AuthService';
 import { toast } from "react-toastify";
 
 
-const RegisterForm = () => {
+const RegisterForm = ({toLogin}) => {
     const [passwordsMatch, setPasswordsMatch] = useState(true);
     const [loadingAPI, setLoadingAPI] = useState(false)
     const [isShowPassword, setIsShowPassword] = useState(false)
@@ -38,6 +38,7 @@ const RegisterForm = () => {
             const response = await Register(registerData)
             if (response.State === 1) {
                 toast.success(response.Data.mess)
+                toLogin()
             }else{
                 toast.error(response.Data.mess)
             }
