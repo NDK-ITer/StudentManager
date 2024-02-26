@@ -1,13 +1,22 @@
-// AdminPage.js
-import React from 'react';
+import React, { useState } from 'react';
+import '../assets/styles/admin/Admin.scss'
+import MainContent from '../components/admin/MainContent';
+import Sidebar from '../components/admin/Sidebar';
 
 const AdminPage = () => {
-    return (
+
+    const [showSidebar, setShowSidebar] = useState(false);
+
+    const toggleSidebar = () => {
+        setShowSidebar(!showSidebar);
+    };
+
+    return (<>
         <div>
-            <h1>Admin Page</h1>
-            {/* Nội dung và các chức năng của trang Admin */}
+            <Sidebar isShow = {showSidebar}/>
+            <MainContent HideSidebar = {toggleSidebar}/>
         </div>
-    );
+    </>);
 }
 
 export default AdminPage;
