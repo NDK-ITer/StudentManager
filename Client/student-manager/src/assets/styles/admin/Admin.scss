@@ -38,3 +38,18 @@
     cursor: pointer;
     filter: brightness(70%)
 }
+
+.header-item{
+    display: flex;
+    position: relative;
+}
+
+.logo-admin{
+    cursor: pointer;
+    text-decoration: none;
+    img{
+        width: 50%;
+        height: 100%;
+    }
+
+}
