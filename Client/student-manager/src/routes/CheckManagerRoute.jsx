@@ -3,9 +3,8 @@ import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
 import { RoleContext } from '../contexts/RoleContext';
 import Alert from 'react-bootstrap/Alert';
-import { toast } from 'react-toastify';
 
-const ManagerRoute = (props) => {
+const CheckManagerRoute = (props) => {
     const {role} = useContext(RoleContext)
     const {user} = useContext(UserContext)
     let navigate = useNavigate()
@@ -22,7 +21,6 @@ const ManagerRoute = (props) => {
         </>
     }
     if (user.role != role.Manager.name){
-        toast.warn("You are not authorized to enter here!")
         navigate('/')
         return<>
             <Alert variant="warning" className='mt-3'>
@@ -35,4 +33,4 @@ const ManagerRoute = (props) => {
     </>)
 }
 
-export default ManagerRoute
+export default CheckManagerRoute

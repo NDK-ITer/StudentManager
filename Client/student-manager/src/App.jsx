@@ -9,30 +9,30 @@ import { RoleContext } from './contexts/RoleContext';
 import { GetAllRole } from './api/services/AuthService'
 
 function App() {
-  const {UpdateListRole} = useContext(RoleContext)
+  const { UpdateListRole } = useContext(RoleContext)
 
-  const getRole = async()=>{
+  const getRole = async () => {
     try {
       const res = await GetAllRole()
-      if(res.State === 1){
+      if (res.State === 1) {
         UpdateListRole(res.Data.listRole)
-      } 
+      }
     } catch (error) {
       toast.error(error)
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getRole()
-  },[])
+  }, [])
   return (
     <div className='app-container app'>
-      <Header />
       <Container>
+        <Header />
         <AppRoute />
-        <ToastContainer />
+        <Footer />
       </Container>
-      <Footer />
+      <ToastContainer />
     </div>
   );
 }
