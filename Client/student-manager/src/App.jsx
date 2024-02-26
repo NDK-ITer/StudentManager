@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useContext, useEffect } from 'react';
 import { RoleContext } from './contexts/RoleContext';
 import { GetAllRole } from './api/services/AuthService'
+import { useLocation } from 'react-router-dom';
 
 function App() {
   const { UpdateListRole } = useContext(RoleContext)
@@ -22,15 +23,18 @@ function App() {
     }
   }
 
+  const location = useLocation();
+  const isAdminOrManagerPage = location.pathname.startsWith('/admin') || location.pathname.startsWith('/manager');
+
   useEffect(() => {
     getRole()
   }, [])
   return (
     <div className='app-container app'>
       <Container>
-        <Header />
+        {!isAdminOrManagerPage && <Header />}
         <AppRoute />
-        <Footer />
+        {!isAdminOrManagerPage && <Footer />}
       </Container>
       <ToastContainer />
     </div>

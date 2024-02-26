@@ -40,20 +40,20 @@ const UserHeader = (props) => {
                             </div>
                         }
                     >
-                        <NavDropdown.Item><Nav.Link as={Link} to="/user-information"><i class="fa-solid fa-address-card"></i>&nbsp;Profile</Nav.Link></NavDropdown.Item>
+                        <NavDropdown.Item><Nav.Link as={Link} to="/user-information"><i class="fa-solid fa-address-card"></i>&nbsp; Profile</Nav.Link></NavDropdown.Item>
                         {user.role == role.Admin.role && (
-                            <NavDropdown.Item><Nav.Link as={Link} to="/admin"><i class="fa-solid fa-user-tie"></i>&nbsp;{role.Admin.name}</Nav.Link></NavDropdown.Item>
+                            <NavDropdown.Item><Nav.Link as={Link} to="/admin"><i class="fa-solid fa-user-tie"></i>&nbsp; {role.Admin.name}</Nav.Link></NavDropdown.Item>
                         )}
                         {user.role == role.Manager.role && (
-                            <NavDropdown.Item><Nav.Link as={Link} to="/manager"><i class="fa-solid fa-bars-progress"></i>&nbsp;{role.Manager.name}</Nav.Link></NavDropdown.Item>
+                            <NavDropdown.Item><Nav.Link as={Link} to="/manager"><i class="fa-solid fa-bars-progress"></i>&nbsp; {role.Manager.name}</Nav.Link></NavDropdown.Item>
                         )}
-                        <NavDropdown.Item><Nav.Link as={Link} onClick={handleEditInformationShow}><i class="fa-solid fa-key"></i>&nbsp;Change Password</Nav.Link></NavDropdown.Item>
+                        <NavDropdown.Item><Nav.Link as={Link} onClick={handleEditInformationShow}><i class="fa-solid fa-key"></i>&nbsp; Change Password</Nav.Link></NavDropdown.Item>
                         <NavDropdown.Divider />
                         <div style={{
                             background: 'yellow',
                             color: 'white'
                         }}>
-                            <NavDropdown.Item><Nav.Link as={Link} onClick={handleLogout}><i class="fa-solid fa-right-from-bracket"></i>&nbsp;Log Out</Nav.Link></NavDropdown.Item>
+                            <NavDropdown.Item><Nav.Link as={Link} onClick={handleLogout}><i class="fa-solid fa-right-from-bracket"></i>&nbsp; Log Out</Nav.Link></NavDropdown.Item>
                         </div>
                     </NavDropdown>
                 </Nav>

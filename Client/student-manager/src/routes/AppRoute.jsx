@@ -6,6 +6,7 @@ import UserInformation from '../components/user/UserInformation';
 import CheckAdminRoute from './CheckAdminRoute';
 import AdminPage from '../pages/AdminPage';
 import ManagerPage from '../pages/ManagerPage';
+import CheckManagerRoute from './CheckManagerRoute';
 
 const AppRoute = () => {
     return (<>
@@ -23,9 +24,9 @@ const AppRoute = () => {
                 </CheckAdminRoute>
             } />
             <Route path='/manager' element={
-                <CheckAdminRoute>
+                <CheckManagerRoute>
                     <ManagerPage/>
-                </CheckAdminRoute>
+                </CheckManagerRoute>
             } />
         </Routes>
     </>)
