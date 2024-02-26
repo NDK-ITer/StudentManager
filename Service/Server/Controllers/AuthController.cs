@@ -248,6 +248,23 @@ namespace Server.Controllers
                     return new JsonResult(res);
                 }
                 userId = HttpContext.Items["UserId"].ToString();
+                var checkIsLock = uow.UserService.GetUserById(userId);
+                if (checkIsLock.Item2 == null) 
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = checkIsLock.Item1
+                    };
+                }
+                if (checkIsLock.Item2.IsLock == true)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = $"User {checkIsLock.Item2.PresentEmail} have been lock"
+                    };
+                }
                 var getUser = uow.UserService.GetUserById(userId);
                 if (getUser.Item2 == null)
                 {

@@ -1,15 +1,40 @@
-.sidebar{
-    background-color: blue;
+
+.header{
+    background: rgb(212, 212, 212);
+    padding: 20px;
+    text-align: center;
+    font-size: large;
+    min-height: 20%;
 }
 
 .main-content{
-    background-color: red;
+    min-height: 90vh;
+    background: white;
+    color: black;
+    text-align: center;
 }
 
-// .header{
-//     background-color: yellow;
-// }
+.content {
+    width: 100%;
+    transition: margin-left 0.5s ease;
+}
 
-// .body{
-//     background-color: green;
-// }
+.option-list{
+    display: flex;
+}
+
+.option-list-item{
+    cursor: pointer;
+    position: relative;
+    display: block;
+    margin: auto;
+    font-size: 2rem;
+    background: skyblue;
+    width: 20%;
+    text-align: center;
+    border-radius: 50px;
+}
+.option-list-item:hover{
+    cursor: pointer;
+    filter: brightness(70%)
+}

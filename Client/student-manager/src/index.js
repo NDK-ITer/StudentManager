@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import { UserProvider } from './contexts/UserContext';
 import { BrowserRouter as Router} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import "react-toastify/dist/ReactToastify.css";
 import { RoleProvider } from './contexts/RoleContext';

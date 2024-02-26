@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Application.Services;
+using Microsoft.AspNetCore.Mvc;
 using SendMail.Interfaces;
 using Server.Requests.Form;
 using System.Dynamic;
-using XAct.Domain.Repositories;
 
 namespace Server.Controllers
 {
@@ -30,6 +30,34 @@ namespace Server.Controllers
             dynamic res = new ExpandoObject();
             try
             {
+                string userId = string.Empty;
+                if (HttpContext.Items["UserId"] == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = "Login Please!"
+                    };
+                    return new JsonResult(res);
+                }
+                userId = HttpContext.Items["UserId"].ToString();
+                var checkIsLock = uow.UserService.GetUserById(userId);
+                if (checkIsLock.Item2 == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = checkIsLock.Item1
+                    };
+                }
+                if (checkIsLock.Item2.IsLock == true)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = $"User {checkIsLock.Item2.PresentEmail} have been lock"
+                    };
+                }
                 return new JsonResult(res);
             }
             catch (Exception e)

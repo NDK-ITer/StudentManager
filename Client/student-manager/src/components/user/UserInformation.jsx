@@ -46,7 +46,7 @@ const UserInformation = () => {
     return (<>
         {userInformation && (
             <div>
-                <div className='header' style={{ backgroundImage: `url(${user.avatar}?${randomParam})` }}>
+                <div className='header-information' style={{ backgroundImage: `url(${user.avatar}?${randomParam})` }}>
                     <div className='line-avatar' >
                         <Card style={{ width: '18rem', borderRadius: '100px' }}>
                             <Card.Body>
@@ -70,7 +70,7 @@ const UserInformation = () => {
                         </Card>
                     </div>
                 </div>
-                <div className='body'>
+                <div className='body-information'>
                     <Tabs
                         defaultActiveKey="profile"
                         id="uncontrolled-tab-example"

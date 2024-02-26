@@ -1,5 +1,3 @@
-import './assets/styles/App.scss';
-import Container from 'react-bootstrap/Container';
 import AppRoute from './routes/AppRoute';
 import { ToastContainer, toast } from "react-toastify";
 import { useContext, useEffect } from 'react';
@@ -22,14 +20,10 @@ function App() {
   useEffect(() => {
     getRole()
   }, [])
-  return (
-    <div className='app-container app'>
-      <Container>
-        <AppRoute />
-      </Container>
+  return (<>
+      <AppRoute />
       <ToastContainer />
-    </div>
-  );
+  </>);
 }
 
 export default App;
