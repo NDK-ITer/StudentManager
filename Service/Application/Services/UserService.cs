@@ -16,10 +16,13 @@ namespace Application.Services
         Tuple<string, User?> CreatedUser(RegisterModel registerModel);
         Tuple<string, User?> EditUser(EditUserModel editUserModel);
         Tuple<string, bool> VerifyEmail(string email);
-        Tuple<string, User?> LockUserUser(string idUser, bool isLock);
+        Tuple<string, User?> SetIsLockUser(string idUser);
         Tuple<string, User?> ResetPassword(string idUser, string newPassword);
+        Tuple<string, List<User?>?> GetAllUser();
         Tuple<string, User?> GetUserById(string id);
         Tuple<string, User?> GetUserByEmail(string email);
+        Tuple<string, bool> CheckIsAdmin(string userId);
+        Tuple<string, bool> CheckIsMaanager(string userId);
     }
     public class UserService : IUserService
     {
@@ -158,22 +161,15 @@ namespace Application.Services
             }
         }
 
-        public Tuple<string, User?> LockUserUser(string idUser, bool isLock)
+        public Tuple<string, User?> SetIsLockUser(string idUser)
         {
-            try
-            {
-                if (idUser.IsNullOrEmpty()) return new Tuple<string, User?>("parameter was null or empty", null);
-                var user = unitOfWork.userRepository.GetById(idUser);
-                if (user == null) return new Tuple<string, User?>($"User with id {idUser} is not exist", null);
-                user.IsLock = isLock;
-                unitOfWork.userRepository.Update(user);
-                unitOfWork.SaveChange();
-                return new Tuple<string, User?>($"Locking User with email {user.PresentEmail} is successful", user);
-            }
-            catch (Exception e)
-            {
-                return new Tuple<string, User?>(e.Message, null);
-            }
+            if (idUser.IsNullOrEmpty()) return new Tuple<string, User?>("parameter was null or empty", null);
+            var user = unitOfWork.userRepository.GetById(idUser);
+            if (user == null) return new Tuple<string, User?>($"User with id {idUser} is not exist", null);
+            user.IsLock = !user.IsLock;
+            unitOfWork.userRepository.Update(user);
+            unitOfWork.SaveChange();
+            return new Tuple<string, User?>($"Locking User with email {user.PresentEmail} is successful", user);
         }
 
         public Tuple<string, User?> ResetPassword(string idUser, string newPassword)
@@ -212,6 +208,37 @@ namespace Application.Services
             {
                 return new Tuple<string, bool>("Error", false);
             }
+        }
+
+        public Tuple<string, bool> CheckIsAdmin(string userId)
+        {
+            if (userId.IsNullOrEmpty()) return new Tuple<string, bool>("parameter was null or empty", false);
+            var user = unitOfWork.userRepository.GetById(userId);
+            if (user == null) return new Tuple<string, bool>($"User with id {userId} is not exist", false);
+
+            var role = unitOfWork.roleRepository.Find(r => r.Name == "ADMIN").FirstOrDefault();
+            if (role == null) return new Tuple<string, bool>("Role not found", false);
+            if (user.Role != role) return new Tuple<string, bool>($"You are not {role.NormalizeName}", false);
+            return new Tuple<string, bool>(string.Empty, true);
+        }
+
+        public Tuple<string, bool> CheckIsMaanager(string userId)
+        {
+            if (userId.IsNullOrEmpty()) return new Tuple<string, bool>("parameter was null or empty", false);
+            var user = unitOfWork.userRepository.GetById(userId);
+            if (user == null) return new Tuple<string, bool>($"User with id {userId} is not exist", false);
+
+            var role = unitOfWork.roleRepository.Find(r => r.Name == "MANAGER").FirstOrDefault();
+            if (role == null) return new Tuple<string, bool>("Role not found", false);
+            if (user.Role != role) return new Tuple<string, bool>($"You are not {role.NormalizeName}", false);
+            return new Tuple<string, bool>(string.Empty, true);
+        }
+
+        public Tuple<string, List<User?>?> GetAllUser()
+        {
+            var allUser = unitOfWork.userRepository.GetAll();
+            if (allUser == null) return new Tuple<string, List<User?>?>("No user",null);
+            return new Tuple<string, List<User?>?>("",allUser);
         }
     }
 }

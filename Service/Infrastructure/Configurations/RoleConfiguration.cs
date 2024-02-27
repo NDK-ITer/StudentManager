@@ -13,7 +13,6 @@ namespace Infrastructure.Configurations
             builder.Property(x => x.Id).HasMaxLength(200);
             builder.Property(x => x.Name).HasMaxLength(20);
             builder.Property(x => x.Description).HasMaxLength(50);
-            builder.Property(x => x.NormalizeName).HasMaxLength(20);
         }
     }
 }

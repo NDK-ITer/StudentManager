@@ -11,13 +11,16 @@ const Sidebar = ({ show, handleClose }) => {
                     <div>
                         <div className="option-list">
                             <div className="option-list-item">
-                                <i class="bi bi-people-fill"></i> User
+                                <i class="bi bi-people-fill"></i>
+                                <br />User
                             </div>
                             <div className="option-list-item">
-                                <i class="bi bi-file-earmark-post"></i> Post
+                                <i class="fa-solid fa-people-roof"></i>
+                                <br />Faculty
                             </div>
                             <div className="option-list-item">
-                            <i class="fa-solid fa-people-roof"></i> Faculty
+                                <i class="bi bi-file-earmark-post"></i>
+                                <br />Post
                             </div>
                         </div>
                     </div>

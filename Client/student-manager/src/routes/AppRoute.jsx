@@ -4,6 +4,7 @@ import AdminPage from '../pages/AdminPage';
 import ManagerPage from '../pages/ManagerPage';
 import CheckManagerRoute from './CheckManagerRoute';
 import UserPage from '../pages/UserPage';
+import DocxReader from '../components/DocReader';
 
 const AppRoute = () => {
     return (<>
@@ -19,6 +20,7 @@ const AppRoute = () => {
                     <ManagerPage/>
                 </CheckManagerRoute>
             } />
+            <Route path='/test' element={<DocxReader/>}/>
         </Routes>
     </>)
 }

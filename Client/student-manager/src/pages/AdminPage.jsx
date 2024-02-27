@@ -10,14 +10,12 @@ const AdminPage = () => {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    
+
     return (<>
-        <div className="admin-page">
-            <Sidebar show={show} handleClose={handleClose}/>
-            <div>
-                <Header handleShow={handleShow}/>
-                <AdminRoute />
-            </div>
+        <Sidebar show={show} handleClose={handleClose} />
+        <div>
+            <Header handleShow={handleShow} />
+            <AdminRoute />
         </div>
     </>);
 }

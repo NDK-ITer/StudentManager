@@ -2,12 +2,10 @@ using Application.Services;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.IdentityModel.Tokens;
 using SendMail.ClassDefine;
 using SendMail.Interfaces;
 using Server.FileMethods;
 using Server.Middleware;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ConnectString");
@@ -25,7 +23,7 @@ builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("myCorsPolicy", builder =>
     {
-        builder.AllowAnyOrigin()
+        builder.WithOrigins("http://localhost:3005")
                .AllowAnyMethod()
                .AllowAnyHeader();
     });
@@ -43,14 +41,14 @@ app.UseAuthorization();
 app.UseMiddleware<JwtMiddleware>();
 app.UseMiddleware<BodyToFormMiddleware>();
 
+app.UseCors("myCorsPolicy");
+
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
            Path.Combine(builder.Environment.ContentRootPath, "PublicFile")),
     RequestPath = "/public"
 });
-
-app.UseCors("myCorsPolicy");
 
 app.MapControllers();
 

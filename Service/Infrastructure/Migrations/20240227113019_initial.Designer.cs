@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20240223101630_addIsChecked")]
-    partial class addIsChecked
+    [Migration("20240227113019_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -137,8 +137,7 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("NormalizeName")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -158,6 +157,13 @@ namespace Infrastructure.Migrations
                             Description = "",
                             Name = "USER",
                             NormalizeName = "User"
+                        },
+                        new
+                        {
+                            Id = "da1ed655-5d7a-4d6d-ac03-540ceac69c91",
+                            Description = "",
+                            Name = "MANAGER",
+                            NormalizeName = "Manager"
                         });
                 });
 
@@ -247,8 +253,8 @@ namespace Infrastructure.Migrations
                         {
                             Id = "2c75293b-f8e5-4862-9b13-5894a64895cd",
                             Avatar = "",
-                            Birthday = new DateTime(2024, 2, 23, 17, 16, 28, 887, DateTimeKind.Local).AddTicks(1107),
-                            CreatedDate = new DateTime(2024, 2, 23, 17, 16, 28, 887, DateTimeKind.Local).AddTicks(1117),
+                            Birthday = new DateTime(2024, 2, 27, 18, 30, 18, 892, DateTimeKind.Local).AddTicks(5054),
+                            CreatedDate = new DateTime(2024, 2, 27, 18, 30, 18, 892, DateTimeKind.Local).AddTicks(5069),
                             FirstEmail = "admin001@gmail.com",
                             FirstName = "Admin",
                             IsLock = false,
@@ -258,9 +264,9 @@ namespace Infrastructure.Migrations
                             PhoneNumber = "0123456789",
                             PresentEmail = "admin001@gmail.com",
                             RoleId = "c8c17fbb-731c-405a-bed8-cb22868ef7ca",
-                            TokenAccess = "C09D185F3313EE93A4FA91598A0F124973C4AE6B7654C179FF13833D70FC5FF0B060F5A9FFAD733B86941B169F62880E6DB42B9C4F4F07C2958CA74BF4F373F7",
+                            TokenAccess = "3843EAE40C07AD7100F5410636E4CE885724694BBE462BD472372914E91DDC6EFA33B30E9A078F2106C9AD852103238DC52E9D3839D27F51ECE91CE932738227",
                             UserName = "adminVersion_0001",
-                            VerifiedDate = new DateTime(2024, 2, 23, 17, 16, 28, 887, DateTimeKind.Local).AddTicks(1353)
+                            VerifiedDate = new DateTime(2024, 2, 27, 18, 30, 18, 892, DateTimeKind.Local).AddTicks(5354)
                         });
                 });
 

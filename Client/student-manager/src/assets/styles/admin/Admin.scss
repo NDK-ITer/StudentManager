@@ -1,17 +1,18 @@
 
 .header{
-    background: rgb(212, 212, 212);
+    background: linear-gradient(to left, blue, white) !important;
     padding: 20px;
     text-align: center;
     font-size: large;
-    min-height: 20%;
+    position: relative;
+    display: block;
 }
 
 .main-content{
-    min-height: 90vh;
-    background: white;
+    min-height: 100vh;
     color: black;
     text-align: center;
+    margin-top: 0%;
 }
 
 .content {
@@ -29,14 +30,14 @@
     display: block;
     margin: auto;
     font-size: 2rem;
-    background: skyblue;
-    width: 20%;
+    width: 10%;
     text-align: center;
     border-radius: 50px;
 }
 .option-list-item:hover{
     cursor: pointer;
-    filter: brightness(70%)
+    filter: brightness(70%);
+    background: rgba(247, 246, 246, 0.822);
 }
 
 .header-item{
@@ -48,8 +49,123 @@
     cursor: pointer;
     text-decoration: none;
     img{
-        width: 50%;
+        width: 150%;
         height: 100%;
     }
+}
 
+.card-item-custom{
+    cursor: pointer;
+}
+
+.link-style {
+    text-decoration: none;
+}
+
+.custom-navbar {
+    height: 20px !important;
+}
+
+.menu-header{
+    cursor: pointer;
+    border-radius: 10px;
+    background: linear-gradient(to left, white, grey) !important;
+    width: auto;
+    height: auto;
+    display: flex;
+}
+
+.menu-header:hover{
+    filter: brightness(70%);
+}
+
+.image-container {
+    width: 100%; 
+    height: 300px;
+    background-position: center; 
+    background-size: cover; 
+}
+
+.avatar-user-item{
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+}
+
+.user-container-custom{
+    min-height: 100vh;
+    background-color: black;
+    display: block;
+    justify-content: center;
+}
+
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: 20px;
+    justify-items: center;
+}
+
+.card-wrapper {
+    width: 100%;
+}
+
+.user-item{
+
+}
+
+.user-bool{
+    display: flex;
+    color: white;
+    cursor: pointer;
+    div{
+        margin: auto;
+    }
+}
+
+.no-verify{
+    background: red !important;
+}
+
+.verify{
+    background: green !important;
+}
+
+.lock{
+    background: red !important;
+}
+
+.un-lock{
+    background: green !important;
+}
+
+.text-warning{
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+    font-weight: 1000;
+    color: white !important;
+}
+
+.search-user{
+    width: 100%;
+    height: 25%;
+    background: black;
+    opacity: 0.5;
+}
+
+.list-user{
+    display: flex;
+    justify-content: center;
+}
+
+.user-element{
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
