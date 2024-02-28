@@ -1,14 +1,58 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import {
     GetAllUser,
     SetLockUser
 } from '../../../api/services/UserService'
 import { toast } from "react-toastify"
-import { Image, Card } from 'react-bootstrap';
+import { Image, Card, Form, Col } from 'react-bootstrap';
 import HomeAdmin from '../../../assets/images/home-admin.png'
+import UserDetail from "./UserDetail";
+import {RoleContext} from '../../../contexts/RoleContext'
+
+
 const User = () => {
 
+    const {role} = useContext(RoleContext)
     const [listUser, setListUser] = useState([])
+    const [searchTerm, setSearchTerm] = useState('');
+    const [isOpenUserDetail, setIsUserDetail] = useState(Array(listUser.length).fill(false))
+
+    const updateUserFields = (index, newFields) => {
+        setListUser(prevList => {
+            return prevList.map((user, i) => {
+                if (i === index) {
+                    return {
+                        ...user,
+                        ...newFields
+                    };
+                }
+                return user;
+            });
+        });
+    };
+    
+
+    const togglePopup = (index) => {
+        const newIsOpenUserDetail = [...isOpenUserDetail];
+        newIsOpenUserDetail[index] = !newIsOpenUserDetail[index];
+        setIsUserDetail(newIsOpenUserDetail);
+    };
+
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
+    const filteredListUser = listUser.filter(user => {
+        const searchTermLower = searchTerm.toLowerCase();
+        const userNameMatch = user.userName.toLowerCase().includes(searchTermLower);
+        const emailMatch = user.email.toLowerCase().includes(searchTermLower);
+        const roleMatch = user.authorize.role.toLowerCase().includes(searchTermLower);
+        const roleNameMatch = user.authorize.name.toLowerCase().includes(searchTermLower);
+        const fulNameMatch = user.fullName.toLowerCase().includes(searchTermLower);
+
+        return userNameMatch || emailMatch || roleMatch || roleNameMatch || fulNameMatch;
+    }
+    );
 
     const getAllUser = async () => {
         try {
@@ -57,12 +101,31 @@ const User = () => {
             }}
         >
             <div className="search-user">
+                <div style={{
+                    display: 'block',
+                    margin: 'auto',
+                    width: '50%'
+                }}>
+                    <Col xs="auto" >
+                        <Form.Control
+                            type="text"
+                            placeholder="Search"
+                            className=" mr-sm-2"
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                            style={{
+                                fontSize: '20px',
+                                borderRadius: '100px !important'
+                            }}
+                        />
+                    </Col>
+                </div>
             </div>
             <div className="list-user">
                 {
-                    listUser && listUser.length > 0 && listUser.map((item, index) => {
+                    listUser && listUser.length > 0 && filteredListUser.map((item, index) => {
                         return (
-                            <div className="user-element">
+                            <div key={item.id} className="user-element">
                                 <Card style={{
                                     width: '18rem',
                                     height: '50%'
@@ -72,7 +135,9 @@ const User = () => {
                                         <Image src={item.avatar}
                                             roundedCircle
                                             className="avatar-user-item"
+                                            onClick={() => togglePopup(index)}
                                         />
+                                        <UserDetail show={isOpenUserDetail[index]} onClose={() => togglePopup(index)} data={item} updateData={updateUserFields} index={index}/>
                                     </Card.Header>
                                     <Card.Body style={{
                                         background: 'white',
@@ -80,7 +145,9 @@ const User = () => {
                                     }}>
                                         <Card.Title>{item.userName}</Card.Title>
                                         <Card.Text>
-
+                                            {(item.authorize.role == role.Admin.role) &&(<div style={{color: 'red'}}>{item.authorize.name}</div>)}
+                                            {(item.authorize.role == role.Manager.role) &&(<div style={{color: 'blue'}}>{item.authorize.name}</div>)}
+                                            {(item.authorize.role == role.User.role) &&(<div style={{color: 'green'}}>{item.authorize.name}</div>)}
                                         </Card.Text>
                                     </Card.Body>
                                     <Card.Footer className={item.isLock ? 'lock' : 'un-lock'}

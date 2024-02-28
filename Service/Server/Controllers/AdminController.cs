@@ -75,7 +75,12 @@ namespace Server.Controllers
                             userName = item.UserName,
                             avatar = $"{baseUrl}/public/{item.Avatar}",
                             isLock = item.IsLock,
-                            isVerify = item.IsVerified
+                            isVerify = item.IsVerified,
+                            authorize = new
+                            {
+                                role = item.Role.Name,
+                                name = item.Role.NormalizeName,
+                            }
                         });
                     }
                 }
@@ -192,6 +197,128 @@ namespace Server.Controllers
                     return new JsonResult(res);
                 }
 
+                return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                res.State = -1;
+                res.Data = e.Message;
+                return new JsonResult(res);
+            }
+        }
+
+        [HttpPut]
+        [HttpOptions]
+        [Route("set-manager")]
+        public ActionResult SetManager(string idUserSet)
+        {
+            dynamic res = new ExpandoObject();
+            try
+            {
+                string userId = string.Empty;
+                if (HttpContext.Items["UserId"] == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = "Login Please!"
+                    };
+                    return new JsonResult(res);
+                }
+                userId = HttpContext.Items["UserId"].ToString();
+                var checkIsAdmin = uow.UserService.CheckIsAdmin(userId);
+                if (!checkIsAdmin.Item2)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = checkIsAdmin.Item1
+                    };
+                    return new JsonResult(res);
+                }
+                var result = uow.RoleService.SetManager(idUserSet);
+                if (result.Item2 == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = result.Item1
+                    };
+                }
+                else
+                {
+                    res.State = 1;
+                    res.Data = new
+                    {
+                        id = result.Item2.Id,
+                        authorize = new
+                        {
+                            role = result.Item2.Role.Name,
+                            name = result.Item2.Role.NormalizeName,
+                        }
+                    };
+                }
+                return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                res.State = -1;
+                res.Data = e.Message;
+                return new JsonResult(res);
+            }
+        }
+
+        [HttpPut]
+        [HttpOptions]
+        [Route("set-user")]
+        public ActionResult SetUser(string idUserSet)
+        {
+            dynamic res = new ExpandoObject();
+            try
+            {
+                string userId = string.Empty;
+                if (HttpContext.Items["UserId"] == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = "Login Please!"
+                    };
+                    return new JsonResult(res);
+                }
+                userId = HttpContext.Items["UserId"].ToString();
+                var checkIsAdmin = uow.UserService.CheckIsAdmin(userId);
+                if (!checkIsAdmin.Item2)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = checkIsAdmin.Item1
+                    };
+                    return new JsonResult(res);
+                }
+                var result = uow.RoleService.SetUser(idUserSet);
+                if (result.Item2 == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = result.Item1
+                    };
+                }
+                else
+                {
+                    res.State = 1;
+                    res.Data = new
+                    {
+                        id = result.Item2.Id,
+                        authorize = new
+                        {
+                            role = result.Item2.Role.Name,
+                            name = result.Item2.Role.NormalizeName,
+                        }
+                    };
+                }
                 return new JsonResult(res);
             }
             catch (Exception e)

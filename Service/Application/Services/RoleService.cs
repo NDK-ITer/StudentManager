@@ -12,6 +12,8 @@ namespace Application.Services
         Tuple<string, Role?> GetByName(string name);
         Tuple<string, List<Role?>?> GetAll();
         Tuple<string, Role?> EditNormalizeName(string roleId, string normalizeName);
+        Tuple<string, User?> SetManager(string userId);
+        Tuple<string, User?> SetUser(string userId);
     }
     public class RoleService : IRoleService
     {
@@ -53,6 +55,30 @@ namespace Application.Services
             var role = unitOfWork.roleRepository.GetRoleByName(name);
             if (role == null) return new Tuple<string, Role?>($"not found with name: {name}", null);
             return new Tuple<string, Role?>("", role);
+        }
+
+        public Tuple<string, User?> SetManager(string userId)
+        {
+            if (string.IsNullOrEmpty(userId)) return new Tuple<string, User?>("paramater is null!", null);
+            var user = unitOfWork.userRepository.GetById(userId);
+            if (user == null) return new Tuple<string, User?>($"not found user with id: {userId}", null);
+            var role = unitOfWork.roleRepository.Find(r => r.Name == "MANAGER").FirstOrDefault();
+            user.RoleId = role.Id;
+            unitOfWork.userRepository.Update(user);
+            unitOfWork.SaveChange();
+            return new Tuple<string, User?>("",user);
+        }
+
+        public Tuple<string, User?> SetUser(string userId)
+        {
+            if (string.IsNullOrEmpty(userId)) return new Tuple<string, User?>("paramater is null!", null);
+            var user = unitOfWork.userRepository.GetById(userId);
+            if (user == null) return new Tuple<string, User?>($"not found user with id: {userId}", null);
+            var role = unitOfWork.roleRepository.Find(r => r.Name == "USER").FirstOrDefault();
+            user.RoleId = role.Id;
+            unitOfWork.userRepository.Update(user);
+            unitOfWork.SaveChange();
+            return new Tuple<string, User?>("", user);
         }
     }
 }

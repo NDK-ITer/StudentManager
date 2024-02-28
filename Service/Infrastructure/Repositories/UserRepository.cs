@@ -12,6 +12,9 @@ namespace Infrastructure.Repositories
         public UserRepository(UserDbContext context, IMemoryCache cache) : base(context, cache)
         {
             _dbSet.Include(u => u.Role).Load();
+            _dbSet.Include(u => u.Faculty).Load();
+            _dbSet.Include(u => u.ListPost).Load();
+            _dbSet.Include(u => u.ListComment).Load();
             _keyValueCache = "userWhichHaveBeenGet";
         }
     }
