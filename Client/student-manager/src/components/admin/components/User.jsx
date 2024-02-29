@@ -6,31 +6,16 @@ import {
 import { toast } from "react-toastify"
 import { Image, Card, Form, Col } from 'react-bootstrap';
 import HomeAdmin from '../../../assets/images/home-admin.png'
-import UserDetail from "./UserDetail";
-import {RoleContext} from '../../../contexts/RoleContext'
+import { RoleContext } from '../../../contexts/RoleContext'
+import { Link } from "react-router-dom";
 
 
 const User = () => {
 
-    const {role} = useContext(RoleContext)
+    const { role } = useContext(RoleContext)
     const [listUser, setListUser] = useState([])
     const [searchTerm, setSearchTerm] = useState('');
     const [isOpenUserDetail, setIsUserDetail] = useState(Array(listUser.length).fill(false))
-
-    const updateUserFields = (index, newFields) => {
-        setListUser(prevList => {
-            return prevList.map((user, i) => {
-                if (i === index) {
-                    return {
-                        ...user,
-                        ...newFields
-                    };
-                }
-                return user;
-            });
-        });
-    };
-    
 
     const togglePopup = (index) => {
         const newIsOpenUserDetail = [...isOpenUserDetail];
@@ -126,41 +111,43 @@ const User = () => {
                     listUser && listUser.length > 0 && filteredListUser.map((item, index) => {
                         return (
                             <div key={item.id} className="user-element">
-                                <Card style={{
-                                    width: '18rem',
-                                    height: '50%'
-                                }}>
-                                    <Card.Header className={item.isVerify ? 'verify' : 'no-verify'}>
-                                        <div className="text-warning">{item.isVerify ? '' : 'Not yet authenticated!'}</div>
-                                        <Image src={item.avatar}
-                                            roundedCircle
-                                            className="avatar-user-item"
-                                            onClick={() => togglePopup(index)}
-                                        />
-                                        <UserDetail show={isOpenUserDetail[index]} onClose={() => togglePopup(index)} data={item} updateData={updateUserFields} index={index}/>
-                                    </Card.Header>
-                                    <Card.Body style={{
-                                        background: 'white',
-                                        minHeight: '100%'
+                                <Link to={{ pathname: `/admin/user/${item.id}` }} style={{ textDecoration: 'none' }}>
+                                    <Card style={{
+                                        width: '18rem',
+                                        height: '100%',
+                                        boxShadow: '10px 10px 10px rgba(2, 2, 2, 1.5)'
                                     }}>
-                                        <Card.Title>{item.userName}</Card.Title>
-                                        <Card.Text>
-                                            {(item.authorize.role == role.Admin.role) &&(<div style={{color: 'red'}}>{item.authorize.name}</div>)}
-                                            {(item.authorize.role == role.Manager.role) &&(<div style={{color: 'blue'}}>{item.authorize.name}</div>)}
-                                            {(item.authorize.role == role.User.role) &&(<div style={{color: 'green'}}>{item.authorize.name}</div>)}
-                                        </Card.Text>
-                                    </Card.Body>
-                                    <Card.Footer className={item.isLock ? 'lock' : 'un-lock'}
-                                        onClick={() => setLockUser(item.id)}
-                                    >
-                                        <div className="user-bool">
-                                            <div >
-                                                {item.isLock ? <i class="fa-solid fa-lock"></i>
-                                                    : <i class="fa-solid fa-lock-open"></i>}
+                                        <Card.Header className={item.isVerify ? 'verify' : 'no-verify'}>
+                                            <div className="text-warning">{item.isVerify ? '' : 'Not yet authenticated!'}</div>
+                                            <Image src={item.avatar}
+                                                roundedCircle
+                                                className="avatar-user-item"
+                                                onClick={() => togglePopup(index)}
+                                            />
+                                        </Card.Header>
+                                        <Card.Body style={{
+                                            background: 'white',
+                                            Height: '100%'
+                                        }}>
+                                            <Card.Title>{item.userName}</Card.Title>
+                                            <Card.Text>
+                                                {(item.authorize.role == role.Admin.role) && (<div style={{ color: 'red' }}>{item.authorize.name}</div>)}
+                                                {(item.authorize.role == role.Manager.role) && (<div style={{ color: 'blue' }}>{item.authorize.name}</div>)}
+                                                {(item.authorize.role == role.User.role) && (<div style={{ color: 'green' }}>{item.authorize.name}</div>)}
+                                            </Card.Text>
+                                        </Card.Body>
+                                        <Card.Footer className={item.isLock ? 'lock' : 'un-lock'}
+                                            onClick={() => setLockUser(item.id)}
+                                        >
+                                            <div className="user-bool">
+                                                <div >
+                                                    {item.isLock ? <i class="fa-solid fa-lock"></i>
+                                                        : <i class="fa-solid fa-lock-open"></i>}
+                                                </div>
                                             </div>
-                                        </div>
-                                    </Card.Footer>
-                                </Card>
+                                        </Card.Footer>
+                                    </Card>
+                                </Link>
                             </div>
                         )
                     })

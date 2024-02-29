@@ -59,6 +59,12 @@
 
 .card-item-custom{
     cursor: pointer;
+    transition: transform 0.3s ease; 
+    box-shadow: 10px 10px 10px rgba(2, 2, 2, 1.5);
+}
+
+.card-item-custom:hover {
+    transform: scale(1.05); /* Phóng to khi di chuột vào */
 }
 
 .link-style {
@@ -178,6 +184,12 @@
     flex: 0 0 33.33%;
     margin-bottom: 5%;
     justify-content: center;
+    transition: transform 0.3s ease; 
+}
+
+.user-element:hover {
+    transform: scale(1.05); 
+    filter: brightness(70%);
 }
 
 .tab-user{
@@ -257,4 +269,65 @@
     filter: brightness(70%);
 }
 //---------------------
+.faculty-main{
+    display: flex;
+    height: auto;
+}
 
+.faculty-crud{
+    width: 25%;
+    min-height: 100vh;
+    display: block;
+}
+
+.faculty-crud-form{
+    margin-top: 40%;
+    h2{
+        color: white;
+    }
+}
+
+.faculty-search-box{
+    min-height: 20vh;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.faculty-content{
+    width: 75%;
+    min-height: 100vh;
+}
+
+.faculty-list{
+    min-height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.faculty-list-item{
+    flex: 0 0 calc(33.33% - 20px);
+    margin-bottom: 5%;
+    margin-top: 10%;
+    justify-content: center;
+    height: 20%;
+    display: flex;
+    transition: transform 0.3s ease; 
+}
+
+.faculty-list-item:hover {
+    transform: scale(1.05); 
+}
+
+@media screen and (max-width: 800px) {
+    .faculty-list-item {
+        flex: 0 0 calc(50% - 20px); 
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .faculty-list-item {
+        flex: 0 0 calc(100% - 20px);
+    }
+}

@@ -30,6 +30,12 @@ const Sidebar = ({ show, handleClose }) => {
                                     <br />Post
                                 </Link>
                             </div>
+                            <div className="option-list-item">
+                                <Link className='link-style' to={`/`}>
+                                    <i class="fa-solid fa-house-user"></i>
+                                    <br />Back to home
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </Offcanvas.Body>

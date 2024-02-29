@@ -1,7 +1,10 @@
-﻿using Application.Services;
+﻿using Application.Models.ModelsOfFaculty;
+using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Server.Requests.Form;
 using System.Dynamic;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Server.Controllers
 {
@@ -319,6 +322,68 @@ namespace Server.Controllers
                         }
                     };
                 }
+                return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                res.State = -1;
+                res.Data = e.Message;
+                return new JsonResult(res);
+            }
+        }
+
+        [HttpPost]
+        [HttpOptions]
+        [Route("add-faculty")]
+        public ActionResult AddFaculty([FromForm] CreateFacultyForm data)
+        {
+            dynamic res = new ExpandoObject();
+            try
+            {
+                string userId = string.Empty;
+                if (HttpContext.Items["UserId"] == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = "Login Please!"
+                    };
+                    return new JsonResult(res);
+                }
+                userId = HttpContext.Items["UserId"].ToString();
+                var checkIsAdmin = uow.UserService.CheckIsAdmin(userId);
+                if (!checkIsAdmin.Item2)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = checkIsAdmin.Item1
+                    };
+                    return new JsonResult(res);
+                }
+                var newFaculty = new AddFacultyModel()
+                {
+                    Name = data.Name
+                };
+                var result = uow.FacultyService.Add(userId, newFaculty);
+                if (result.Item2 == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = result.Item1
+                    };
+                }
+                else
+                {
+                    res.State = 1;
+                    res.Data = new
+                    {
+                        Id = result.Item2.Id,
+                        Name = result.Item2.Name,
+                    };
+                }
+
                 return new JsonResult(res);
             }
             catch (Exception e)

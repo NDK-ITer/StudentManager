@@ -1,4 +1,5 @@
 ﻿using Application.Services;
+using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Dynamic;
@@ -66,6 +67,11 @@ namespace Server.Controllers
                         userName = user.UserName,
                         isLock = user.IsLock,
                         isVerify = user.IsVerified,
+                        authorize = new
+                        {
+                            role = user.Role.Name,
+                            name = user.Role.NormalizeName,
+                        },
                         createDate = $"{user.CreatedDate.Day}/{user.CreatedDate.Month}/{user.CreatedDate.Year}",
                         listPost = listPost
                     };
