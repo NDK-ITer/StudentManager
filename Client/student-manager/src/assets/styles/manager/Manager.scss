@@ -1,0 +1,31 @@
+.manager-main{
+    min-height: 100vh;
+    color: white;
+    display: flex;
+}
+
+.manager-image-container{
+    width: 100%; 
+    height: 300px;
+    background-position: center; 
+    background-size: cover; 
+}
+
+.manager-sidebar{
+    width: 20%;
+    background: rgba(0, 4, 255, 0.5);
+    display: block;
+}
+
+.manager-text-logo{
+    height: 30%;
+    text-align: center;
+    display: block;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: 700;
+    color: linear-gradient(to left, blue, white) !important;
+    background: rgba(231, 231, 231, 0.349);
+    border-radius: 30%;
+}

@@ -33,35 +33,6 @@ const UserHeader = (props) => {
         {user.isAuth ?
             <div>
                 <Nav>
-                    {/* <NavDropdown
-                        title={
-                            <div className='name-user'>
-                                <Image
-                                    src={`${user.avatar}?${randomParam}`}
-                                    roundedCircle={true}
-                                    className="avatar-image-header"
-
-                                />
-                                &nbsp;{user.userName}
-                            </div>
-                        }
-                    >
-                        <NavDropdown.Item><Nav.Link as={Link} to="/user-information"><i class="fa-solid fa-address-card"></i>&nbsp; Profile</Nav.Link></NavDropdown.Item>
-                        {user.role == role.Admin.role && (
-                            <NavDropdown.Item><Nav.Link as={Link} to="/admin"><i class="fa-solid fa-user-tie"></i>&nbsp; {role.Admin.name}</Nav.Link></NavDropdown.Item>
-                        )}
-                        {user.role == role.Manager.role && (
-                            <NavDropdown.Item><Nav.Link as={Link} to="/manager"><i class="fa-solid fa-bars-progress"></i>&nbsp; {role.Manager.name}</Nav.Link></NavDropdown.Item>
-                        )}
-                        <NavDropdown.Item><Nav.Link as={Link} onClick={handleEditInformationShow}><i class="fa-solid fa-key"></i>&nbsp; Change Password</Nav.Link></NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <div style={{
-                            background: 'yellow',
-                            color: 'white'
-                        }}>
-                            <NavDropdown.Item><Nav.Link as={Link} onClick={handleLogout}><i class="fa-solid fa-right-from-bracket"></i>&nbsp; Log Out</Nav.Link></NavDropdown.Item>
-                        </div>
-                    </NavDropdown> */}
                     <div className='name-user' onClick={handleShow}>
                         <Image
                             src={`${user.avatar}?${randomParam}`}
@@ -86,19 +57,21 @@ const UserHeader = (props) => {
                                 <Nav.Link as={Link} to="/user-information"><i class="fa-solid fa-address-card"></i>&nbsp; Profile</Nav.Link>
                             </div>
                             <div>
-                                {user.role == role.Admin.role && (
-                                    <Nav.Link as={Link} to="/admin"><i class="fa-solid fa-user-tie"></i>&nbsp; {role.Admin.name}</Nav.Link>
-                                )}
-                                {user.role == role.Manager.role && (
-                                    <Nav.Link as={Link} to="/manager"><i class="fa-solid fa-bars-progress"></i>&nbsp; {role.Manager.name}</Nav.Link>
-                                )}
-                            </div>
-                            <div>
                                 <Nav.Link as={Link} onClick={handleEditInformationShow}><i class="fa-solid fa-key"></i>&nbsp; Change Password</Nav.Link>
+                            </div>
+
+                            <div>
+                                {user.role == role.Admin.role && (<>----------------------------------------------
+                                    <Nav.Link as={Link} to="/admin" className="nav-link-red"><i class="fa-solid fa-user-tie"></i>&nbsp; {role.Admin.name}</Nav.Link>
+                                    ----------------------------------------------</>)}
+                                {user.role == role.Manager.role && (<>----------------------------------------------
+                                    <Nav.Link as={Link} to="/manager" className="nav-link-blue"><i class="fa-solid fa-bars-progress"></i>&nbsp; {role.Manager.name}</Nav.Link>
+                                    ----------------------------------------------</>)}
                             </div>
                             <div>
                                 <NavDropdown.Divider />
                             </div>
+
                             <div style={{
                                 color: 'red'
                             }}>
