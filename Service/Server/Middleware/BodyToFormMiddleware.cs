@@ -15,9 +15,8 @@ namespace Server.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            if (context.Request.Method == HttpMethods.Post && context.Request.ContentType?.ToLower().StartsWith("application/json") == true)
+            if ((context.Request.Method == HttpMethods.Post || context.Request.Method == HttpMethods.Put) && context.Request.ContentType?.ToLower().StartsWith("application/json") == true)
             {
-                // Đọc nội dung của request
                 var body = await new StreamReader(context.Request.Body).ReadToEndAsync();
 
                 var formData = new Dictionary<string, string>();

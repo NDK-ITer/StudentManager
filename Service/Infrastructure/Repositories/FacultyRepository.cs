@@ -18,5 +18,10 @@ namespace Infrastructure.Repositories
         {
             faculty.IsDeleted = true;
         }
+
+        public void Restore(Faculty faculty)
+        {
+            faculty.IsDeleted = false;
+        }
     }
 }

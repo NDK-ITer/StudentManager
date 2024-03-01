@@ -331,3 +331,14 @@
         flex: 0 0 calc(100% - 20px);
     }
 }
+
+.delete{
+    background: rgb(109, 0, 0) !important;
+    color: white;
+}
+
+.non-delete{
+    background: rgb(0, 109, 54) !important;
+    color: white;
+}
+

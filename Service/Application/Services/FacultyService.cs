@@ -12,6 +12,7 @@ namespace Application.Services
         Tuple<string, Faculty?> Add(string userId, AddFacultyModel a);
         Tuple<string, Faculty?> Update(string userId, EditFacultyModel e);
         Tuple<string, bool> Delete(string userId, string id);
+        Tuple<string, bool> Restore(string userId, string id);
         Tuple<string, Faculty?> GetById(string id);
         Tuple<string, List<Faculty?>?> GetAll(string userId);
         Tuple<string, bool> AlowUploadPost(string userId, string facultyId);
@@ -68,6 +69,23 @@ namespace Application.Services
             var faculty = unitOfWork.facultyRepository.GetById(id);
             if (faculty == null) return new Tuple<string, bool>($"not found faculty with id: {id}", false);
             unitOfWork.facultyRepository.Remove(faculty);
+            unitOfWork.SaveChange();
+            return new Tuple<string, bool>("delete successful", true);
+        }
+
+        public Tuple<string, bool> Restore(string userId, string id)
+        {
+            if (id.IsNullOrEmpty())
+            {
+                return new Tuple<string, bool>("parameter is null!", false);
+            }
+            if (userId.IsNullOrEmpty()) return new Tuple<string, bool>("userId not null", false);
+            var user = unitOfWork.userRepository.GetById(userId);
+            if (user == null) return new Tuple<string, bool>($"not found with userId: {userId}", false);
+            if (user.Role.Name != "ADMIN") return new Tuple<string, bool>("you cant do this", false);
+            var faculty = unitOfWork.facultyRepository.GetById(id);
+            if (faculty == null) return new Tuple<string, bool>($"not found faculty with id: {id}", false);
+            unitOfWork.facultyRepository.Restore(faculty);
             unitOfWork.SaveChange();
             return new Tuple<string, bool>("delete successful", true);
         }

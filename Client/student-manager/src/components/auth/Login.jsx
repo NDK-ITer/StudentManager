@@ -38,7 +38,6 @@ const LoginForm = (props) => {
             }
             setLoadingAPI(true)
             const response = await Login(loginData)
-            // console.log('Login.jsx: ',response)
             if (response.State === 1) {
                 toast.success(`Login is successful!`);
                 loginContext(response)
