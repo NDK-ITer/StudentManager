@@ -5,7 +5,8 @@ import { GetAllRole } from '../api/services/AuthService';
 import { RoleContext } from '../contexts/RoleContext';
 import { toast } from 'react-toastify';
 import UserRoute from '../routes/user/UserRoute';
-import '../assets/styles/App.scss';
+import '../assets/styles/user/User.scss'
+import UserBackground from '../assets/images/user-background.png'
 
 const UserPage = () => {
 
@@ -27,9 +28,10 @@ const UserPage = () => {
 
     return (<>
         <div className=''>
-            <Header />
-            <UserRoute />
-            <Footer />
+            <div className='main-content user-image-container' style={{ backgroundImage: `url(${UserBackground})` }}>
+                <Header />
+                <UserRoute />
+            </div>
         </div>
     </>);
 }

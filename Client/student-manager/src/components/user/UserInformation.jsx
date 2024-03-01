@@ -3,7 +3,6 @@ import { UserContext } from '../../contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { GetMyInformation } from '../../api/services/AuthService';
-import '../../assets/styles/UserInformation.scss'
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Profile from './information/Profile';
@@ -14,7 +13,7 @@ import EditAvatar from './information/EditAvatar';
 const UserInformation = () => {
 
     let navigate = useNavigate()
-    const { user ,randomParam, isAuth} = useContext(UserContext)
+    const { user, randomParam, isAuth } = useContext(UserContext)
     const [userInformation, setUserInformation] = useState({})
     const [isEditAvatarShow, setIsEditAvatarShow] = useState(false);
 
@@ -45,7 +44,7 @@ const UserInformation = () => {
     }, []);
     return (<>
         {userInformation && (
-            <div>
+            <div className='profile-content' >
                 <div className='header-information' style={{ backgroundImage: `url(${user.avatar}?${randomParam})` }}>
                     <div className='line-avatar' >
                         <Card style={{ width: '18rem', borderRadius: '100px' }}>
@@ -77,15 +76,10 @@ const UserInformation = () => {
                         className="mb-3"
                         fill
                     >
-                        <Tab eventKey="profile"
-                            title="Profile"
-                        >
+                        <Tab eventKey="profile" title={<span className="tab-title">Profile</span>}>
                             <Profile data={user} />
                         </Tab>
-                        
-                        <Tab eventKey="post"
-                            title="Post"
-                        >
+                        <Tab eventKey="post" title={<span className="tab-title">Post</span>}>
                             <h1>POST</h1>
                         </Tab>
                     </Tabs>

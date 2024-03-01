@@ -1,0 +1,243 @@
+
+.footer {
+    background-color: rgba(36, 36, 36, 0.445);
+    color: white;
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 0%;
+}
+
+.btn-submit{
+    display: block;
+    margin: 20px auto;
+    width: 100%;
+}
+
+.show-password{
+    position: relative;
+    i{
+        cursor: pointer;
+        position: absolute;
+        top: -27px;
+        right: 21px;
+    }
+}
+
+//header
+
+.user-header{
+    background: linear-gradient(to left, rgba(0, 0, 255, 0.555), rgba(255, 255, 255, 0.774)) !important;
+    display: flex;
+}
+
+.avatar-header{
+    display: flex;
+    align-items: center;
+    margin: auto;
+    color: white !important;
+}
+
+.name-user{
+    cursor: pointer;
+    color: white;
+    size: 0;
+    margin-left: 300%;
+}
+
+.nav-item .nav-link.dropdown-toggle::after {
+    display: none !important;
+}
+
+.login-btn{
+    background: rgb(224, 220, 220);
+    height: 42px;
+    width: 74px;
+    margin: auto;
+    border-radius: 50%;
+    i{
+        background: none;
+        margin-bottom: 0 auto;
+        position: relative;
+        padding: auto;
+        top: 1px;
+        right: -17px;
+    }
+}
+
+.search-box{
+    margin: auto;
+}
+
+.form-container{
+    position: relative;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.overlay-content {
+    background-color: skyblue;
+    padding: 50px;
+    padding-left: 250px;
+    padding-right: 250px;
+    border-radius: 50px;
+}
+
+.user-show{
+    margin-left: 500%;
+}
+
+.close{
+    position: absolute;
+    top: 6%;
+    right: 450px;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    background: none;
+}
+
+.main-logo{
+    width: 15%;
+    height: 10%;
+    margin-right: auto;
+    margin-left: 10%;
+}
+
+.navbar-brand{
+    width: 10%;
+}
+
+.avatar-image-header {
+    width: 50px;
+    height: 50px;
+    object-fit: cover; 
+    border-radius: 5%;
+}
+
+.nav-link-red {
+    color: red !important;
+}
+
+.nav-link-blue {
+    color: blue !important;
+}
+
+//home page
+.carousel-caption{
+    color: black;
+}
+
+.carousel-item{
+    background: rgba(0, 0, 255, 0.199);
+    border-radius: 10px;
+}
+
+.user-image-container{
+    width: 100%; 
+    height: 100%;
+    background-position: center; 
+    background-size: cover; 
+}
+
+//user information
+
+.card-body{
+    text-align: center;
+    padding-top: 10%;
+}
+
+.line-avatar{
+    display: block;
+    margin: auto;
+}
+
+.header-information{
+    width: 100%;
+    height: 10%;
+    display: flex;
+    position: relative;
+    border-radius: 50px;
+}
+
+.body-information{
+    background: rgba(255, 255, 255, 0.822);
+    width: 70%;
+    min-height: 500px;
+    position: relative;
+    border-radius: 30px;
+    margin: auto;
+}
+
+.nav-item{
+    font-size: large;
+}
+
+.avatar-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.avatar-image {
+    cursor: pointer;
+    width: 100px;
+    height: 100px;
+    transition: filter 0.3s ease;
+    object-fit: cover; 
+    border-radius: 50%;
+}
+
+.avatar-wrapper:hover .avatar-image {
+    filter: brightness(50%);
+}
+
+.edit-overlay {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    padding: 5px 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.avatar-wrapper:hover .edit-overlay {
+    opacity: 1;
+}
+
+.props{
+    display: block;
+    margin: auto;
+}
+
+.btn-edit-user{
+    cursor: pointer;
+    width: 10%;
+    height: 120%;
+    border-radius: 100%;
+    margin: auto;
+    transition: filter 0.3s;
+}
+
+.profile-content{
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
+.tab-title {
+    font-family: Arial, sans-serif; 
+    font-size: 16px; 
+    font-weight: bold; 
+}

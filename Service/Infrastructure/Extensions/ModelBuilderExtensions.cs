@@ -15,21 +15,21 @@ namespace Infrastructure.Extensions
                 {
                     Id = AdminID,
                     Name = "ADMIN",
-                    NormalizeName = "Admin",
+                    NormalizeName = "Marketing Manager",
                     Description = ""
                 },
                 new Role()
                 {
                     Id = UserId,
                     Name = "USER",
-                    NormalizeName = "User",
+                    NormalizeName = "Student",
                     Description = ""
                 },
                 new Role()
                 {
                     Id = ManagerId,
                     Name = "MANAGER",
-                    NormalizeName = "Manager",
+                    NormalizeName = "Marketing Coordinator",
                     Description = ""
                 }
             );

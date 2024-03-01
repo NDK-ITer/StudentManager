@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import LoginForm from './Login';
 import RegisterForm from './Register';
-import '../../assets/styles/Auth.scss'
 
 
 function Auth() {

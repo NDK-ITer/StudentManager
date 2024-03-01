@@ -3,6 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useContext, useEffect } from 'react';
 import { RoleContext } from './contexts/RoleContext';
 import { GetAllRole } from './api/services/AuthService'
+import './assets/styles/App.scss'
 
 function App() {
   const { UpdateListRole } = useContext(RoleContext)

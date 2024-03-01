@@ -4,7 +4,6 @@ import { Image, NavDropdown, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ChangePassword from "./information/ChangePassword";
 import { RoleContext } from "../../contexts/RoleContext";
-import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
 const UserHeader = (props) => {
@@ -31,55 +30,52 @@ const UserHeader = (props) => {
 
     return (<>
         {user.isAuth ?
-            <div>
-                <Nav>
-                    <div className='name-user' onClick={handleShow}>
-                        <Image
-                            src={`${user.avatar}?${randomParam}`}
-                            roundedCircle={true}
-                            className="avatar-image-header"
-                        />
-                        &nbsp;{user.userName}
-                    </div>
-                    <Offcanvas show={show} onHide={handleClose}>
-                        <Offcanvas.Header>
-                            <Offcanvas.Title>
-                                <Image
-                                    src={`${user.avatar}?${randomParam}`}
-                                    roundedCircle={true}
-                                    className="avatar-image-header"
-                                />
-                                &nbsp;{user.userName}
-                            </Offcanvas.Title>
-                        </Offcanvas.Header>
-                        <Offcanvas.Body>
-                            <div>
-                                <Nav.Link as={Link} to="/user-information"><i class="fa-solid fa-address-card"></i>&nbsp; Profile</Nav.Link>
-                            </div>
-                            <div>
-                                <Nav.Link as={Link} onClick={handleEditInformationShow}><i class="fa-solid fa-key"></i>&nbsp; Change Password</Nav.Link>
-                            </div>
+            <div className="avatar-header">
+                <div className='name-user' onClick={handleShow}>
+                    <Image
+                        src={`${user.avatar}?${randomParam}`}
+                        roundedCircle={true}
+                        className="avatar-image-header"
+                    />
+                </div>
+                <Offcanvas show={show} onHide={handleClose}>
+                    <Offcanvas.Header>
+                        <Offcanvas.Title>
+                            <Image
+                                src={`${user.avatar}?${randomParam}`}
+                                roundedCircle={true}
+                                className="avatar-image-header"
+                            />
+                            &nbsp;{user.userName}
+                        </Offcanvas.Title>
+                    </Offcanvas.Header>
+                    <Offcanvas.Body>
+                        <div>
+                            <Nav.Link as={Link} to="/user-information"><i class="fa-solid fa-address-card"></i>&nbsp; Profile</Nav.Link>
+                        </div>
+                        <div>
+                            <Nav.Link as={Link} onClick={handleEditInformationShow}><i class="fa-solid fa-key"></i>&nbsp; Change Password</Nav.Link>
+                        </div>
 
-                            <div>
-                                {user.role == role.Admin.role && (<>----------------------------------------------
-                                    <Nav.Link as={Link} to="/admin" className="nav-link-red"><i class="fa-solid fa-user-tie"></i>&nbsp; {role.Admin.name}</Nav.Link>
-                                    ----------------------------------------------</>)}
-                                {user.role == role.Manager.role && (<>----------------------------------------------
-                                    <Nav.Link as={Link} to="/manager" className="nav-link-blue"><i class="fa-solid fa-bars-progress"></i>&nbsp; {role.Manager.name}</Nav.Link>
-                                    ----------------------------------------------</>)}
-                            </div>
-                            <div>
-                                <NavDropdown.Divider />
-                            </div>
+                        <div>
+                            {user.role == role.Admin.role && (<>----------------------------------------------
+                                <Nav.Link as={Link} to="/admin" className="nav-link-red"><i class="fa-solid fa-user-tie"></i>&nbsp; {role.Admin.name}</Nav.Link>
+                                ----------------------------------------------</>)}
+                            {user.role == role.Manager.role && (<>----------------------------------------------
+                                <Nav.Link as={Link} to="/manager" className="nav-link-blue"><i class="fa-solid fa-bars-progress"></i>&nbsp; {role.Manager.name}</Nav.Link>
+                                ----------------------------------------------</>)}
+                        </div>
+                        <div>
+                            <NavDropdown.Divider />
+                        </div>
 
-                            <div style={{
-                                color: 'red'
-                            }}>
-                                <Nav.Link as={Link} onClick={handleLogout}><i class="fa-solid fa-right-from-bracket"></i>&nbsp; Log Out</Nav.Link>
-                            </div>
-                        </Offcanvas.Body>
-                    </Offcanvas>
-                </Nav>
+                        <div style={{
+                            color: 'red'
+                        }}>
+                            <Nav.Link as={Link} onClick={handleLogout}><i class="fa-solid fa-right-from-bracket"></i>&nbsp; Log Out</Nav.Link>
+                        </div>
+                    </Offcanvas.Body>
+                </Offcanvas>
                 <ChangePassword show={isEditInformationShow} handleClose={handleEditInformationClose} />
             </div>
             :

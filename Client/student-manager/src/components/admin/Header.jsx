@@ -6,7 +6,7 @@ import { Navbar, Nav } from 'react-bootstrap';
 
 const Header = ({ handleShow }) => {
     return (<>
-        <div className="header" style={{ background: 'linear-gradient(to left, blue, white) !important' }}>
+        <div className="admin-header" style={{ background: 'linear-gradient(to left, blue, white) !important' }}>
             <Navbar style={{ background: 'linear-gradient(to left, blue, white) !important' }}>
                 <Navbar.Brand href="#home">
                     <div className="logo-admin">
