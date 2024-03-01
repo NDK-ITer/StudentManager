@@ -212,7 +212,7 @@ namespace Server.Controllers
         [HttpPut]
         [HttpOptions]
         [Route("set-manager")]
-        public ActionResult SetManager(string idUserSet)
+        public ActionResult SetManager(string idUserSet, string idFaculty)
         {
             dynamic res = new ExpandoObject();
             try
@@ -238,7 +238,7 @@ namespace Server.Controllers
                     };
                     return new JsonResult(res);
                 }
-                var result = uow.RoleService.SetManager(idUserSet);
+                var result = uow.RoleService.SetManager(idUserSet, idFaculty);
                 if (result.Item2 == null)
                 {
                     res.State = 0;
@@ -257,7 +257,8 @@ namespace Server.Controllers
                         {
                             role = result.Item2.Role.Name,
                             name = result.Item2.Role.NormalizeName,
-                        }
+                        },
+                        faculty = result.Item2.Faculty.Name,
                     };
                 }
                 return new JsonResult(res);

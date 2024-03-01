@@ -111,43 +111,45 @@ const User = () => {
                     listUser && listUser.length > 0 && filteredListUser.map((item, index) => {
                         return (
                             <div key={item.id} className="user-element">
-                                <Link to={{ pathname: `/admin/user/${item.id}` }} style={{ textDecoration: 'none' }}>
-                                    <Card style={{
-                                        width: '18rem',
-                                        height: '100%',
-                                        boxShadow: '10px 10px 10px rgba(2, 2, 2, 1.5)'
-                                    }}>
-                                        <Card.Header className={item.isVerify ? 'verify' : 'no-verify'}>
+                                <Card style={{
+                                    width: '18rem',
+                                    height: '100%',
+                                    boxShadow: '10px 10px 10px rgba(2, 2, 2, 1.5)'
+                                }}>
+                                    <Card.Header className={item.isVerify ? 'verify' : 'no-verify'}>
+                                        <Link to={{ pathname: `/admin/user/${item.id}` }} style={{ textDecoration: 'none', color: 'inherit'  }}>
                                             <div className="text-warning">{item.isVerify ? '' : 'Not yet authenticated!'}</div>
                                             <Image src={item.avatar}
                                                 roundedCircle
                                                 className="avatar-user-item"
                                                 onClick={() => togglePopup(index)}
                                             />
-                                        </Card.Header>
-                                        <Card.Body style={{
-                                            background: 'white',
-                                            Height: '100%'
-                                        }}>
+                                        </Link>
+                                    </Card.Header>
+                                    <Card.Body style={{
+                                        background: 'white',
+                                        Height: '100%'
+                                    }}>
+                                        <Link to={{ pathname: `/admin/user/${item.id}` }} style={{ textDecoration: 'none', color: 'inherit'  }}>
                                             <Card.Title>{item.userName}</Card.Title>
                                             <Card.Text>
                                                 {(item.authorize.role == role.Admin.role) && (<div style={{ color: 'red' }}>{item.authorize.name}</div>)}
                                                 {(item.authorize.role == role.Manager.role) && (<div style={{ color: 'blue' }}>{item.authorize.name}</div>)}
                                                 {(item.authorize.role == role.User.role) && (<div style={{ color: 'green' }}>{item.authorize.name}</div>)}
                                             </Card.Text>
-                                        </Card.Body>
-                                        <Card.Footer className={item.isLock ? 'lock' : 'un-lock'}
-                                            onClick={() => setLockUser(item.id)}
-                                        >
-                                            <div className="user-bool">
-                                                <div >
-                                                    {item.isLock ? <i class="fa-solid fa-lock"></i>
-                                                        : <i class="fa-solid fa-lock-open"></i>}
-                                                </div>
+                                        </Link>
+                                    </Card.Body>
+                                    <Card.Footer className={item.isLock ? 'lock' : 'un-lock'}
+                                        onClick={() => setLockUser(item.id)}
+                                    >
+                                        <div className="user-bool">
+                                            <div >
+                                                {item.isLock ? <i class="fa-solid fa-lock"></i>
+                                                    : <i class="fa-solid fa-lock-open"></i>}
                                             </div>
-                                        </Card.Footer>
-                                    </Card>
-                                </Link>
+                                        </div>
+                                    </Card.Footer>
+                                </Card>
                             </div>
                         )
                     })

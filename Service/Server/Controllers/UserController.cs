@@ -44,7 +44,7 @@ namespace Server.Controllers
                 {
                     var user = result.Item2;
                     var listPost = new List<object>();
-                    if (result.Item2.ListPost.IsNullOrEmpty())
+                    if (!result.Item2.ListPost.IsNullOrEmpty())
                     {
                         foreach (var item in result.Item2.ListPost)
                         {
@@ -58,23 +58,21 @@ namespace Server.Controllers
                         }
                     }
                     res.State = 1;
-                    res.Data = new
+                    res.Data = new ExpandoObject();
+                    res.Data.id = user.Id;
+                    res.Data.email = user.PresentEmail;
+                    res.Data.fullName = $"{user.FirstName.Trim()} {user.LastName.Trim()}";
+                    res.Data.avatar = $"{baseUrl}/public/{user.Avatar}";
+                    res.Data.userName = user.UserName;
+                    res.Data.isLock = user.IsLock;
+                    res.Data.isVerify = user.IsVerified;
+                    res.Data.authorize = new
                     {
-                        id = user.Id,
-                        email = user.PresentEmail,
-                        fullName = $"{user.FirstName.Trim()} {user.LastName.Trim()}",
-                        avatar = $"{baseUrl}/public/{user.Avatar}",
-                        userName = user.UserName,
-                        isLock = user.IsLock,
-                        isVerify = user.IsVerified,
-                        authorize = new
-                        {
-                            role = user.Role.Name,
-                            name = user.Role.NormalizeName,
-                        },
-                        createDate = $"{user.CreatedDate.Day}/{user.CreatedDate.Month}/{user.CreatedDate.Year}",
-                        listPost = listPost
+                        role = user.Role.Name,
+                        name = user.Role.NormalizeName,
                     };
+                    res.Data.createDate = $"{user.CreatedDate.Day}/{user.CreatedDate.Month}/{user.CreatedDate.Year}";
+                    res.Data.listPost = listPost;
                     if (user.Faculty != null) res.Data.faculty = user.Faculty.Name;
                 }
                 return new JsonResult(res);

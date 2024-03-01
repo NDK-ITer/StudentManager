@@ -23,8 +23,8 @@ const SetUser = (idUserSet) =>{
     return Root.put(`${adminController}/set-user/?idUserSet=${idUserSet}`)
 }
 
-const SetManager = (idUserSet) =>{
-    return Root.put(`${adminController}/set-manager/?idUserSet=${idUserSet}`)
+const SetManager = (idUserSet, idFaculty) =>{
+    return Root.put(`${adminController}/set-manager/?idUserSet=${idUserSet}&idFaculty=${idFaculty}`)
 }
 
 export {

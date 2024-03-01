@@ -25,12 +25,10 @@ const Faculty = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = Math.min(startIndex + itemsPerPage - 1, listFaculty.length - 1);
 
-    // Danh sách faculty trên trang hiện tại
     let currentFaculty = filteredListFaculty.slice(startIndex, endIndex + 1);
 
-    // Nếu trang cuối không đủ 3 phần tử, thêm phần tử trống vào
     while (currentFaculty.length < itemsPerPage) {
-        currentFaculty.push({ name: '', isDelete: false }); // Thêm phần tử giả mạo với dữ liệu trống
+        currentFaculty.push({ name: '', isDelete: false });
     }
 
     const handlePageChange = (pageNumber) => {

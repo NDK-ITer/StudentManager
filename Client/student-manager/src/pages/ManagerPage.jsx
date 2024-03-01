@@ -1,4 +1,3 @@
-// AdminPage.js
 import React from 'react';
 
 const ManagerPage = () => {

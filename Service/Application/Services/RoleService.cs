@@ -12,7 +12,7 @@ namespace Application.Services
         Tuple<string, Role?> GetByName(string name);
         Tuple<string, List<Role?>?> GetAll();
         Tuple<string, Role?> EditNormalizeName(string roleId, string normalizeName);
-        Tuple<string, User?> SetManager(string userId);
+        Tuple<string, User?> SetManager(string userId, string idFaculty);
         Tuple<string, User?> SetUser(string userId);
     }
     public class RoleService : IRoleService
@@ -57,13 +57,16 @@ namespace Application.Services
             return new Tuple<string, Role?>("", role);
         }
 
-        public Tuple<string, User?> SetManager(string userId)
+        public Tuple<string, User?> SetManager(string userId, string idFaculty)
         {
             if (string.IsNullOrEmpty(userId)) return new Tuple<string, User?>("paramater is null!", null);
             var user = unitOfWork.userRepository.GetById(userId);
             if (user == null) return new Tuple<string, User?>($"not found user with id: {userId}", null);
+            var faculty = unitOfWork.facultyRepository.GetById(idFaculty);
+            if (faculty == null) return new Tuple<string, User?>($"not found faculty with id: {idFaculty}", null);
             var role = unitOfWork.roleRepository.Find(r => r.Name == "MANAGER").FirstOrDefault();
             user.RoleId = role.Id;
+            user.FacultyID = faculty.Id;
             unitOfWork.userRepository.Update(user);
             unitOfWork.SaveChange();
             return new Tuple<string, User?>("",user);
@@ -76,6 +79,7 @@ namespace Application.Services
             if (user == null) return new Tuple<string, User?>($"not found user with id: {userId}", null);
             var role = unitOfWork.roleRepository.Find(r => r.Name == "USER").FirstOrDefault();
             user.RoleId = role.Id;
+            if (!user.FacultyID.IsNullOrEmpty()) user.FacultyID = null;
             unitOfWork.userRepository.Update(user);
             unitOfWork.SaveChange();
             return new Tuple<string, User?>("", user);

@@ -20,7 +20,7 @@ const CheckManagerRoute = (props) => {
             </Alert>
         </>
     }
-    if (user.role != role.Manager.name){
+    if (user.role != role.Manager.role){
         navigate('/')
         return<>
             <Alert variant="warning" className='mt-3'>
