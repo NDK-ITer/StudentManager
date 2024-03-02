@@ -1,7 +1,7 @@
 ﻿using Application.Services;
-using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Server.Requests.Form;
 using System.Dynamic;
 
 namespace Server.Controllers
@@ -120,6 +120,40 @@ namespace Server.Controllers
                     res.State = 1;
                     res.Data = new ExpandoObject();
                     res.Data.listFaculty = listFacultyPublic;
+                }
+                return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                res.State = -1;
+                res.Data = e.Message;
+                return new JsonResult(res);
+            }
+        }
+
+        [HttpPost]
+        [HttpOptions]
+        [Route("upload-post")]
+        public ActionResult UploadPost([FromForm] UploadPostForm data)
+        {
+            dynamic res = new ExpandoObject();
+            res.Data = new ExpandoObject();
+            try
+            {
+                string userId = string.Empty;
+                if (HttpContext.Items["UserId"] == null)
+                {
+                    res.State = 0;
+                    res.Data.mess = "Login Please!";
+                    return new JsonResult(res);
+                }
+                userId = HttpContext.Items["UserId"].ToString();
+                var check = uow.UserService.CheckIsUser(userId);
+                if (check.Item2 == false)
+                {
+                    res.State = 0;
+                    res.Data.mess = check.Item1;
+                    return new JsonResult(res);
                 }
                 return new JsonResult(res);
             }

@@ -23,9 +23,9 @@ function Auth() {
                             ) : (
                                 <RegisterForm toLogin={setIsLoginForm} />
                             )}
-                            <p className="text-center mt-3">
+                            <p className="text-center mt-3" style={{fontWeight:'700', }}>
                                 {isLoginForm ? 'Not available account?' : 'available account?'}
-                                <Button variant="link" onClick={handleFormSwitch} className="ml-2">
+                                <Button variant="link" onClick={handleFormSwitch} className="ml-2" style={{textDecoration:'none', color:'blue', fontWeight:'700'}} >
                                     {isLoginForm ? 'Sign in now!' : 'Sign up now!'}
                                 </Button>
                             </p>

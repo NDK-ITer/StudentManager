@@ -4,7 +4,7 @@
     {
         public string Title { get; set; }
         public string Content { get; set; }
-        public List<string> ListImage { get; set; }
+        public string AvatarPost { get; set; }
 
     }
 }

@@ -1,16 +1,16 @@
 import Root from '../Root';
 
-const controllerName = `auth`
+const AuthController = `auth`
 
 const Login = (props) =>{
-    return Root.post(`${controllerName}/login`,{
+    return Root.post(`${AuthController}/login`,{
         email: props.email,
         password: props.password
     })
 }
 
 const Register = (props) =>{
-    return Root.post(`${controllerName}/register`,{
+    return Root.post(`${AuthController}/register`,{
         firstName: props.firstName,
         lastName: props.lastName,
         userName: props.userName,
@@ -20,23 +20,23 @@ const Register = (props) =>{
 }
 
 const GetMyInformation = () =>{
-    return Root.get(`${controllerName}/information`)
+    return Root.get(`${AuthController}/information`)
 }
 
 const UploadAvatar = (props) =>{
     const formData = new FormData();
     formData.append('newAvatar', props.uploadAvatar);
-    return Root.post(`${controllerName}/edit-avatar`,formData)
+    return Root.post(`${AuthController}/edit-avatar`,formData)
 }
 
 const ChangePassword = (props) =>{
-    return Root.post(`${controllerName}/change-password`,{
+    return Root.post(`${AuthController}/change-password`,{
         newPassword: props.password
     })
 }
 
 const UpdateProfile = (props) =>{
-    return Root.post(`${controllerName}/edit-profile`,{
+    return Root.post(`${AuthController}/edit-profile`,{
         firstName: props.firstName,
         lastName: props.lastName,
         userName: props.userName
@@ -44,7 +44,7 @@ const UpdateProfile = (props) =>{
 }
 
 const GetAllRole = () =>{
-    return Root.get(`${controllerName}/get-all-role`)
+    return Root.get(`${AuthController}/get-all-role`)
 }
 
 export {

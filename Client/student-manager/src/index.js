@@ -22,7 +22,7 @@ const Root = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, (1)*1000);
   }, []);
 
   return (

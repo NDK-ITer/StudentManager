@@ -32,9 +32,6 @@ const FacultyController = () => {
 
     useEffect(() => {
         getFacultyPublic()
-        if (listFaculty) {
-            console.log(listFaculty)
-        }
     }, [])
     return (<>
         <div>

@@ -6,6 +6,7 @@ import { GetMyInformation } from '../../api/services/AuthService';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Profile from './information/Profile';
+import Post from './information/Post';
 import { Image, Card } from 'react-bootstrap';
 import 'react-image-crop/dist/ReactCrop.css';
 import EditAvatar from './information/EditAvatar';
@@ -13,9 +14,10 @@ import EditAvatar from './information/EditAvatar';
 const UserInformation = () => {
 
     let navigate = useNavigate()
-    const { user, randomParam, isAuth } = useContext(UserContext)
+    const { user, randomParam } = useContext(UserContext)
     const [userInformation, setUserInformation] = useState({})
     const [isEditAvatarShow, setIsEditAvatarShow] = useState(false);
+    const [listPost, setListPost] = useState([])
 
     const handleEditAvatarClose = () => setIsEditAvatarShow(false);
 
@@ -26,6 +28,7 @@ const UserInformation = () => {
             const res = await GetMyInformation()
             if (res.State === 1) {
                 setUserInformation(res.Data)
+                setListPost(res.Data.listPost)
             } else {
                 toast.error(res.Data.mess)
             }
@@ -80,7 +83,7 @@ const UserInformation = () => {
                             <Profile data={user} />
                         </Tab>
                         <Tab eventKey="post" title={<span className="tab-title">Post</span>}>
-                            <h1>POST</h1>
+                            <Post data={listPost}/>
                         </Tab>
                     </Tabs>
                 </div>

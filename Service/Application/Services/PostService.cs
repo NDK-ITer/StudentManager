@@ -48,7 +48,7 @@ namespace Application.Services
                 Id = Guid.NewGuid().ToString(),
                 Title = a.Title,
                 DatePost = DateTime.Now,
-                ListImage = a.ListImage,
+                AvatarPost = a.AvatarPost,
             };
             unitOfWork.postRepository.Add(newPost);
             unitOfWork.SaveChange();
