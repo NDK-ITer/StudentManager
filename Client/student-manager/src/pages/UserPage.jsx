@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 import Header from '../components/Header';
-import Footer from '../components/Footer'
 import { GetAllRole } from '../api/services/AuthService';
 import { RoleContext } from '../contexts/RoleContext';
 import { toast } from 'react-toastify';
@@ -28,9 +27,11 @@ const UserPage = () => {
 
     return (<>
         <div className=''>
-            <div className='main-content user-image-container' style={{ backgroundImage: `url(${UserBackground})` }}>
+            <div className='user-main-content user-image-container' style={{ backgroundImage: `url(${UserBackground})` }}>
                 <Header />
-                <UserRoute />
+                <div className='user-body'>
+                    <UserRoute />
+                </div>
             </div>
         </div>
     </>);

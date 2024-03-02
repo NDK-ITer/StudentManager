@@ -84,5 +84,51 @@ namespace Server.Controllers
                 return new JsonResult(res);
             }
         }
+
+        [HttpGet]
+        [HttpOptions]
+        [Route("get-faculty-public")]
+        public ActionResult GetFacultyPublic()
+        {
+            dynamic res = new ExpandoObject();
+            try
+            {
+                var result = uow.FacultyService.GetPublic();
+                if (result.Item2.IsNullOrEmpty())
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = result.Item1
+                    };
+                }
+                else
+                {
+                    var user = result.Item2;
+                    var listFacultyPublic = new List<object>();
+                    if (!result.Item2.IsNullOrEmpty())
+                    {
+                        foreach (var item in result.Item2)
+                        {
+                            listFacultyPublic.Add(new
+                            {
+                                id = item.Id,
+                                name = item.Name,
+                            });
+                        }
+                    }
+                    res.State = 1;
+                    res.Data = new ExpandoObject();
+                    res.Data.listFaculty = listFacultyPublic;
+                }
+                return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                res.State = -1;
+                res.Data = e.Message;
+                return new JsonResult(res);
+            }
+        }
     }
 }

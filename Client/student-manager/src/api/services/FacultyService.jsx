@@ -28,10 +28,15 @@ const GetAllFaculty = () =>{
     return Root.get(`${adminController}/get-all-faculty`)
 }
 
+const GetFacultyPublic = () =>{
+    return Root.get(`${userController}/get-faculty-public`)
+}
+
 export {
     CreateFaculty,
     DeleteFaculty,
     RestoreFaculty,
     UpdateFaculty,
-    GetAllFaculty
+    GetAllFaculty,
+    GetFacultyPublic
 }

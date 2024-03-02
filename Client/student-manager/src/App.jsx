@@ -4,6 +4,7 @@ import { useContext, useEffect } from 'react';
 import { RoleContext } from './contexts/RoleContext';
 import { GetAllRole } from './api/services/AuthService'
 import './assets/styles/App.scss'
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 function App() {
   const { UpdateListRole } = useContext(RoleContext)
@@ -22,8 +23,12 @@ function App() {
     getRole()
   }, [])
   return (<>
-      <AppRoute />
-      <ToastContainer />
+    <TransitionGroup>
+      <CSSTransition timeout={300} classNames="fade">
+        <AppRoute />
+      </CSSTransition>
+    </TransitionGroup>
+    <ToastContainer />
   </>);
 }
 

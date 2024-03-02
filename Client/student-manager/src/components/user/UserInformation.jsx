@@ -73,7 +73,7 @@ const UserInformation = () => {
                     <Tabs
                         defaultActiveKey="profile"
                         id="uncontrolled-tab-example"
-                        className="mb-3"
+                        className="mb-5"
                         fill
                     >
                         <Tab eventKey="profile" title={<span className="tab-title">Profile</span>}>

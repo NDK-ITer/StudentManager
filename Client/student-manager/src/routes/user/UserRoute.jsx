@@ -3,6 +3,8 @@ import Home from '../../components/Home'
 import Auth from '../../components/auth/Auth';
 import AuthRoute from '../AuthRoute';
 import UserInformation from '../../components/user/UserInformation';
+import ListPost from '../../components/post/ListPost';
+import DetailPost from '../../components/post/DetailPost';
 
 const UserRoute = () => {
     return (<>
@@ -14,6 +16,8 @@ const UserRoute = () => {
                     <UserInformation />
                 </AuthRoute>
             } />
+            <Route path='/post' element={<ListPost/>}/>
+            <Route path='/post/:postId' element={<DetailPost/>}/>
         </Routes>
     </>)
 }

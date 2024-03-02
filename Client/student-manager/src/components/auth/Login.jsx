@@ -60,43 +60,45 @@ const LoginForm = (props) => {
     }, [])
 
     return (
-        <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="formBasicEmail">
-                <Form.Label>Email:</Form.Label>
-                <Form.Control
-                    type="email"
-                    name="email"
-                    value={loginData.email}
-                    onChange={handleInputChange}
-                    placeholder="email"
-                />
-            </Form.Group>
+        <div className='login-form'>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group className='form-controller-custom' controlId="formBasicEmail">
+                    <Form.Label></Form.Label>
+                    <Form.Control
+                        type="email"
+                        name="email"
+                        value={loginData.email}
+                        onChange={handleInputChange}
+                        placeholder="email"
+                    />
+                </Form.Group>
 
-            <Form.Group controlId="formBasicPassword">
-                <Form.Label>Password:</Form.Label>
-                <Form.Control
-                    type={isShowPassword === true ? 'text' : 'password'}
-                    name="password"
-                    value={loginData.password}
-                    onChange={handleInputChange}
-                    placeholder="password"
-                />
-                <div className='show-password'>
-                    <i className={isShowPassword === true ? "fa-solid fa-eye" : "fa-solid fa-eye-slash"}
-                        onClick={() => setIsShowPassword(!isShowPassword)}></i>
-                </div>
-            </Form.Group>
+                <Form.Group className='form-controller-custom' controlId="formBasicPassword">
+                    <Form.Label></Form.Label>
+                    <Form.Control
+                        type={isShowPassword === true ? 'text' : 'password'}
+                        name="password"
+                        value={loginData.password}
+                        onChange={handleInputChange}
+                        placeholder="password"
+                    />
+                    <div className='show-password'>
+                        <i className={isShowPassword === true ? "fa-solid fa-eye" : "fa-solid fa-eye-slash"}
+                            onClick={() => setIsShowPassword(!isShowPassword)}></i>
+                    </div>
+                </Form.Group>
 
-            <Form.Group>
-                <Button variant="primary" type="submit" className='btn-submit'
-                    disabled={(loginData.email && loginData.password) || loadingAPI ? false : true}
-                >
-                    {loadingAPI && (<i className="fa-solid fa-sync fa-spin"></i>)}
-                    &nbsp;Login
-                </Button>
-            </Form.Group>
+                <Form.Group>
+                    <Button variant="primary" type="submit" className='btn-submit'
+                        disabled={(loginData.email && loginData.password) || loadingAPI ? false : true}
+                    >
+                        {loadingAPI && (<i className="fa-solid fa-sync fa-spin"></i>)}
+                        &nbsp;Login
+                    </Button>
+                </Form.Group>
+            </Form>
+        </div>
 
-        </Form>
     );
 }
 
