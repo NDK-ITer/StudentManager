@@ -4,7 +4,6 @@ using Infrastructure.Context;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
-using System.Linq.Expressions;
 
 namespace Application.Services
 {
@@ -33,7 +32,7 @@ namespace Application.Services
             var post = unitOfWork.postRepository.GetById(idPost);
             if (post == null) return new Tuple<string, bool>($"not found with idPost: {idPost}", false);
             if (post.Faculty.IsDeleted == true) return new Tuple<string, bool>("Faculty of this post was deleted", false);
-            if (post.Faculty.ListAdmin.Find(a => a.Id == idUser) != null) return new Tuple<string, bool>($"user with id {idUser} is not Admin", false);
+            if (post.Faculty.ListAdmin.Find(a => a.Id == idUser) != null) return new Tuple<string, bool>($"user with id {idUser} is not Manager of {post.Faculty.Name}", false);
             post.IsApproved = true;
             unitOfWork.postRepository.Update(post);
             unitOfWork.SaveChange();
@@ -43,11 +42,18 @@ namespace Application.Services
         public Tuple<string, Post?> Add(AddPostModel a)
         {
             if (a == null) return new Tuple<string, Post?>("parameter is null", null);
+            var faculty = unitOfWork.facultyRepository.GetById(a.FacultyId);
+            if (faculty == null) return new Tuple<string, Post?>($"not Fauculty with id: {a.FacultyId}", null);
+            if (faculty.IsOpen == false) return new Tuple<string, Post?>($"{faculty.Name} is not open!",null);
             var newPost = new Post()
             {
                 Id = Guid.NewGuid().ToString(),
+                FacultyId = a.FacultyId,
                 Title = a.Title,
                 DatePost = DateTime.Now,
+                IsApproved = false,
+                IsChecked = false,
+                LinkDocument = a.LinkDocument,
                 AvatarPost = a.AvatarPost,
             };
             unitOfWork.postRepository.Add(newPost);

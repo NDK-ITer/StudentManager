@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 Service/Server/PublicFile/*
+Service/Server/TempImages/*

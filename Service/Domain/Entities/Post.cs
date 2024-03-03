@@ -4,6 +4,7 @@
     {
         public string Id { get; set; }
         public string Title { get; set; }
+        public string Content { get; set; }
         public string LinkDocument { get; set; }
         public string AvatarPost {  get; set; }
         public DateTime DatePost { get; set; }

@@ -1,6 +1,8 @@
-﻿using Application.Services;
+﻿using Application.Models.ModelsOfPost;
+using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Server.FileMethods;
 using Server.Requests.Form;
 using System.Dynamic;
 
@@ -11,16 +13,19 @@ namespace Server.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUnitOfWorkService uow;
+        private readonly DocumentMethod documentMethod;
         private readonly string baseUrl;
 
         public UserController(
             IUnitOfWorkService uow,
-            IHttpContextAccessor httpContextAccessor
+            IHttpContextAccessor httpContextAccessor,
+            DocumentMethod documentMethod
         )
         {
             var request = httpContextAccessor.HttpContext.Request;
             baseUrl = $"{request.Scheme}://{request.Host}";
             this.uow = uow;
+            this.documentMethod = documentMethod;
         }
 
         [HttpGet]
@@ -154,6 +159,49 @@ namespace Server.Controllers
                     res.State = 0;
                     res.Data.mess = check.Item1;
                     return new JsonResult(res);
+                }
+                var checkIsLock = uow.UserService.GetUserById(userId);
+                if (checkIsLock.Item2 == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = checkIsLock.Item1
+                    };
+                }
+                if (checkIsLock.Item2.IsLock == true)
+                {
+                    res.State = 0;
+                    res.Data.mess = $"User {checkIsLock.Item2.PresentEmail} have been lock";
+                }
+                var random = new Random(); int randomNumber = random.Next(1000);
+                var avatarPostName = $"AvatarPost-{Guid.NewGuid().ToString().Substring(0, 10)}.png";
+                var docPostName = $"DocumentPost-{Guid.NewGuid().ToString().Substring(0, 10)}.{documentMethod.GetFileExtension(data.Document)}";
+                var avatar = documentMethod.SaveFile("PublicFile", data.AvatarPost, avatarPostName);
+                var linkDoc = documentMethod.SaveFile("PublicFile", data.Document, docPostName);
+
+                var addPostModel = new AddPostModel()
+                {
+                    Title = data.Title,
+                    AvatarPost = avatar,
+                    LinkDocument = linkDoc,
+                    FacultyId = data.FacultyId,
+                };
+                var result  = uow.PostService.Add(addPostModel);
+                if (result.Item2 == null)
+                {
+                    res.State = 0;
+                    res.Data.mess = result.Item1;
+                }
+                else
+                {
+                    res.State = 1;
+                    res.Data.id = result.Item2.Id;
+                    res.Data.title = result.Item2.Title;
+                    res.Data.dateUpload = $"{result.Item2.DatePost.Day}/{result.Item2.DatePost.Month}/{result.Item2.DatePost.Year}"; 
+                    res.Data.isApproved = result.Item2.IsApproved;
+                    res.Data.isCheck = result.Item2.IsChecked;
+                    res.Data.avatarPost = $"{baseUrl}/public/{result.Item2.AvatarPost}";
                 }
                 return new JsonResult(res);
             }

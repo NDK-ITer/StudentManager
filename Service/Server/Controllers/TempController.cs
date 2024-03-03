@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Server.FileMethods;
 
 namespace Server.Controllers
 {
@@ -7,21 +8,23 @@ namespace Server.Controllers
     [ApiController]
     public class TempController : ControllerBase
     {
-        public TempController()
+        private readonly DocumentMethod documentMethod;
+        private readonly string baseUrl;
+
+        public TempController( DocumentMethod documentMethod, IHttpContextAccessor httpContextAccessor)
         {
-           
+            this.documentMethod = documentMethod;
+            var request = httpContextAccessor.HttpContext.Request;
+            baseUrl = $"{request.Scheme}://{request.Host}";
         }
 
-        [HttpGet("profile")]
+        [HttpGet("get-doc-content")]
         public ActionResult GetUserProfile()
         {
-            var userId = string.Empty;
-            if (HttpContext.Items["UserId"] != null)
-            {
-                userId = HttpContext.Items["UserId"].ToString();
-            }
+            var content = documentMethod.ConvertToHtml("PublicFile", "testDoc.docx", baseUrl);
 
-            return Ok(new { UserId = userId });
+            return Ok(content);
         }
+
     }
 }

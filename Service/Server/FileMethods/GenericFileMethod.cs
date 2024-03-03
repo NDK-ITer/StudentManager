@@ -1,6 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.Net.Mime;
 
+
 namespace Server.FileMethods
 {
     public class GenericFileMethod
@@ -20,7 +21,7 @@ namespace Server.FileMethods
         }
         public string? SaveFile(string folder, IFormFile file, string? newName)
         {
-            if (folder.IsNullOrEmpty() || file == null) { return null; }
+            if (folder.IsNullOrEmpty() || file == null) { return string.Empty; }
             var contentPath = this.environment.ContentRootPath;
             var path = Path.Combine(contentPath, folder);
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
@@ -47,34 +48,32 @@ namespace Server.FileMethods
             var contentPath = this.environment.ContentRootPath;
             var path = Path.Combine(contentPath, folder);
             var fileWithPath = Path.Combine(path, fileName);
-
             if (!File.Exists(fileWithPath))
             {
-                return null; // File không tồn tại
+                return null; 
             }
-
             byte[] fileBytes = File.ReadAllBytes(fileWithPath);
             var ms = new MemoryStream(fileBytes);
-
-            // Thiết lập ContentDisposition và ContentType
             var contentDisposition = new ContentDisposition
             {
                 FileName = fileName,
-                Inline = false // Đặt thành true nếu bạn muốn hiển thị tệp như một phần của nội dung trang
+                Inline = false
             };
-
-            var contentType = "application/octet-stream"; // Đổi loại nếu biết chính xác loại dữ liệu
-
-            // Tạo đối tượng FormFile với các thuộc tính cần thiết
+            var contentType = "application/octet-stream";
             var file = new FormFile(ms, 0, ms.Length, null, fileName)
             {
                 Headers = new HeaderDictionary(),
                 ContentType = contentType,
             };
-
             file.ContentDisposition = contentDisposition.ToString();
-
             return file;
         }
+
+        public string GetFileExtension(IFormFile file)
+        {
+            return Path.GetExtension(file.FileName).ToLowerInvariant();
+        }
+
+        
     }
 }
