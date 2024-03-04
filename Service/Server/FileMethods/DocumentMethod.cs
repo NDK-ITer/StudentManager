@@ -60,8 +60,6 @@ namespace Server.FileMethods
                     htmlContent.WriteLine($"<p>{paragraph.Text.Trim()}</p>");
                 }
             }
-
-
             return htmlContent.ToString();
         }
 

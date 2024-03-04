@@ -44,7 +44,6 @@ namespace Application.Services
             if (a == null) return new Tuple<string, Post?>("parameter is null", null);
             var faculty = unitOfWork.facultyRepository.GetById(a.FacultyId);
             if (faculty == null) return new Tuple<string, Post?>($"not Fauculty with id: {a.FacultyId}", null);
-            if (faculty.IsOpen == false) return new Tuple<string, Post?>($"{faculty.Name} is not open!",null);
             var newPost = new Post()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -55,6 +54,8 @@ namespace Application.Services
                 IsChecked = false,
                 LinkDocument = a.LinkDocument,
                 AvatarPost = a.AvatarPost,
+                UserId = a.UserId,
+                Content = string.Empty,
             };
             unitOfWork.postRepository.Add(newPost);
             unitOfWork.SaveChange();

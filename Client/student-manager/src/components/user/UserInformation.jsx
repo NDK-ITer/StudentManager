@@ -17,7 +17,6 @@ const UserInformation = () => {
     const { user, randomParam } = useContext(UserContext)
     const [userInformation, setUserInformation] = useState({})
     const [isEditAvatarShow, setIsEditAvatarShow] = useState(false);
-    const [listPost, setListPost] = useState([])
 
     const handleEditAvatarClose = () => setIsEditAvatarShow(false);
 
@@ -28,7 +27,6 @@ const UserInformation = () => {
             const res = await GetMyInformation()
             if (res.State === 1) {
                 setUserInformation(res.Data)
-                setListPost(res.Data.listPost)
             } else {
                 toast.error(res.Data.mess)
             }
@@ -83,7 +81,7 @@ const UserInformation = () => {
                             <Profile data={user} />
                         </Tab>
                         <Tab eventKey="post" title={<span className="tab-title">Post</span>}>
-                            <Post data={listPost}/>
+                            <Post userId={userInformation.id}/>
                         </Tab>
                     </Tabs>
                 </div>

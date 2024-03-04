@@ -232,7 +232,7 @@ namespace Server.Controllers
         [HttpPost]
         [HttpOptions]
         [Route("edit-avatar")]
-        public ActionResult EditAvatar([FromForm] IFormFile newAvatar)
+        public ActionResult EditAvatar([FromForm] IFormFile NewAvatar)
         {
             dynamic res = new ExpandoObject();
             try
@@ -276,7 +276,7 @@ namespace Server.Controllers
                     return new JsonResult(res);
                 }
                 var avatarUser = getUser.Item2.Avatar;
-                var newNameAvatar = imgMethod.SaveFile("PublicFile", newAvatar, avatarUser);
+                var newNameAvatar = imgMethod.SaveFile("PublicFile", NewAvatar, avatarUser);
                 if (newNameAvatar.IsNullOrEmpty())
                 {
                     res.State = 0;

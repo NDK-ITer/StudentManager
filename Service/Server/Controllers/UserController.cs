@@ -1,5 +1,6 @@
 ﻿using Application.Models.ModelsOfPost;
 using Application.Services;
+using DocumentFormat.OpenXml.Bibliography;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Server.FileMethods;
@@ -168,11 +169,20 @@ namespace Server.Controllers
                     {
                         mess = checkIsLock.Item1
                     };
+                    return new JsonResult(res);
                 }
                 if (checkIsLock.Item2.IsLock == true)
                 {
                     res.State = 0;
                     res.Data.mess = $"User {checkIsLock.Item2.PresentEmail} have been lock";
+                    return new JsonResult(res);
+                }
+                var checkFacultyOpen = uow.FacultyService.GetById(data.FacultyId);
+                if (checkFacultyOpen.Item2.IsOpen == false)
+                {
+                    res.State = 0;
+                    res.Data.mess = $"{checkFacultyOpen.Item2.Name} is not open!";
+                    return new JsonResult(res);
                 }
                 var random = new Random(); int randomNumber = random.Next(1000);
                 var avatarPostName = $"AvatarPost-{Guid.NewGuid().ToString().Substring(0, 10)}.png";
@@ -186,6 +196,7 @@ namespace Server.Controllers
                     AvatarPost = avatar,
                     LinkDocument = linkDoc,
                     FacultyId = data.FacultyId,
+                    UserId = userId,
                 };
                 var result  = uow.PostService.Add(addPostModel);
                 if (result.Item2 == null)
@@ -202,6 +213,121 @@ namespace Server.Controllers
                     res.Data.isApproved = result.Item2.IsApproved;
                     res.Data.isCheck = result.Item2.IsChecked;
                     res.Data.avatarPost = $"{baseUrl}/public/{result.Item2.AvatarPost}";
+                }
+                return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                res.State = -1;
+                res.Data = e.Message;
+                return new JsonResult(res);
+            }
+        }
+
+        [HttpGet]
+        [HttpOptions]
+        [Route("get-post-public")]
+        public ActionResult GetPostPublic()
+        {
+            dynamic res = new ExpandoObject();
+            try
+            {
+                var result = uow.PostService.GetPublic();
+                if (result.Item2.IsNullOrEmpty())
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = result.Item1
+                    };
+                }
+                else
+                {
+                    var user = result.Item2;
+                    var listPostPublic = new List<object>();
+                    if (!result.Item2.IsNullOrEmpty())
+                    {
+                        foreach (var item in result.Item2)
+                        {
+                            listPostPublic.Add(new
+                            {
+                                id = item.Id,
+                                title = item.Title,
+                                user = new
+                                {
+                                    userName = item.User.UserName,
+                                    avatarUser = $"{baseUrl}/public{item.User.Avatar}",
+                                },
+                                avatarPost = $"{baseUrl}/public{item.AvatarPost}",
+                            });
+                        }
+                        
+                    }
+                    res.State = 1;
+                    res.Data = new ExpandoObject();
+                    res.Data.listPost = listPostPublic;
+                }
+                return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                res.State = -1;
+                res.Data = e.Message;
+                return new JsonResult(res);
+            }
+        }
+
+        [HttpGet]
+        [HttpOptions]
+        [Route("get-my-post")]
+        public ActionResult GetMyPost()
+        {
+            dynamic res = new ExpandoObject();
+            try
+            {
+                string userId = string.Empty;
+                if (HttpContext.Items["UserId"] == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = "Login Please!"
+                    };
+                    return new JsonResult(res);
+                }
+                userId = HttpContext.Items["UserId"].ToString();
+                var result = uow.UserService.GetUserById(userId);
+                if (result.Item2 == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = result.Item1
+                    };
+                }
+                else
+                {
+                    var user = result.Item2;
+                    var listPostPublic = new List<object>();
+                    if (!user.ListPost.IsNullOrEmpty())
+                    {
+                        foreach (var item in user.ListPost)
+                        {
+                            listPostPublic.Add(new
+                            {
+                                id = item.Id,
+                                title = item.Title,
+                                isApproved = item.IsApproved,
+                                isChecked = item.IsChecked,
+                                dateUpload = item.DatePost,
+                                avatarPost = $"{baseUrl}/public/{item.AvatarPost}",
+                            });
+                        }
+
+                    }
+                    res.State = 1;
+                    res.Data = new ExpandoObject();
+                    res.Data.listPost = listPostPublic;
                 }
                 return new JsonResult(res);
             }
