@@ -19,7 +19,7 @@ namespace Server.FileMethods
                 return memoryStream.ToArray();
             }
         }
-        public string? SaveFile(string folder, IFormFile file, string? newName)
+        public virtual string? SaveFile(string folder, IFormFile file, string? newName)
         {
             if (folder.IsNullOrEmpty() || file == null) { return string.Empty; }
             var contentPath = this.environment.ContentRootPath;

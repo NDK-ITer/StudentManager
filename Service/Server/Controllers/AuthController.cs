@@ -55,16 +55,18 @@ namespace Server.Controllers
                 }
 
                 res.State = 1;
-                res.Data = new
-                {
-                    userName = result.Item2.UserName,
-                    firstName = result.Item2.FirstName,
-                    lastName = result.Item2.LastName,
-                    email = result.Item2.Email,
-                    role = result.Item2.Role,
-                    linkAvatar = $"{baseUrl}/public/{result.Item2.Avatar}"
-                };
+                res.Data = new ExpandoObject();
+                res.Data.userName = result.Item2.UserName;
+                res.Data.firstName = result.Item2.FirstName;
+                res.Data.lastName = result.Item2.LastName;
+                res.Data.email = result.Item2.Email;
+                res.Data.role = result.Item2.Role;
+                res.Data.linkAvatar = $"{baseUrl}/public/{result.Item2.Avatar}";
                 res.jwt = result.Item2.JwtToken;
+                if (uow.UserService.CheckIsMaanager(result.Item2.Id).Item2)
+                {
+                    res.Data.facultyId = uow.UserService.GetUserById(result.Item2.Id).Item2.FacultyID;
+                }
                 return new JsonResult(res);
             }
             catch (Exception e)

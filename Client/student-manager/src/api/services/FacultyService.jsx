@@ -3,6 +3,7 @@ import Root from '../Root';
 const adminController = `admin`
 const userController = `user`
 
+
 const CreateFaculty = (props) =>{
     return Root.post(`${adminController}/add-faculty`,{
         name: props.name
@@ -32,11 +33,13 @@ const GetFacultyPublic = () =>{
     return Root.get(`${userController}/get-faculty-public`)
 }
 
+
+
 export {
     CreateFaculty,
     DeleteFaculty,
     RestoreFaculty,
     UpdateFaculty,
     GetAllFaculty,
-    GetFacultyPublic
+    GetFacultyPublic,
 }

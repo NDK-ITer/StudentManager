@@ -64,6 +64,15 @@ function GetUserRole() {
     }
 }
 
+function GetFacultyId() {
+    const user = Cookies.get('user')
+    if (user) {
+        return (JSON.parse(user).facultyId)
+    } else {
+        return undefined
+    }
+}
+
 const UserContext = createContext({
     userName: '',
     avatar: '',
@@ -71,6 +80,7 @@ const UserContext = createContext({
     lastName: '',
     email: '',
     role: '',
+    facultyId: undefined,
     isAuth: false,
 })
 
@@ -84,6 +94,7 @@ const UserProvider = ({ children }) => {
         lastName: GetUserLastName(),
         email: GetUserEmail(),
         role: GetUserRole(),
+        facultyId: GetFacultyId(),
         isAuth: IsLogin(),
     })
 

@@ -259,6 +259,7 @@ namespace Server.Controllers
                                     avatarUser = $"{baseUrl}/public{item.User.Avatar}",
                                 },
                                 avatarPost = $"{baseUrl}/public{item.AvatarPost}",
+                                content = documentMethod.ConvertToHtml("PublicFile", item.LinkDocument, baseUrl)
                             });
                         }
                         
@@ -321,6 +322,7 @@ namespace Server.Controllers
                                 isChecked = item.IsChecked,
                                 dateUpload = item.DatePost,
                                 avatarPost = $"{baseUrl}/public/{item.AvatarPost}",
+                                linkDocument = $"{baseUrl}/public/{item.LinkDocument}",
                             });
                         }
 

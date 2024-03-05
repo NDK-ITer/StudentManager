@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ReactApexChart from 'react-apexcharts';
+import {UserContext} from '../../contexts/UserContext'
 
 const Home = () => {
+    const {user} = useContext(UserContext)
     const [data, setData] = useState([30, 40, 35, 50, 49, 60, 70]);
     const [categories, setCategories] = useState(['January', 'February', 'March', 'April', 'May', 'June', 'July'])
 

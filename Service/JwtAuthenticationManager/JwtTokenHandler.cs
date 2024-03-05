@@ -39,6 +39,7 @@ namespace JwtAuthenticationManager
 
             return new CombineJwtModel
             {
+                Id = userAccount.Id,
                 UserName = userAccount.UserName,
                 FirstName = userAccount.FirstName,
                 Email = userAccount.Email,

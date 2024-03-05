@@ -21,9 +21,18 @@ namespace Server.Controllers
         [HttpGet("get-doc-content")]
         public ActionResult GetUserProfile()
         {
-            var content = documentMethod.ConvertToHtml("PublicFile", "testDoc.docx", baseUrl);
+            var content = documentMethod.ConvertToHtml("PublicFile", "DocumentPost-db7748d2-7.docx", baseUrl);
 
-            return Ok(content);
+            return new JsonResult(new {content = content});
+        }
+
+
+        [HttpPost("post-doc-content")]
+        public ActionResult PostUserProfile([FromForm] IFormFile file)
+        {
+            var content = documentMethod.SaveFile("PublicFile", file, "temp");
+
+            return new JsonResult(new { content = content });
         }
 
     }

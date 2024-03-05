@@ -52,12 +52,12 @@ namespace Server.FileMethods
                         }
 
                         string imageUrl = new Uri(new Uri(baseUrl.Trim()), $"public/{imageName}").AbsoluteUri;
-                        htmlContent.WriteLine($"<img src='{imageUrl}'/>");
+                        htmlContent.Write($"<img src='{imageUrl}'/>");
 
                         tempImageFiles.Add(imageName);
                     }
 
-                    htmlContent.WriteLine($"<p>{paragraph.Text.Trim()}</p>");
+                    htmlContent.Write($"<p>{paragraph.Text.Trim()}</p>");
                 }
             }
             return htmlContent.ToString();
