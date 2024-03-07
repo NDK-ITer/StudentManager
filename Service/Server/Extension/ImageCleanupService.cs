@@ -3,7 +3,7 @@
     public class ImageCleanupService : IHostedService, IDisposable
     {
         private readonly string _tempFolderPath;
-        private readonly TimeSpan _expirationPeriod = TimeSpan.FromSeconds(10); 
+        private readonly TimeSpan _expirationPeriod = TimeSpan.FromSeconds(3); 
 
         public ImageCleanupService(string tempFolderPath)
         {

@@ -12,7 +12,6 @@ const PostDetail = () => {
         try {
             const res = await GetPostManagerDetail(postId)
             if (res.State === 1) {
-                console.log(res.Data)
                 setPost(res.Data)
             } else {
                 toast.warning(res.Data.mess)
@@ -26,14 +25,15 @@ const PostDetail = () => {
         getPostDetail()
     }, [])
     return (<>
-        <div className='manager-post-detail-container'>
+        {post && (<div className='manager-post-detail-container'>
             <div className='information-post'>
 
             </div>
             <div className='content'>
                 <div dangerouslySetInnerHTML={{ __html: post.content }} />
             </div>
-        </div>
+        </div>)}
+
     </>)
 }
 
