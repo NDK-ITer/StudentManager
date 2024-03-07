@@ -175,8 +175,7 @@
             }
             .link-doc{
                 margin-top: 10%;
-                // background: red;
-                text-align: center;
+                // text-align: center;
                 img{
                     width: 20%;
                     height: 20%;
@@ -202,10 +201,13 @@
             padding-top: 2%;
         }
         img{
-            max-width: 100%;
+            max-width: 70%;
             height: auto; 
             padding-top: 2%; 
             padding-bottom: 2%; 
+            align-items: center;
+            margin: auto; 
+            display: block;
         }
     }
 }

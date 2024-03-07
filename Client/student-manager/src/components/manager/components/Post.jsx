@@ -7,18 +7,7 @@ import { Link } from "react-router-dom"
 
 const Post = () => {
     const { user } = useContext(UserContext)
-    const [listPost, setListPost] = useState([])
-
-    const updateListItemById = (id, propertyObj) => {
-        const updatedListPost = [...listPost];
-        const itemIndex = updatedListPost.findIndex(item => item.id === id);
-        if (itemIndex === -1) {
-            console.log(`Not found post with id: ${id}`);
-            return;
-        }
-        Object.assign(updatedListPost[itemIndex], propertyObj);
-        setListPost(updatedListPost);
-    }
+    const [listPost, setListPost] = useState()
 
     const getListPost = async () => {
         try {
@@ -34,8 +23,8 @@ const Post = () => {
     }
 
     useEffect(() => {
+        console.log(user.facultyId)
         getListPost()
-        console.log(listPost)
     }, [])
 
     return (<>
@@ -48,7 +37,7 @@ const Post = () => {
                     return (<>
                         <Link to={`/manager/post/${item.id}`} className="item">
                             <Image src={item.avatarPost} />
-                            <div className={item.isCheck ? 'check' : 'no-check'}>
+                            <div className={item.isCheck ? 'check' : 'no-check'} key={item.id}>
                                 {item.title}
                             </div>
                         </Link>

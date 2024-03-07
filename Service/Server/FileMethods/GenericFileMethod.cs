@@ -26,7 +26,7 @@ namespace Server.FileMethods
             var path = Path.Combine(contentPath, folder);
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
             var newFileName = file.FileName;
-            if (newName != null) newFileName = newName;
+            if (!newName.IsNullOrEmpty()) newFileName = newName;
             var fileWithPath = Path.Combine(path, newFileName);
             var stream = new FileStream(fileWithPath, FileMode.Create);
             file.CopyTo(stream);

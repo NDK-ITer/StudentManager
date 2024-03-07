@@ -117,7 +117,7 @@ const UserProvider = ({ children }) => {
     }
 
     const loginContext = (response) => {
-        setUser(() => ({
+        let userData = {
             userName: response.Data.userName,
             avatar: response.Data.linkAvatar,
             firstName: response.Data.firstName,
@@ -125,7 +125,12 @@ const UserProvider = ({ children }) => {
             email: response.Data.email,
             role: response.Data.role,
             isAuth: true,
-        }))
+        }
+        if (response.Data.facultyId) {
+            userData.facultyId = response.Data.facultyId
+        }
+        console.log(userData)
+        setUser(() => (userData))
         Cookies.set('jwt', response.jwt);
         Cookies.set('user', JSON.stringify(response.Data));
     }

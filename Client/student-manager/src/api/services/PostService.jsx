@@ -5,7 +5,6 @@ const userController = `user`
 const managerController = `manager`
 
 const UploadPost = (props) =>{
-    console.log(props)
     const formData = new FormData();
     formData.append('AvatarPost', props.avatarPost);
     formData.append('Document', props.document);
@@ -26,9 +25,20 @@ const GetPostManagerDetail = (idPost) =>{
     return Root.get(`${managerController}/get-post-faculty/${idPost}`)
 }
 
+const UpdateAndApprovedPost = (props) =>{
+    const formData = new FormData();
+    formData.append('Id', props.id);
+    formData.append('Title', props.title);
+    formData.append('AvatarPost',props.avatarPost)
+    formData.append('LinkDocument',props.linkDocument)
+    formData.append('IsApproved',props.isApproved)
+    return Root.put(`${managerController}/approved-post`,formData)
+}
+
 export {
     UploadPost,
     GetMyPost,
     GetPostOfFaculty,
-    GetPostManagerDetail
+    GetPostManagerDetail,
+    UpdateAndApprovedPost
 }

@@ -1,7 +1,9 @@
-﻿using Application.Services;
+﻿using Application.Models.ModelsOfPost;
+using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Server.FileMethods;
+using Server.Requests.Form;
 using System.Dynamic;
 
 namespace Server.Controllers
@@ -136,6 +138,7 @@ namespace Server.Controllers
                     res.Data.linkDocument = $"{baseUrl}/public/{result.Item2.LinkDocument}";
                     res.Data.isApproved = result.Item2.IsApproved;
                     res.Data.content = documentMethod.ConvertToHtml("PublicFile",result.Item2.LinkDocument,baseUrl);
+                    uow.PostService.CheckPost(id);
                 }
 
                 return new JsonResult(res);
@@ -147,5 +150,68 @@ namespace Server.Controllers
                 return new JsonResult(res);
             }
         }
+
+        [HttpPut]
+        [HttpOptions]
+        [Route("approved-post")]
+        public ActionResult ApprovedPost([FromForm] EditPostForm data)
+        {
+            dynamic res = new ExpandoObject();
+            res.Data = new ExpandoObject();
+            try
+            {
+                string userId = string.Empty;
+                if (HttpContext.Items["UserId"] == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = "Login Please!"
+                    };
+                    return new JsonResult(res);
+                }
+                userId = HttpContext.Items["UserId"].ToString();
+                var checkIsManager = uow.UserService.CheckIsMaanager(userId);
+                if (!checkIsManager.Item2)
+                {
+                    res.State = 0;
+                    res.Data.mess = checkIsManager.Item1;
+                    return new JsonResult(res);
+                }
+
+                var editPost = new EditPostModel()
+                {
+                    Id = data.Id,
+                    Title = data.Title,
+                    IsApproved = data.IsApproved,
+                };
+                var result = uow.PostService.Update(userId ,editPost);
+                if (result.Item2 == null)
+                {
+                    res.State = 0;
+                    res.Data.mess = result.Item1;
+                }
+                else
+                {
+                    var post = result.Item2;
+                    if (data.LinkDocument != null) documentMethod.SaveFile("PublicFile", data.LinkDocument, post.LinkDocument);
+                    if (data.AvatarPost != null) documentMethod.SaveFile("PublicFile", data.AvatarPost, post.AvatarPost);
+                    res.State = 1;
+                    res.Data.id = post.Id;
+                    res.Data.title = post.Title;
+                    res.Data.isApproved = post.IsApproved;
+                    res.Data.content = documentMethod.ConvertToHtml("PublicFile", post.LinkDocument, baseUrl);
+                }
+
+                return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                res.State = -1;
+                res.Data = e.Message;
+                return new JsonResult(res);
+            }
+        }
+
     }
 }

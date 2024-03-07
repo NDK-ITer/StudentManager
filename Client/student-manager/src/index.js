@@ -20,9 +20,9 @@ const Root = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // setTimeout(() => {
-    //   setLoading(false);
-    // }, (1)*1000);
+    setTimeout(() => {
+      setLoading(false);
+    }, (1)*1000);
   }, []);
 
   return (
@@ -30,8 +30,7 @@ const Root = () => {
       <RoleProvider>
         <UserProvider>
           <Router>
-            {/* {withLoading(App, loading)} */}
-            <App/>
+            {withLoading(App, loading)}
           </Router>
         </UserProvider>
       </RoleProvider>

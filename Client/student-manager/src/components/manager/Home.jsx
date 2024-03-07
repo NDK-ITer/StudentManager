@@ -37,6 +37,9 @@ const Home = () => {
         ]
     };
 
+    useEffect(()=>{
+        console.log(user.facultyId)
+    },[])
     return (
         <div className='manager-home-content'>
             <div className='manager-chart'>

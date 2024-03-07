@@ -17,6 +17,7 @@ namespace Application.Services
         Tuple<string, List<Post?>> GetPostOfFaculty(string userId, string facultyId);
         Tuple<string, List<Post?>?> GetAll(string userId);
         Tuple<string, List<Post?>?> GetPublic();
+        void CheckPost(string id);
     }
     public class PostService:IPostService
     {
@@ -107,6 +108,7 @@ namespace Application.Services
             if (post == null) return new Tuple<string, Post?>($"not found post with id: {e.Id}", null);
             if (post.Faculty.ListAdmin.Find(a => a.Id == idUser) == null) return new Tuple<string, Post?>("you cant update this post", null);
             post.Title = e.Title;
+            post.IsApproved = e.IsApproved;
             unitOfWork.postRepository.Update(post);
             unitOfWork.SaveChange();
             return new Tuple<string, Post?>("update successful", post);
@@ -119,6 +121,14 @@ namespace Application.Services
             var faculty = unitOfWork.facultyRepository.GetById(facultyId);
             if (!faculty.ListAdmin.Contains(user)) return new Tuple<string, List<Post?>?>("you cant do it", null);
             return new Tuple<string, List<Post?>?>("", faculty.ListPost);
+        }
+
+        public void CheckPost(string id)
+        {
+            var post = unitOfWork.postRepository.GetById(id);
+            post.IsChecked = true;
+            unitOfWork.postRepository.Update(post);
+            unitOfWork.SaveChange();
         }
     }
 }
