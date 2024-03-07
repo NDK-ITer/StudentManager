@@ -44,7 +44,7 @@ const Post = () => {
 
             </div>
             <div className="list-post-manager">
-                {listPost.length > 0 && listPost.map((item, index) => {
+                {listPost && listPost.length > 0 && listPost.map((item, index) => {
                     return (<>
                         <Link to={`/manager/post/${item.id}`} className="item">
                             <Image src={item.avatarPost} />

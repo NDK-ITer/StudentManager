@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { GetPostManagerDetail } from '../../../api/services/PostService';
+import { Image } from 'react-bootstrap';
+import DocxLogo from '../../../assets/images/docx-logo.png'
 
 
 const PostDetail = () => {
@@ -27,7 +29,18 @@ const PostDetail = () => {
     return (<>
         {post && (<div className='manager-post-detail-container'>
             <div className='information-post'>
-
+                <div className='avatar-post'>
+                    <Image src={post.avatarPost} />
+                </div>
+                <div className='information'>
+                    <span className='title'>{post.title}</span>
+                    <div className='link-doc'>
+                        Get content    <i class="fa-solid fa-hand-point-right"></i>
+                        <a href={post.linkDocument}>
+                            <Image src={DocxLogo} />
+                        </a>
+                    </div>
+                </div>
             </div>
             <div className='content'>
                 <div dangerouslySetInnerHTML={{ __html: post.content }} />
