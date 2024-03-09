@@ -17,6 +17,12 @@ const Post = ({ userId }) => {
     const [listFaculty, setListFaculty] = useState([])
     const [show, setShow] = useState(false);
 
+    const [isChecked, setIsChecked] = useState(false);
+
+    const agreeCheckboxChange = (event) => {
+        setIsChecked(event.target.checked);
+    };
+
     const handleChange = (e) => {
         const { name, value, files } = e.target;
         setPostData({
@@ -58,6 +64,11 @@ const Post = ({ userId }) => {
             const res = await UploadPost(postData);
             if (res.State === 1) {
                 addNewPost(res.Data)
+                toast.success('Upload post successful')
+                handleClose()
+            }
+            else{
+                toast.warning(res.Data.mess)
             }
         } catch (error) {
             toast.error(error)
@@ -168,12 +179,18 @@ const Post = ({ userId }) => {
                                     accept=".docx"
                                 />
                             </Form.Group>
+                            <Form.Check
+                                type="checkbox"
+                                label="I agree to Terms and Conditions !"
+                                checked={isChecked}
+                                onChange={agreeCheckboxChange}
+                            />
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={handleClose}>
                                 Close
                             </Button>
-                            <Button variant="primary" type="submit" onClick={handleClose}>
+                            <Button variant="primary" type="submit"  disabled={!isChecked || !postData.facultyId || !postData.avatarPost || !postData.document || !postData.title}>
                                 Upload Post
                             </Button>
                         </Modal.Footer>

@@ -213,5 +213,110 @@ namespace Server.Controllers
             }
         }
 
+
+        [HttpGet]
+        [HttpOptions]
+        [Route("get-faculty")]
+        public ActionResult GetFacultyById(string idFaculty)
+        {
+            dynamic res = new ExpandoObject();
+            res.Data = new ExpandoObject();
+            try
+            {
+                string userId = string.Empty;
+                if (HttpContext.Items["UserId"] == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = "Login Please!"
+                    };
+                    return new JsonResult(res);
+                }
+                userId = HttpContext.Items["UserId"].ToString();
+                var checkIsManager = uow.UserService.CheckIsMaanager(userId);
+                if (!checkIsManager.Item2)
+                {
+                    res.State = 0;
+                    res.Data.mess = checkIsManager.Item1;
+                    return new JsonResult(res);
+                }
+
+                var result = uow.FacultyService.GetById(idFaculty);
+                if (result.Item2 == null)
+                {
+                    res.State = 0;
+                    res.Data.mess = result.Item1;
+                }
+                else
+                {
+                    var faculty = result.Item2;
+                    res.State = 1;
+                    res.Data.id = faculty.Id;
+                    res.Data.name = faculty.Name;
+                    res.Data.isOpen = faculty.IsOpen;
+                    res.Data.isDelete = faculty.IsDeleted;
+                }
+                return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                res.State = -1;
+                res.Data = e.Message;
+                return new JsonResult(res);
+            }
+        }
+
+
+        [HttpPut]
+        [HttpOptions]
+        [Route("state-faculty")]
+        public ActionResult StateFaculty(string idFaculty)
+        {
+            dynamic res = new ExpandoObject();
+            res.Data = new ExpandoObject();
+            try
+            {
+                string userId = string.Empty;
+                if (HttpContext.Items["UserId"] == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = "Login Please!"
+                    };
+                    return new JsonResult(res);
+                }
+                userId = HttpContext.Items["UserId"].ToString();
+                var checkIsManager = uow.UserService.CheckIsMaanager(userId);
+                if (!checkIsManager.Item2)
+                {
+                    res.State = 0;
+                    res.Data.mess = checkIsManager.Item1;
+                    return new JsonResult(res);
+                }
+
+                var result = uow.FacultyService.OpenCloseFaculty(idFaculty);
+                if (result.Item2 == null)
+                {
+                    res.State = 0;
+                    res.Data.mess = result.Item1;
+                }
+                else
+                {
+                    res.State = 1;
+                    res.Data.isOpen = result.Item2.IsOpen;
+                    res.Data.mess = result.Item1;
+                }
+
+                return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                res.State = -1;
+                res.Data = e.Message;
+                return new JsonResult(res);
+            }
+        }
     }
 }

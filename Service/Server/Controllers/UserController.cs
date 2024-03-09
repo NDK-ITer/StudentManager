@@ -2,6 +2,7 @@
 using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using SendMail.Interfaces;
 using Server.FileMethods;
 using Server.Requests.Form;
 using System.Dynamic;
@@ -13,11 +14,13 @@ namespace Server.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUnitOfWorkService uow;
+        private readonly IEmailSender emailSender;
         private readonly DocumentMethod documentMethod;
         private readonly string baseUrl;
 
         public UserController(
             IUnitOfWorkService uow,
+            IEmailSender emailSender,
             IHttpContextAccessor httpContextAccessor,
             DocumentMethod documentMethod
         )
@@ -25,6 +28,7 @@ namespace Server.Controllers
             var request = httpContextAccessor.HttpContext.Request;
             baseUrl = $"{request.Scheme}://{request.Host}";
             this.uow = uow;
+            this.emailSender = emailSender;
             this.documentMethod = documentMethod;
         }
 
@@ -186,14 +190,13 @@ namespace Server.Controllers
                 var random = new Random(); int randomNumber = random.Next(1000);
                 var avatarPostName = $"AvatarPost-{Guid.NewGuid().ToString().Substring(0, 10)}.png";
                 var docPostName = $"DocumentPost-{Guid.NewGuid().ToString().Substring(0, 10)}.{documentMethod.GetFileExtension(data.Document)}";
-                var avatar = documentMethod.SaveFile("PublicFile", data.AvatarPost, avatarPostName);
-                var linkDoc = documentMethod.SaveFile("PublicFile", data.Document, docPostName);
+                
 
                 var addPostModel = new AddPostModel()
                 {
                     Title = data.Title,
-                    AvatarPost = avatar,
-                    LinkDocument = linkDoc,
+                    AvatarPost = avatarPostName,
+                    LinkDocument = docPostName,
                     FacultyId = data.FacultyId,
                     UserId = userId,
                 };
@@ -205,13 +208,21 @@ namespace Server.Controllers
                 }
                 else
                 {
+                    var avatar = documentMethod.SaveFile("PublicFile", data.AvatarPost, avatarPostName);
+                    var linkDoc = documentMethod.SaveFile("PublicFile", data.Document, docPostName);
+                    var post = result.Item2;
+                    var user = uow.UserService.GetUserById(userId).Item2;
+                    foreach (var item in post.Faculty.ListAdmin)
+                    {
+                        emailSender.SendEmailAsync(item.PresentEmail,"Student upload post", $"Student {user.FirstName.Trim()} {user.LastName.Trim()} have uploaded a post");
+                    }
                     res.State = 1;
-                    res.Data.id = result.Item2.Id;
-                    res.Data.title = result.Item2.Title;
-                    res.Data.dateUpload = $"{result.Item2.DatePost.Day}/{result.Item2.DatePost.Month}/{result.Item2.DatePost.Year}"; 
-                    res.Data.isApproved = result.Item2.IsApproved;
-                    res.Data.isCheck = result.Item2.IsChecked;
-                    res.Data.avatarPost = $"{baseUrl}/public/{result.Item2.AvatarPost}";
+                    res.Data.id = post .Id;
+                    res.Data.title = post .Title;
+                    res.Data.dateUpload = $"{post .DatePost.Day}/{post .DatePost.Month}/{post .DatePost.Year}"; 
+                    res.Data.isApproved = post .IsApproved;
+                    res.Data.isCheck = post .IsChecked;
+                    res.Data.avatarPost = $"{baseUrl}/public/{post .AvatarPost}";
                 }
                 return new JsonResult(res);
             }
@@ -331,6 +342,26 @@ namespace Server.Controllers
                     res.Data.listPost = listPostPublic;
                 }
                 return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                res.State = -1;
+                res.Data = e.Message;
+                return new JsonResult(res);
+            }
+        }
+
+        [HttpGet]
+        [HttpOptions]
+        [Route("get-post")]
+        public ActionResult GetPostById(string idPost)
+        {
+            dynamic res = new ExpandoObject();
+            res.Data = new ExpandoObject();
+            try
+            {
+                return new JsonResult(res);
+
             }
             catch (Exception e)
             {
