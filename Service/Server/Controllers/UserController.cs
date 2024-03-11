@@ -6,6 +6,7 @@ using SendMail.Interfaces;
 using Server.FileMethods;
 using Server.Requests.Form;
 using System.Dynamic;
+using System.Text.RegularExpressions;
 
 namespace Server.Controllers
 {
@@ -259,17 +260,21 @@ namespace Server.Controllers
                     {
                         foreach (var item in result.Item2)
                         {
+                            var content = documentMethod.ConvertToHtml("PublicFile", item.LinkDocument, baseUrl);
+                            if (!content.IsNullOrEmpty())
+                            {
+                                string plainText = Regex.Replace(content, "<.*?>", string.Empty);
+                                plainText = plainText.Replace("<p>", "").Replace("</p>", "");
+                                content = plainText.Length <= 20 ? plainText : plainText.Substring(0, 20);
+                            }
                             listPostPublic.Add(new
                             {
                                 id = item.Id,
                                 title = item.Title,
-                                user = new
-                                {
-                                    userName = item.User.UserName,
-                                    avatarUser = $"{baseUrl}/public{item.User.Avatar}",
-                                },
-                                avatarPost = $"{baseUrl}/public{item.AvatarPost}",
-                                content = documentMethod.ConvertToHtml("PublicFile", item.LinkDocument, baseUrl)
+                                avatarPost = $"{baseUrl}/public/{item.AvatarPost}",
+                                facultyId = item.FacultyId,
+                                uploadDate = $"{item.DatePost.Day}/{item.DatePost.Month}/{item.DatePost.Year}",
+                                description = content
                             });
                         }
                         
@@ -330,7 +335,7 @@ namespace Server.Controllers
                                 title = item.Title,
                                 isApproved = item.IsApproved,
                                 isChecked = item.IsChecked,
-                                dateUpload = item.DatePost,
+                                dateUpload = $"{item.DatePost.Day}/{item.DatePost.Month}/{item.DatePost.Year}",
                                 avatarPost = $"{baseUrl}/public/{item.AvatarPost}",
                                 linkDocument = $"{baseUrl}/public/{item.LinkDocument}",
                             });
@@ -360,8 +365,45 @@ namespace Server.Controllers
             res.Data = new ExpandoObject();
             try
             {
+                var result = uow.PostService.GetById(idPost);
+                if (result.Item2 == null)
+                {
+                    res.State = 0;
+                    res.Data.mess = result.Item1;
+                }
+                else
+                {
+                    var post = result.Item2;
+                    if (!result.Item2.IsApproved)
+                    {
+                        res.State = 0;
+                        res.Data.mess = $"Post with id: {post.Title} was not approved";
+                    }
+                    else
+                    {
+                        res.State = 1;
+                        res.Data.id = post.Id;
+                        res.Data.title = post.Title;
+                        res.Data.uploadDate = $"{post.DatePost.Day}/{post.DatePost.Month}/{post.DatePost.Year}";
+                        res.Data.content = documentMethod.ConvertToHtml("PublicFile", post.LinkDocument, baseUrl);
+                        var listComment = new List<object>();
+                        if (!post.ListComent.IsNullOrEmpty())
+                        {
+                            foreach (var item in post.ListComent)
+                            {
+                                listComment.Add(new
+                                {
+                                    id = item.Id,
+                                    content = item.Content,
+                                    dateComment = item.DateComment,
+                                    avatarUser = $"{baseUrl}/public/{item.User.Avatar}",
+                                });
+                            }
+                        }
+                        res.Data.listComment = listComment;
+                    }
+                }
                 return new JsonResult(res);
-
             }
             catch (Exception e)
             {

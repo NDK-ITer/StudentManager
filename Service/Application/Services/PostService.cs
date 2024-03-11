@@ -84,7 +84,7 @@ namespace Application.Services
 
         public Tuple<string, List<Post?>?> GetPublic()
         {
-            var postPublic = unitOfWork.postRepository.Find(p => p.IsApproved == true);
+            var postPublic = unitOfWork.postRepository.Find(p => p.IsApproved == true && p.Faculty.IsDeleted == false);
             if (postPublic.IsNullOrEmpty()) return new Tuple<string, List<Post?>?>("no public post", null);
             return new Tuple<string, List<Post?>?>("", postPublic);
         }

@@ -14,8 +14,8 @@ const Header = () => {
             </div>
             <div className='user-header-option'>
                 <div><Link to='/post' style={{color:'inherit', textDecoration: 'none'}}>Posts</Link></div>
-                <div><Link to='/post' style={{color:'inherit', textDecoration: 'none'}}>Posting</Link></div>
-                <div><Link to='/post' style={{color:'inherit', textDecoration: 'none'}}>Posting</Link></div>
+                {/* <div><Link to='/post' style={{color:'inherit', textDecoration: 'none'}}>Posting</Link></div>
+                <div><Link to='/post' style={{color:'inherit', textDecoration: 'none'}}>Posting</Link></div> */}
             </div>
             <UserHeader />
         </div>

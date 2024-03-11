@@ -50,7 +50,7 @@ namespace Server.Middleware
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
-            if (token != null)
+            if (!token.IsNullOrEmpty())
             {
                 AttachUserToContext(context, token);
             }

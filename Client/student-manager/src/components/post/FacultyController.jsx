@@ -1,38 +1,9 @@
-import { useEffect, useState } from "react"
-import { GetFacultyPublic } from '../../api/services/FacultyService'
-import { toast } from "react-toastify"
+
 import { Form } from 'react-bootstrap';
 
-const FacultyController = () => {
+const FacultyController = ({listFaculty, selectedFaculty, handleCheckboxChange}) => {
 
-    const [listFaculty, setListFaculty] = useState([])
-    const [selectedItems, setSelectedItems] = useState([]);
 
-    const handleCheckboxChange = (id) => {
-        const selectedIndex = selectedItems.indexOf(id);
-        if (selectedIndex === -1) {
-            setSelectedItems([...selectedItems, id]);
-        } else {
-            const updatedItems = [...selectedItems];
-            updatedItems.splice(selectedIndex, 1);
-            setSelectedItems(updatedItems);
-        }
-    };
-
-    const getFacultyPublic = async () => {
-        try {
-            const res = await GetFacultyPublic();
-            if (res.State === 1) {
-                setListFaculty(res.Data.listFaculty)
-            }
-        } catch (error) {
-            toast.error(error)
-        }
-    }
-
-    useEffect(() => {
-        getFacultyPublic()
-    }, [])
     return (<>
         <div>
             <div style={{
@@ -47,7 +18,7 @@ const FacultyController = () => {
                             type='checkbox'
                             label={item.name}
                             onChange={() => handleCheckboxChange(item.id)}
-                            checked={selectedItems.includes(item.id)}
+                            checked={selectedFaculty.includes(item.id)}
                         />
                     </>)
                 })}

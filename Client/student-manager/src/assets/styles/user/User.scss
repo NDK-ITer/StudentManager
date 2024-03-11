@@ -200,7 +200,7 @@
 .body-information{
     background: rgba(255, 255, 255, 0.822);
     width: 70%;
-    height: 50vh;
+    height: 64vh;
     position: relative;
     border-radius: 30px;
     margin: auto;
@@ -330,13 +330,14 @@
 .user-body{
     width: 100%;
     height: 92vh;
-    padding-top: 5%;
+    overflow-y: auto;
 }
 
 .banner-home{
     width: 60%;
     max-height: 40%;
     margin: auto;
+    margin-top: 5%;
     box-shadow: 0 0 20px rgba(0, 0, 0, 2.0);
     h5{
         color: white;
@@ -366,6 +367,13 @@
     width: 20%;
     min-height: 60%;
     background: rgb(204, 204, 204);
+    .search-post{
+        width: 100%;
+        display: block;
+        margin-top: 15%;
+        height: auto;
+        padding: 10%;
+    }
 }
 
 .faculty-controller .element{
@@ -375,9 +383,35 @@
 }
 
 .list-post-element{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    justify-content: space-between; 
+    box-sizing: border-box;
     width: 60%;
     height: 100%;
+    gap: 10px;
     background: rgba(111, 0, 255, 0.336);
+    overflow-y: auto;
+    .element-post-public{
+        width: calc(50% - 5px);
+        margin-bottom: 1%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .card-title {
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+        }
+        .card-text {
+            display: inline-block;
+            vertical-align: middle;
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+        }
+    }
 }
 
 .date-post-controller{
@@ -448,6 +482,44 @@
 .controller-my-post{
     width: 20%;
     height: 100%;
-    background: white ;
+    // background: white ;
     padding-left: 1%;
+}
+
+.detail-post-public {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    .content{
+        overflow-y: auto !important;
+        width: 80%;
+        height: 100%;
+        background: rgb(255, 255, 255);
+        padding: 10px;
+        text-align: justify;
+        p{
+            margin-left: 5%;
+            margin-right: 0; 
+            padding-bottom: 2%;
+            padding-top: 2%;
+            text-indent: 1em;
+        }
+        img{
+            max-width: 70%;
+            height: auto; 
+            padding-top: 2%; 
+            padding-bottom: 2%; 
+            align-items: center;
+            margin: auto; 
+            display: block;
+        }
+    }
+    .comment-post{
+        width: 40%;
+        height: 100%;
+        background: rgb(197, 196, 196);
+        display: inline-block; 
+        vertical-align: middle; 
+        text-align: left;
+    }
 }

@@ -35,10 +35,20 @@ const UpdateAndApprovedPost = (props) =>{
     return Root.put(`${managerController}/approved-post`,formData)
 }
 
+const GetPostPublic = () =>{
+    return Root.get(`${userController}/get-post-public`)
+}
+
+const GetPublicPostById = (idPost) =>{
+    return Root.get(`${userController}/get-post/?idPost=${idPost}`)
+}
+
 export {
     UploadPost,
     GetMyPost,
     GetPostOfFaculty,
     GetPostManagerDetail,
-    UpdateAndApprovedPost
+    UpdateAndApprovedPost,
+    GetPostPublic,
+    GetPublicPostById
 }

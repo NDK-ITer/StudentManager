@@ -108,7 +108,7 @@ const Post = ({ userId }) => {
     return (<>
         <div className="my-post-area">
             <div className="controller-my-post">
-                <Button onClick={handleShow}><i class="fa-solid fa-plus"></i>&nbsp;Create a new post ?</Button>
+                <Button onClick={handleShow}><i class="fa-solid fa-plus"></i>&nbsp;Create a new post?</Button>
                 <Form>
                     <Form.Check
                         type="checkbox"
@@ -116,7 +116,7 @@ const Post = ({ userId }) => {
                         label="Show Approved Only"
                         checked={showApprovedOnly}
                         onChange={handleCheckboxChange}
-                        style={{ background: 'blue', color: 'white', marginTop: '10%', borderRadius: '10px' }}
+                        style={{ marginTop: '10%', borderRadius: '10px' }}
                     />
                 </Form>
                 <Modal show={show} onHide={handleClose} backdrop="static" centered>
@@ -205,7 +205,7 @@ const Post = ({ userId }) => {
                     return (<div key={item.id} className="list-post item">
                         <Image src={item.avatarPost} />
                         <div className={item.isApproved ? 'approved' : 'no-approved'}>
-                            <p>{item.title}</p>
+                            {item.title}<br/>
                             <i class="fa-solid fa-file-word"></i>&nbsp;&nbsp;{item.isApproved ? 'Approved' : 'Your post is not approve'}
                             <br />Upload Date: {item.dateUpload}
                         </div>
