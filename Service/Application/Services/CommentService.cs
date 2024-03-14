@@ -29,6 +29,7 @@ namespace Application.Services
                 Content = a.Content,
                 UserId = idUser,
                 PostId = idPost,
+                DateComment = DateTime.Now,
             };
             unitOfWork.commentRepository.Add(cmt);
             unitOfWork.SaveChange();

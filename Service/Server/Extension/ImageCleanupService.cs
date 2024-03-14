@@ -13,7 +13,7 @@
         public Task StartAsync(CancellationToken cancellationToken)
         {
 
-            var timer = new Timer(CleanupExpiredImages, null, TimeSpan.Zero, TimeSpan.FromSeconds(5));
+            var timer = new Timer(CleanupExpiredImages, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
 
             return Task.CompletedTask;
         }

@@ -36,14 +36,15 @@ namespace Server.FileMethods
             }
 
             var tempImageFiles = new List<string>();
-
+            int i = 0;
             using (DocX doc = DocX.Load(fileWithPath))
             {
                 foreach (Xceed.Document.NET.Paragraph paragraph in doc.Paragraphs)
                 {
+                    
                     foreach (var pic in paragraph.Pictures)
                     {
-                        var imageName = Guid.NewGuid().ToString() + ".png";
+                        var imageName = $"{Path.GetFileNameWithoutExtension(fileName)}-{i}.png";
                         var imagePath = Path.Combine(tempImageFolderPath, imageName);
 
                         using (FileStream fs = new FileStream(imagePath, FileMode.Create))
@@ -55,6 +56,7 @@ namespace Server.FileMethods
                         htmlContent.Write($"<img src='{imageUrl}'/>");
 
                         tempImageFiles.Add(imageName);
+                        i++;
                     }
 
                     htmlContent.Write($"<p>{paragraph.Text.Trim()}</p>");

@@ -518,8 +518,61 @@
         width: 40%;
         height: 100%;
         background: rgb(197, 196, 196);
-        display: inline-block; 
-        vertical-align: middle; 
-        text-align: left;
+        text-align: center;
+        justify-content: center;
+        .list-comment{
+            width: 100%;
+            height: 80%;
+            background: rgba(0, 0, 255, 0.295);
+            overflow-y: auto;
+            padding: 5%;
+            text-align: center;
+            .item{
+                width: 95%;
+                height: 20%;
+                background:  rgb(209, 207, 207);
+                display: flex;
+                margin: 0 5px;
+                border-radius: 10px;
+                margin-bottom: 10%;
+                .avatar-user{
+                    width: 25%;
+                    height: 100%;
+                }
+                .cmt-detail{
+                    width: 70%;
+                    height: 100%;
+                    .content-cmt{
+                        height: 75%;
+                        text-align: start;
+                    }
+                    .date-cmt{
+                        height: 25%;
+                        text-align: start;
+                    }
+                }
+            }
+        }
+        .input-comment{
+            width: 70%;
+            height: 10%;
+            display: flex;
+            margin: 0 auto;
+            padding: 2%;
+            .btn-post-cmt{
+                cursor: pointer;
+                width: 38px;
+                height: 38px;
+                margin-left: 2%;
+                background: blue;
+                text-align: center;
+                border-radius: 100%;
+                display: flex;
+                position: relative;
+            }
+            .btn-post-cmt:hover{
+                filter: brightness(70%);
+            }
+        }
     }
 }
