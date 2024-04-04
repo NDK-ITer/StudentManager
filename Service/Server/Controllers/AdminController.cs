@@ -382,7 +382,6 @@ namespace Server.Controllers
                         id = result.Item2.Id,
                         name = result.Item2.Name,
                         isDelete = result.Item2.IsDeleted,
-                        isOpen = result.Item2.IsOpen,
                     };
                 }
 
@@ -629,7 +628,6 @@ namespace Server.Controllers
                             id = item.Id,
                             name = item.Name,
                             isDelete = item.IsDeleted,
-                            isOpen = item.IsOpen,
                         });
                     }
                     res.State = 1;

@@ -15,9 +15,9 @@ namespace Application.Services
         Tuple<string, bool> Restore(string userId, string id);
         Tuple<string, Faculty?> GetById(string id);
         Tuple<string, List<Faculty?>?> GetAll(string userId);
-        Tuple<string, bool> AlowUploadPost(string userId, string facultyId);
+        Tuple<string, bool> AlowUploadPost(string userId, string facultyId, DateTime endTimePost);
         Tuple<string, List<Faculty?>?> GetPublic();
-        Tuple<string, Faculty?> OpenCloseFaculty(string idFaculty);
+        Tuple<string, Faculty?> SetEndTimePost(string idFaculty, DateTime endTimePost);
     }
     public class FacultyService:IFacultyService
     {
@@ -45,13 +45,13 @@ namespace Application.Services
             return new Tuple<string, Faculty?>("add successful!", newFaculty);
         }
 
-        public Tuple<string, bool> AlowUploadPost(string userId, string facultyId)
+        public Tuple<string, bool> AlowUploadPost(string userId, string facultyId, DateTime endTimePost)
         {
             if (userId.IsNullOrEmpty() || facultyId.IsNullOrEmpty()) return new Tuple<string, bool>("parameter is null", false);
             var user = unitOfWork.userRepository.GetById(userId);
             var faculty = unitOfWork.facultyRepository.GetById(facultyId);
             if (!faculty.ListAdmin.Contains(user)) return new Tuple<string, bool>("you cant do it", false);
-            faculty.IsOpen = true;
+            faculty.EndTimePost = endTimePost;
             unitOfWork.facultyRepository.Update(faculty);
             unitOfWork.SaveChange();
             return new Tuple<string, bool>("open successful", true);
@@ -141,22 +141,14 @@ namespace Application.Services
             return new Tuple<string, Faculty?>("update successfull", faculty);
         }
 
-        public Tuple<string, Faculty?> OpenCloseFaculty(string idFaculty)
+        public Tuple<string, Faculty?> SetEndTimePost(string idFaculty, DateTime endTimePost)
         {
             if (idFaculty.IsNullOrEmpty()) return new Tuple<string, Faculty?>("parameter is not null", null);
             var faculty = unitOfWork.facultyRepository.GetById(idFaculty);
             if (faculty == null) return new Tuple<string, Faculty?>($"not found with id: {idFaculty}", null);
-            faculty.IsOpen = !faculty.IsOpen;
+            faculty.EndTimePost = endTimePost;
             unitOfWork.facultyRepository.Update(faculty);
-            unitOfWork.SaveChange();
-            if (faculty.IsOpen)
-            {
-                return new Tuple<string, Faculty?>("Open successful", faculty);
-            }
-            else
-            {
-                return new Tuple<string, Faculty?>("Close successful", faculty);
-            }
+            return new Tuple<string, Faculty?>("Set Deadline successful", faculty);
         }
     }
 }

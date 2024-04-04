@@ -10,6 +10,7 @@ namespace Infrastructure.Extensions
             var AdminID = "c8c17fbb-731c-405a-bed8-cb22868ef7ca";
             var ManagerId = "da1ed655-5d7a-4d6d-ac03-540ceac69c91";
             var UserId = "76fda05c-b706-421c-94b7-a0a578c1b93b";
+            var Staff = "8b657a23-9383-4fc5-aecc-6fa719143be1";
             modelBuilder.Entity<Role>().HasData(
                 new Role()
                 {
@@ -30,6 +31,13 @@ namespace Infrastructure.Extensions
                     Id = ManagerId,
                     Name = "MANAGER",
                     NormalizeName = "Marketing Coordinator",
+                    Description = ""
+                },
+                new Role()
+                {
+                    Id = Staff,
+                    Name = "STAFF",
+                    NormalizeName = "Staff",
                     Description = ""
                 }
             );

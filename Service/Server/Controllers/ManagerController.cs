@@ -254,7 +254,6 @@ namespace Server.Controllers
                     res.State = 1;
                     res.Data.id = faculty.Id;
                     res.Data.name = faculty.Name;
-                    res.Data.isOpen = faculty.IsOpen;
                     res.Data.isDelete = faculty.IsDeleted;
                 }
                 return new JsonResult(res);
@@ -271,7 +270,7 @@ namespace Server.Controllers
         [HttpPut]
         [HttpOptions]
         [Route("state-faculty")]
-        public ActionResult StateFaculty(string idFaculty)
+        public ActionResult StateFaculty(string idFaculty, DateTime endTimePost)
         {
             dynamic res = new ExpandoObject();
             res.Data = new ExpandoObject();
@@ -296,7 +295,7 @@ namespace Server.Controllers
                     return new JsonResult(res);
                 }
 
-                var result = uow.FacultyService.OpenCloseFaculty(idFaculty);
+                var result = uow.FacultyService.SetEndTimePost(idFaculty, endTimePost);
                 if (result.Item2 == null)
                 {
                     res.State = 0;
@@ -305,7 +304,6 @@ namespace Server.Controllers
                 else
                 {
                     res.State = 1;
-                    res.Data.isOpen = result.Item2.IsOpen;
                     res.Data.mess = result.Item1;
                 }
 
