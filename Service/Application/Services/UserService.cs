@@ -23,7 +23,8 @@ namespace Application.Services
         Tuple<string, User?> GetUserByEmail(string email);
         Tuple<string, bool> CheckIsAdmin(string userId);
         Tuple<string, bool> CheckIsMaanager(string userId);
-        Tuple<string, bool> CheckIsUser(string userId);
+        Tuple<string, bool> CheckIsStudent(string userId);
+        Tuple<string, bool> CheckIsStaff(string userId);
     }
     public class UserService : IUserService
     {
@@ -242,13 +243,25 @@ namespace Application.Services
             return new Tuple<string, List<User?>?>("",allUser);
         }
 
-        public Tuple<string, bool> CheckIsUser(string userId)
+        public Tuple<string, bool> CheckIsStudent(string userId)
         {
             if (userId.IsNullOrEmpty()) return new Tuple<string, bool>("parameter was null or empty", false);
             var user = unitOfWork.userRepository.GetById(userId);
             if (user == null) return new Tuple<string, bool>($"User with id {userId} is not exist", false);
 
-            var role = unitOfWork.roleRepository.Find(r => r.Name == "USER").FirstOrDefault();
+            var role = unitOfWork.roleRepository.Find(r => r.Name == "STUDENT").FirstOrDefault();
+            if (role == null) return new Tuple<string, bool>("Role not found", false);
+            if (user.Role != role) return new Tuple<string, bool>($"You are not {role.NormalizeName}", false);
+            return new Tuple<string, bool>(string.Empty, true);
+        }
+
+        public Tuple<string, bool> CheckIsStaff(string userId)
+        {
+            if (userId.IsNullOrEmpty()) return new Tuple<string, bool>("parameter was null or empty", false);
+            var user = unitOfWork.userRepository.GetById(userId);
+            if (user == null) return new Tuple<string, bool>($"User with id {userId} is not exist", false);
+
+            var role = unitOfWork.roleRepository.Find(r => r.Name == "STAFF").FirstOrDefault();
             if (role == null) return new Tuple<string, bool>("Role not found", false);
             if (user.Role != role) return new Tuple<string, bool>($"You are not {role.NormalizeName}", false);
             return new Tuple<string, bool>(string.Empty, true);

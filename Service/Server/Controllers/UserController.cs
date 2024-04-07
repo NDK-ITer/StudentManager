@@ -159,7 +159,7 @@ namespace Server.Controllers
                     return new JsonResult(res);
                 }
                 userId = HttpContext.Items["UserId"].ToString();
-                var check = uow.UserService.CheckIsUser(userId);
+                var check = uow.UserService.CheckIsStudent(userId);
                 if (check.Item2 == false)
                 {
                     res.State = 0;

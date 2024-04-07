@@ -14,6 +14,7 @@ namespace Application.Services
         Tuple<string, Role?> EditNormalizeName(string roleId, string normalizeName);
         Tuple<string, User?> SetManager(string userId, string idFaculty);
         Tuple<string, User?> SetUser(string userId);
+        Tuple<string, User?> SetStudent(string userId);
     }
     public class RoleService : IRoleService
     {
@@ -70,6 +71,19 @@ namespace Application.Services
             unitOfWork.userRepository.Update(user);
             unitOfWork.SaveChange();
             return new Tuple<string, User?>("",user);
+        }
+
+        public Tuple<string, User?> SetStudent(string userId)
+        {
+            if (string.IsNullOrEmpty(userId)) return new Tuple<string, User?>("paramater is null!", null);
+            var user = unitOfWork.userRepository.GetById(userId);
+            if (user == null) return new Tuple<string, User?>($"not found user with id: {userId}", null);
+            var role = unitOfWork.roleRepository.Find(r => r.Name == "STUDENT").FirstOrDefault();
+            user.RoleId = role.Id;
+            if (!user.FacultyID.IsNullOrEmpty()) user.FacultyID = null;
+            unitOfWork.userRepository.Update(user);
+            unitOfWork.SaveChange();
+            return new Tuple<string, User?>("", user);
         }
 
         public Tuple<string, User?> SetUser(string userId)

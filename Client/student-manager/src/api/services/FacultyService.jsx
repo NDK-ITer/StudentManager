@@ -38,8 +38,8 @@ const GetFacultyById = (idFaculty) => {
     return Root.get(`${managerController}/get-faculty/?idFaculty=${idFaculty}`)
 }
 
-const SetStateFaculty = (idFaculty) =>{
-    return Root.put(`${managerController}/state-faculty/?idFaculty=${idFaculty}`)
+const SetStateFaculty = (idFaculty, deadlineValue) =>{
+    return Root.put(`${managerController}/state-faculty/?idFaculty=${idFaculty}&deadlineValue=${deadlineValue}`)
 }
 
 export {

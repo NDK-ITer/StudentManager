@@ -4,7 +4,7 @@
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public DateTime EndTimePost {  get; set; }
+        public DateTime? EndTimePost {  get; set; }
         public bool IsDeleted { get; set; }
         //FK
         public List<Post> ListPost { get; set; }

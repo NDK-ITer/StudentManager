@@ -17,6 +17,10 @@ const RoleProvider = ({ children }) => {
         User: {
             role: '',
             name: '',
+        },
+        Staff: {
+            role: '',
+            name: ''
         }
     })
 
@@ -41,6 +45,15 @@ const RoleProvider = ({ children }) => {
                 }));
             }
             if (item.name === 'USER') {
+                setRole(prevState => ({
+                    ...prevState,
+                    User: {
+                        role: item.name,
+                        name: item.normalizeName,
+                    },
+                }));
+            }
+            if (item.name === 'STAFF') {
                 setRole(prevState => ({
                     ...prevState,
                     User: {

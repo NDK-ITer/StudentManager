@@ -148,6 +148,7 @@ namespace Application.Services
             if (faculty == null) return new Tuple<string, Faculty?>($"not found with id: {idFaculty}", null);
             faculty.EndTimePost = endTimePost;
             unitOfWork.facultyRepository.Update(faculty);
+            unitOfWork.SaveChange();
             return new Tuple<string, Faculty?>("Set Deadline successful", faculty);
         }
     }

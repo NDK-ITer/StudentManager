@@ -84,7 +84,7 @@ namespace Server.Controllers
                     }
                     res.Data.listPost = listPost;
                 }
-                
+
                 return new JsonResult(res);
             }
             catch (Exception e)
@@ -98,7 +98,7 @@ namespace Server.Controllers
         [HttpGet]
         [HttpOptions]
         [Route("get-post-faculty/{id}")]
-        public ActionResult GetPostFacultyById([FromRoute]string id)
+        public ActionResult GetPostFacultyById([FromRoute] string id)
         {
             dynamic res = new ExpandoObject();
             res.Data = new ExpandoObject();
@@ -137,7 +137,7 @@ namespace Server.Controllers
                     res.Data.avatarPost = $"{baseUrl}/public/{result.Item2.AvatarPost}";
                     res.Data.linkDocument = $"{baseUrl}/public/{result.Item2.LinkDocument}";
                     res.Data.isApproved = result.Item2.IsApproved;
-                    res.Data.content = documentMethod.ConvertToHtml("PublicFile",result.Item2.LinkDocument,baseUrl);
+                    res.Data.content = documentMethod.ConvertToHtml("PublicFile", result.Item2.LinkDocument, baseUrl);
                     uow.PostService.CheckPost(id);
                 }
 
@@ -185,7 +185,7 @@ namespace Server.Controllers
                     Title = data.Title,
                     IsApproved = data.IsApproved,
                 };
-                var result = uow.PostService.Update(userId ,editPost);
+                var result = uow.PostService.Update(userId, editPost);
                 if (result.Item2 == null)
                 {
                     res.State = 0;
@@ -270,7 +270,7 @@ namespace Server.Controllers
         [HttpPut]
         [HttpOptions]
         [Route("state-faculty")]
-        public ActionResult StateFaculty(string idFaculty, DateTime endTimePost)
+        public ActionResult StateFaculty(string idFaculty, DateTime deadlineValue)
         {
             dynamic res = new ExpandoObject();
             res.Data = new ExpandoObject();
@@ -295,7 +295,7 @@ namespace Server.Controllers
                     return new JsonResult(res);
                 }
 
-                var result = uow.FacultyService.SetEndTimePost(idFaculty, endTimePost);
+                var result = uow.FacultyService.SetEndTimePost(idFaculty, deadlineValue);
                 if (result.Item2 == null)
                 {
                     res.State = 0;
@@ -305,8 +305,11 @@ namespace Server.Controllers
                 {
                     res.State = 1;
                     res.Data.mess = result.Item1;
+                    if (result.Item2.EndTimePost >= DateTime.Now)
+                        res.Data.isOpen = true;
+                    else
+                        res.Data.isOpen = false;
                 }
-
                 return new JsonResult(res);
             }
             catch (Exception e)
