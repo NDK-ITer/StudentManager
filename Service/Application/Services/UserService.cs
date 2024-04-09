@@ -19,6 +19,7 @@ namespace Application.Services
         Tuple<string, User?> SetIsLockUser(string idUser);
         Tuple<string, User?> ResetPassword(string idUser, string newPassword);
         Tuple<string, List<User?>?> GetAllUser();
+        Tuple<string, List<User?>?> GetListUser();
         Tuple<string, User?> GetUserById(string id);
         Tuple<string, User?> GetUserByEmail(string email);
         Tuple<string, bool> CheckIsAdmin(string userId);
@@ -196,7 +197,7 @@ namespace Application.Services
         {
             try
             {
-                if (id.IsNullOrEmpty()) return new Tuple<string, bool>("parameter is null",false);
+                if (id.IsNullOrEmpty()) return new Tuple<string, bool>("parameter is null", false);
                 var result = GetUserById(id);
                 if (result.Item2 == null) return new Tuple<string, bool>(result.Item1, false);
                 var user = result.Item2;
@@ -239,8 +240,8 @@ namespace Application.Services
         public Tuple<string, List<User?>?> GetAllUser()
         {
             var allUser = unitOfWork.userRepository.GetAll();
-            if (allUser == null) return new Tuple<string, List<User?>?>("No user",null);
-            return new Tuple<string, List<User?>?>("",allUser);
+            if (allUser == null) return new Tuple<string, List<User?>?>("No user", null);
+            return new Tuple<string, List<User?>?>("", allUser);
         }
 
         public Tuple<string, bool> CheckIsStudent(string userId)
@@ -265,6 +266,13 @@ namespace Application.Services
             if (role == null) return new Tuple<string, bool>("Role not found", false);
             if (user.Role != role) return new Tuple<string, bool>($"You are not {role.NormalizeName}", false);
             return new Tuple<string, bool>(string.Empty, true);
+        }
+
+        public Tuple<string, List<User?>?> GetListUser()
+        {
+            var allUser = unitOfWork.userRepository.Find(u => u.Role.Name == "USER");
+            if (allUser == null || allUser.Count <= 0) return new Tuple<string, List<User?>?>("No user", null);
+            return new Tuple<string, List<User?>?>("", allUser);
         }
     }
 }

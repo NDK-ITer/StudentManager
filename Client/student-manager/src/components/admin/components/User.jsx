@@ -135,7 +135,9 @@ const User = () => {
                                             <Card.Text>
                                                 {(item.authorize.role == role.Admin.role) && (<div style={{ color: 'red' }}>{item.authorize.name}</div>)}
                                                 {(item.authorize.role == role.Manager.role) && (<div style={{ color: 'blue' }}>{item.authorize.name}</div>)}
-                                                {(item.authorize.role == role.User.role) && (<div style={{ color: 'green' }}>{item.authorize.name}</div>)}
+                                                {(item.authorize.role == role.Staff.role) && (<div style={{ color: 'green' }}>{item.authorize.name}</div>)}
+                                                {(item.authorize.role == role.Student.role) && (<div style={{ color: 'orange' }}>{item.authorize.name}</div>)}
+                                                {(item.authorize.role == role.User.role) && (<div style={{ color: 'purple' }}>{item.authorize.name}</div>)}
                                             </Card.Text>
                                         </Link>
                                     </Card.Body>

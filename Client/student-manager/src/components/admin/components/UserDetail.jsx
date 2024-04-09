@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Modal, Image, Tab, Tabs, Button, Form } from 'react-bootstrap';
 import { RoleContext } from '../../../contexts/RoleContext';
 import { toast } from 'react-toastify';
-import { GetUserById, SetUser, SetManager } from '../../../api/services/UserService'
+import { GetUserById, SetUser, SetManager, SetStaff, SetStudent } from '../../../api/services/UserService'
 import { GetAllFaculty } from '../../../api/services/FacultyService'
 import { useParams } from 'react-router-dom';
 
@@ -11,14 +11,16 @@ const UserDetail = () => {
     const { role } = useContext(RoleContext)
     const [user, setUser] = useState()
     const { userId } = useParams();
-    const [showVerify, setShowVerify] = useState(false);
+    const [showVerifyUser, setShowVerifyUser] = useState(false);
+    const [showVerifyManager, setShowVerifyManager] = useState(false);
+    const [showVerifyStaff, setShowVerifyStaff] = useState(false);
+    const [showVerifyStudent, setShowVerifyStudent] = useState(false);
     const [listFacultyOption, setListFacultyOption] = useState()
     const [selectedFaculty, setSelectedFaculty] = useState('');
 
     const handleSelectChange = (event) => {
         setSelectedFaculty(event.target.value);
     };
-
     const getAllFaculty = async () => {
         try {
             const res = await GetAllFaculty()
@@ -32,9 +34,21 @@ const UserDetail = () => {
         }
     }
 
-    const handleClose = () => setShowVerify(false);
+    const handleCloseUser = () => setShowVerifyUser(false);
 
-    const handleShow = () => setShowVerify(true);
+    const handleShowUser = () => setShowVerifyUser(true);
+
+    const handleCloseManager = () => setShowVerifyManager(false);
+
+    const handleShowManager = () => setShowVerifyManager(true);
+
+    const handleCloseStaff = () => setShowVerifyStaff(false);
+
+    const handleShowStaff = () => setShowVerifyStaff(true);
+
+    const handleCloseStudent = () => setShowVerifyStudent(false);
+
+    const handleShowStudent = () => setShowVerifyStudent(true);
 
     const updateUserFields = (newFields) => {
         setUser(prevUser => ({
@@ -42,7 +56,6 @@ const UserDetail = () => {
             ...newFields
         }));
     };
-
 
     const getUserById = async (id) => {
         try {
@@ -57,9 +70,9 @@ const UserDetail = () => {
         }
     }
 
-    const changeManager = async (idUser) => {
+    const changeManager = async (id) => {
         try {
-            const res = await SetManager(idUser, selectedFaculty)
+            const res = await SetManager(id, selectedFaculty)
             if (res.State === 1) {
                 updateUserFields(res.Data)
                 console.log(user)
@@ -75,6 +88,35 @@ const UserDetail = () => {
     const changeUser = async (id) => {
         try {
             const res = await SetUser(id)
+            if (res.State === 1) {
+                updateUserFields(res.Data)
+                toast.success("update successful")
+            } else {
+                toast.error(res.Data.mess)
+            }
+        } catch (error) {
+            toast.error(error)
+        }
+    }
+
+    const changeStaff = async (id) => {
+        try {
+            const res = await SetStaff(id, selectedFaculty)
+            if (res.State === 1) {
+                updateUserFields(res.Data)
+                console.log(user)
+                toast.success("update successful")
+            } else {
+                toast.error(res.Data.mess)
+            }
+        } catch (error) {
+            toast.error(error)
+        }
+    }
+
+    const changeStudent = async (id) => {
+        try {
+            const res = await SetStudent(id)
             if (res.State === 1) {
                 updateUserFields(res.Data)
                 toast.success("update successful")
@@ -112,6 +154,8 @@ const UserDetail = () => {
                     {(user.authorize.role == role.Admin.role) && (<div style={{ color: 'rgb(255, 48, 48)', fontWeight: '700' }}>{user.authorize.name}</div>)}
                     {(user.authorize.role == role.Manager.role) && (<div style={{ color: 'aqua', fontWeight: '700' }}>{user.authorize.name}</div>)}
                     {(user.authorize.role == role.User.role) && (<div style={{ color: 'rgb(79, 250, 57)', fontWeight: '700' }}>{user.authorize.name}</div>)}
+                    {(user.authorize.role == role.Student.role) && (<div style={{ color: 'rgb(79, 250, 57)', fontWeight: '700' }}>{user.authorize.name}</div>)}
+                    {(user.authorize.role == role.Staff.role) && (<div style={{ color: 'rgb(79, 250, 57)', fontWeight: '700' }}>{user.authorize.name}</div>)}
                 </div>
             </div>
             <div>
@@ -132,31 +176,108 @@ const UserDetail = () => {
                             <div className='user-authorize'>
                                 {(user.authorize.role == role.Admin.role) && (<div style={{ color: 'red', fontWeight: '900', margin: 'auto', fontSize: '20px' }}>This is a {role.Admin.name} so you cannot change their role!</div>)}
                                 {(user.authorize.role == role.Manager.role) && (<>
-                                    <h3 style={{ margin: 'auto' }}>Update user to {role.User.name}</h3>
-                                    <div className='set-role-btn' onClick={handleShow}>
-                                        <i class="bi bi-person-lines-fill"></i>
+                                    <h3 style={{ margin: 'auto' }}>Update user to</h3>
+                                    <div className='set-role-btn' onClick={handleShowStudent}>
+                                        {role.Student.name}
                                     </div>
-                                    <Modal show={showVerify} onHide={handleClose} centered>
+                                    <Modal show={showVerifyStudent} onHide={handleCloseStudent} centered>
                                         <Modal.Body>Are you sure about that ?</Modal.Body>
                                         <Modal.Footer>
-                                            <Button variant="secondary" onClick={handleClose}>
+                                            <Button variant="secondary" onClick={handleCloseStudent}>
+                                                Cancel
+                                            </Button>
+                                            <Button variant="primary"
+                                                onClick={() => {
+                                                    changeStudent(user.id)
+                                                    handleCloseStudent()
+                                                }}
+                                            >
+                                                Save Changes
+                                            </Button>
+                                        </Modal.Footer>
+                                    </Modal>
+                                    <div className='set-role-btn' onClick={handleShowStaff}>
+                                        {role.Staff.name}
+                                    </div>
+                                    <Modal show={showVerifyStaff} onHide={handleCloseStaff} centered>
+                                        <Modal.Body>Are you sure about that ?</Modal.Body>
+                                        <Modal.Footer>
+                                            <Button variant="secondary" onClick={handleCloseStaff}>
+                                                Cancel
+                                            </Button>
+                                            <Button variant="primary"
+                                                onClick={() => {
+                                                    changeStaff(user.id)
+                                                    handleCloseStaff()
+                                                }}
+                                            >
+                                                Save Changes
+                                            </Button>
+                                        </Modal.Footer>
+                                    </Modal>
+                                    <div className='set-role-btn' onClick={handleShowUser}>
+                                        {role.User.name}
+                                    </div>
+                                    <Modal show={showVerifyUser} onHide={handleCloseUser} centered>
+                                        <Modal.Body>Are you sure about that ?</Modal.Body>
+                                        <Modal.Footer>
+                                            <Button variant="secondary" onClick={handleCloseUser}>
                                                 Cancel
                                             </Button>
                                             <Button variant="primary" onClick={() => {
                                                 changeUser(user.id)
-                                                handleClose()
+                                                handleCloseUser()
                                             }}>
                                                 Save Changes
                                             </Button>
                                         </Modal.Footer>
                                     </Modal>
                                 </>)}
-                                {(user.authorize.role == role.User.role) && (<>
-                                    <h3 style={{ margin: 'auto' }}>Update user to {role.Manager.name}</h3>
-                                    <div className='set-role-btn' onClick={handleShow}>
-                                        <i class="bi bi-person-fill"></i>
+                                {(user.authorize.role == role.Staff.role) && (<>
+                                    <h3 style={{ margin: 'auto' }}>Update user to</h3>
+
+                                    <div className='set-role-btn' onClick={handleShowUser}>
+                                        {role.User.name}
                                     </div>
-                                    <Modal show={showVerify} onHide={handleClose} centered>
+                                    <Modal show={showVerifyUser} onHide={handleCloseUser} centered>
+                                        <Modal.Body>Are you sure about that ?</Modal.Body>
+                                        <Modal.Footer>
+                                            <Button variant="secondary" onClick={handleCloseUser}>
+                                                Cancel
+                                            </Button>
+                                            <Button variant="primary" onClick={() => {
+                                                changeUser(user.id)
+                                                handleCloseUser()
+                                            }}>
+                                                Save Changes
+                                            </Button>
+                                        </Modal.Footer>
+                                    </Modal>
+
+                                    <div className='set-role-btn' onClick={handleShowStudent}>
+                                        {role.Student.name}
+                                    </div>
+                                    <Modal show={showVerifyStudent} onHide={handleCloseStudent} centered>
+                                        <Modal.Body>Are you sure about that ?</Modal.Body>
+                                        <Modal.Footer>
+                                            <Button variant="secondary" onClick={handleCloseStudent}>
+                                                Cancel
+                                            </Button>
+                                            <Button variant="primary"
+                                                onClick={() => {
+                                                    changeStudent(user.id)
+                                                    handleCloseStudent()
+                                                }}
+                                            >
+                                                Save Changes
+                                            </Button>
+                                        </Modal.Footer>
+                                    </Modal>
+
+                                    <div className='set-role-btn' onClick={handleShowManager}>
+                                        {role.Manager.name}
+                                    </div>
+                                    <Modal show={showVerifyManager} onHide={handleCloseManager} centered>
                                         <Modal.Header style={{ display: 'flex', justifyContent: 'center', fontWeight: '900', fontSize: '30px' }}>
                                             Choose one Faculty
                                         </Modal.Header>
@@ -169,13 +290,158 @@ const UserDetail = () => {
                                             </Form.Select>
                                         </Modal.Body>
                                         <Modal.Footer>
-                                            <Button variant="secondary" onClick={handleClose}>
+                                            <Button variant="secondary" onClick={handleCloseManager}>
                                                 Cancel
                                             </Button>
                                             <Button variant="primary"
                                                 onClick={() => {
                                                     changeManager(user.id)
-                                                    handleClose()
+                                                    handleCloseManager()
+                                                }}
+                                                disabled={(selectedFaculty && selectedFaculty !== '') ? false : true}
+                                            >
+                                                Save Changes
+                                            </Button>
+                                        </Modal.Footer>
+                                    </Modal>
+                                </>)}
+                                {(user.authorize.role == role.Student.role) && (<>
+                                    <h3 style={{ margin: 'auto' }}>Update user to</h3>
+
+                                    <div className='set-role-btn' onClick={handleShowStaff}>
+                                        {role.Staff.name}
+                                    </div>
+                                    <Modal show={showVerifyStaff} onHide={handleCloseStaff} centered>
+                                        <Modal.Body>Are you sure about that ?</Modal.Body>
+                                        <Modal.Footer>
+                                            <Button variant="secondary" onClick={handleCloseStaff}>
+                                                Cancel
+                                            </Button>
+                                            <Button variant="primary"
+                                                onClick={() => {
+                                                    changeStaff(user.id)
+                                                    handleCloseStaff()
+                                                }}
+                                            >
+                                                Save Changes
+                                            </Button>
+                                        </Modal.Footer>
+                                    </Modal>
+
+                                    <div className='set-role-btn' onClick={handleShowManager}>
+                                        {role.Manager.name}
+                                    </div>
+                                    <Modal show={showVerifyManager} onHide={handleCloseManager} centered>
+                                        <Modal.Header style={{ display: 'flex', justifyContent: 'center', fontWeight: '900', fontSize: '30px' }}>
+                                            Choose one Faculty
+                                        </Modal.Header>
+                                        <Modal.Body>
+                                            <Form.Select value={selectedFaculty} onChange={handleSelectChange}>
+                                                <option value="">---Select a faculty---</option>
+                                                {listFacultyOption && listFacultyOption.map((option, index) => (
+                                                    <option key={index} value={option.id}>{option.name}</option>
+                                                ))}
+                                            </Form.Select>
+                                        </Modal.Body>
+                                        <Modal.Footer>
+                                            <Button variant="secondary" onClick={handleCloseManager}>
+                                                Cancel
+                                            </Button>
+                                            <Button variant="primary"
+                                                onClick={() => {
+                                                    changeManager(user.id)
+                                                    handleCloseManager()
+                                                }}
+                                                disabled={(selectedFaculty && selectedFaculty !== '') ? false : true}
+                                            >
+                                                Save Changes
+                                            </Button>
+                                        </Modal.Footer>
+                                    </Modal>
+
+                                    <div className='set-role-btn' onClick={handleShowUser}>
+                                        {role.User.name}
+                                    </div>
+                                    <Modal show={showVerifyUser} onHide={handleCloseUser} centered>
+                                        <Modal.Body>Are you sure about that ?</Modal.Body>
+                                        <Modal.Footer>
+                                            <Button variant="secondary" onClick={handleCloseUser}>
+                                                Cancel
+                                            </Button>
+                                            <Button variant="primary" onClick={() => {
+                                                changeUser(user.id)
+                                                handleCloseUser()
+                                            }}>
+                                                Save Changes
+                                            </Button>
+                                        </Modal.Footer>
+                                    </Modal>
+                                </>)}
+                                {(user.authorize.role == role.User.role) && (<>
+                                    <h3 style={{ margin: 'auto' }}>Update user to</h3>
+                                    <div className='set-role-btn' onClick={handleShowStaff}>
+                                        {role.Staff.name}
+                                    </div>
+                                    <Modal show={showVerifyStaff} onHide={handleCloseStaff} centered>
+                                        <Modal.Body>Are you sure about that ?</Modal.Body>
+                                        <Modal.Footer>
+                                            <Button variant="secondary" onClick={handleCloseStaff}>
+                                                Cancel
+                                            </Button>
+                                            <Button variant="primary"
+                                                onClick={() => {
+                                                    changeStaff(user.id)
+                                                    handleCloseStaff()
+                                                }}
+                                            >
+                                                Save Changes
+                                            </Button>
+                                        </Modal.Footer>
+                                    </Modal>
+
+                                    <div className='set-role-btn' onClick={handleShowStudent}>
+                                        {role.Student.name}
+                                    </div>
+                                    <Modal show={showVerifyStudent} onHide={handleCloseStudent} centered>
+                                        <Modal.Body>Are you sure about that ?</Modal.Body>
+                                        <Modal.Footer>
+                                            <Button variant="secondary" onClick={handleCloseStudent}>
+                                                Cancel
+                                            </Button>
+                                            <Button variant="primary"
+                                                onClick={() => {
+                                                    changeStudent(user.id)
+                                                    handleCloseStudent()
+                                                }}
+                                            >
+                                                Save Changes
+                                            </Button>
+                                        </Modal.Footer>
+                                    </Modal>
+
+                                    <div className='set-role-btn' onClick={handleShowManager}>
+                                        {role.Manager.name}
+                                    </div>
+                                    <Modal show={showVerifyManager} onHide={handleCloseManager} centered>
+                                        <Modal.Header style={{ display: 'flex', justifyContent: 'center', fontWeight: '900', fontSize: '30px' }}>
+                                            Choose one Faculty
+                                        </Modal.Header>
+                                        <Modal.Body>
+                                            <Form.Select value={selectedFaculty} onChange={handleSelectChange}>
+                                                <option value="">---Select a faculty---</option>
+                                                {listFacultyOption && listFacultyOption.map((option, index) => (
+                                                    <option key={index} value={option.id}>{option.name}</option>
+                                                ))}
+                                            </Form.Select>
+                                        </Modal.Body>
+                                        <Modal.Footer>
+                                            <Button variant="secondary" onClick={handleCloseManager}>
+                                                Cancel
+                                            </Button>
+                                            <Button variant="primary"
+                                                onClick={() => {
+                                                    changeManager(user.id)
+                                                    handleCloseManager()
                                                 }}
                                                 disabled={(selectedFaculty && selectedFaculty !== '') ? false : true}
                                             >

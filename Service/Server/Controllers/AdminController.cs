@@ -332,6 +332,130 @@ namespace Server.Controllers
             }
         }
 
+        [HttpPut]
+        [HttpOptions]
+        [Route("set-student")]
+        public ActionResult SetStudent(string idUserSet)
+        {
+            dynamic res = new ExpandoObject();
+            try
+            {
+                string userId = string.Empty;
+                if (HttpContext.Items["UserId"] == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = "Login Please!"
+                    };
+                    return new JsonResult(res);
+                }
+                userId = HttpContext.Items["UserId"].ToString();
+                var checkIsAdmin = uow.UserService.CheckIsAdmin(userId);
+                var checkIsStaff = uow.UserService.CheckIsStaff(userId);
+                if (!checkIsAdmin.Item2 && !checkIsStaff.Item2)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = "You can't do it!"
+                    };
+                    return new JsonResult(res);
+                }
+
+                var result = uow.RoleService.SetStudent(idUserSet);
+                if (result.Item2 == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = result.Item1
+                    };
+                }
+                else
+                {
+                    res.State = 1;
+                    res.Data = new
+                    {
+                        id = result.Item2.Id,
+                        authorize = new
+                        {
+                            role = result.Item2.Role.Name,
+                            name = result.Item2.Role.NormalizeName,
+                        }
+                    };
+                }
+                return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                res.State = -1;
+                res.Data = e.Message;
+                return new JsonResult(res);
+            }
+        }
+
+        [HttpPut]
+        [HttpOptions]
+        [Route("set-staff")]
+        public ActionResult SetStaff(string idUserSet)
+        {
+            dynamic res = new ExpandoObject();
+            try
+            {
+                string userId = string.Empty;
+                if (HttpContext.Items["UserId"] == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = "Login Please!"
+                    };
+                    return new JsonResult(res);
+                }
+                userId = HttpContext.Items["UserId"].ToString();
+                var checkIsAdmin = uow.UserService.CheckIsAdmin(userId);
+                if (!checkIsAdmin.Item2)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = checkIsAdmin.Item1
+                    };
+                    return new JsonResult(res);
+                }
+                var result = uow.RoleService.SetStaff(idUserSet);
+                if (result.Item2 == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = result.Item1
+                    };
+                }
+                else
+                {
+                    res.State = 1;
+                    res.Data = new
+                    {
+                        id = result.Item2.Id,
+                        authorize = new
+                        {
+                            role = result.Item2.Role.Name,
+                            name = result.Item2.Role.NormalizeName,
+                        }
+                    };
+                }
+                return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                res.State = -1;
+                res.Data = e.Message;
+                return new JsonResult(res);
+            }
+        }
+
         [HttpPost]
         [HttpOptions]
         [Route("add-faculty")]

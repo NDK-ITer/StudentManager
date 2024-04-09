@@ -67,6 +67,9 @@ const UserHeader = (props) => {
                             {user.role == role.Manager.role && (<>----------------------------------------------
                                 <Nav.Link as={Link} to="/manager" className="nav-link-blue"><i class="fa-solid fa-bars-progress"></i>&nbsp; {role.Manager.name}</Nav.Link>
                                 ----------------------------------------------</>)}
+                            {user.role == role.Staff.role && (<>----------------------------------------------
+                                <Nav.Link as={Link} to="/staff" className="nav-link-green"><i class="fa-solid fa-bars-progress"></i>&nbsp; {role.Staff.name}</Nav.Link>
+                                ----------------------------------------------</>)}
                         </div>
                         <div>
                             <NavDropdown.Divider />

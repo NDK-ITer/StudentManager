@@ -4,6 +4,8 @@ import AdminPage from '../pages/AdminPage';
 import ManagerPage from '../pages/ManagerPage';
 import CheckManagerRoute from './CheckManagerRoute';
 import UserPage from '../pages/UserPage';
+import CheckStaffRoute from './CheckStaffRoute';
+import StaffPage from '../pages/StaffPage';
 
 const AppRoute = () => {
     return (<>
@@ -18,6 +20,11 @@ const AppRoute = () => {
                 <CheckManagerRoute>
                     <ManagerPage/>
                 </CheckManagerRoute>
+            } />
+            <Route path='/staff/*' element={
+                <CheckStaffRoute>
+                    <StaffPage/>
+                </CheckStaffRoute>
             } />
         </Routes>
     </>)
