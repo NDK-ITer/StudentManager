@@ -42,7 +42,7 @@ const Home = () => {
                             </Link>
                         </Col>
                         <Col md={6} lg={4}>
-                            <Link className='link-style' to={`${baseUrl}/post`}>
+                            <Link className='link-style' to={`${baseUrl}/all-post`}>
                                 <Card className='card-item-custom'>
                                     <Card.Body>
                                         <Card.Title>

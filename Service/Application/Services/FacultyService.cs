@@ -4,6 +4,7 @@ using Infrastructure.Context;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
+using System.Globalization;
 
 namespace Application.Services
 {
@@ -18,8 +19,11 @@ namespace Application.Services
         Tuple<string, bool> AlowUploadPost(string userId, string facultyId, DateTime endTimePost);
         Tuple<string, List<Faculty?>?> GetPublic();
         Tuple<string, Faculty?> SetEndTimePost(string idFaculty, DateTime endTimePost);
+        Tuple<string, Dictionary<string, int>?> GetReport(string facultyId, int fromYear, int toYear);
+        Tuple<string, Dictionary<string, int>?> GetAllFacultyReport();
+        
     }
-    public class FacultyService:IFacultyService
+    public class FacultyService : IFacultyService
     {
         private readonly IUnitOfWork unitOfWork;
 
@@ -102,7 +106,7 @@ namespace Application.Services
             {
                 return new Tuple<string, List<Faculty?>?>("no faculty", null);
             }
-            return new Tuple<string, List<Faculty?>?>("",allFaculty);
+            return new Tuple<string, List<Faculty?>?>("", allFaculty);
         }
 
         public Tuple<string, Faculty?> GetById(string id)
@@ -150,6 +154,41 @@ namespace Application.Services
             unitOfWork.facultyRepository.Update(faculty);
             unitOfWork.SaveChange();
             return new Tuple<string, Faculty?>("Set Deadline successful", faculty);
+        }
+
+        public Tuple<string, Dictionary<string, int>?> GetReport(string facultyId, int fromYear, int toYear)
+        {
+            if (facultyId.IsNullOrEmpty() || fromYear == null || toYear == null) return new Tuple<string, Dictionary<string, int>?>("Parameter not null", null);
+            var listPost = unitOfWork.postRepository.Find(p => p.FacultyId == facultyId && fromYear <= p.DatePost.Year && p.DatePost.Year <= toYear);
+            if (listPost.IsNullOrEmpty()) return new Tuple<string, Dictionary<string, int>?>($"List post is empty", null);
+
+            var result = new Dictionary<string, int>();
+            foreach (var post in listPost)
+            {
+                string yearKey = post.DatePost.Year.ToString();
+                if (result.ContainsKey(yearKey))
+                    result[yearKey]++;
+                else
+                    result[yearKey] = 1;
+            }
+            return new Tuple<string, Dictionary<string, int>?>("", result);
+        }
+
+        public Tuple<string, Dictionary<string, int>?> GetAllFacultyReport()
+        {
+            var listFaculty = unitOfWork.facultyRepository.GetAll();
+            if (listFaculty.IsNullOrEmpty()) return new Tuple<string, Dictionary<string, int>?>($"List post is empty", null);
+
+            var result = new Dictionary<string, int>();
+            foreach (var item in listFaculty)
+            {
+                string yearKey = item.Name;
+                if (result.ContainsKey(yearKey))
+                    result[yearKey]++;
+                else
+                    result[yearKey] = item.ListPost.Count;
+            }
+            return new Tuple<string, Dictionary<string, int>?>("", result);
         }
     }
 }

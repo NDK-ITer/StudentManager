@@ -25,6 +25,7 @@ const Sidebar = ({ faculty, setState }) => {
                         id="custom-switch"
                         checked={faculty.isOpen}
                         onChange={() => setState()}
+                        readOnly={true}
                     />
                 </Form>
             </div>

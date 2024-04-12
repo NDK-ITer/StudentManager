@@ -43,6 +43,19 @@ const GetPublicPostById = (idPost) =>{
     return Root.get(`${userController}/get-post/?idPost=${idPost}`)
 }
 
+const GetDateValue = () => {
+    return Root.get(`${adminController}/get-date-value`)
+}
+
+const GetReportFaculty = (facultyId, fromYear, toYear) => {
+    console.log(fromYear, toYear)
+    return Root.get(`${managerController}/get-report?facultyId=${facultyId}&fromYear=${fromYear}&toYear=${toYear}`)
+}
+
+const GetAllPost = () => {
+    return Root.get(`${adminController}/get-all-post`)
+}
+
 export {
     UploadPost,
     GetMyPost,
@@ -50,5 +63,8 @@ export {
     GetPostManagerDetail,
     UpdateAndApprovedPost,
     GetPostPublic,
-    GetPublicPostById
+    GetPublicPostById,
+    GetDateValue,
+    GetReportFaculty,
+    GetAllPost
 }

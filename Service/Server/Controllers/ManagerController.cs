@@ -255,6 +255,10 @@ namespace Server.Controllers
                     res.Data.id = faculty.Id;
                     res.Data.name = faculty.Name;
                     res.Data.isDelete = faculty.IsDeleted;
+                    if (DateTime.Now <= faculty.EndTimePost)
+                        res.Data.isOpen = true;
+                    else
+                        res.Data.isOpen = false;
                 }
                 return new JsonResult(res);
             }
@@ -316,6 +320,66 @@ namespace Server.Controllers
             {
                 res.State = -1;
                 res.Data = e.Message;
+                return new JsonResult(res);
+            }
+        }
+
+        [HttpGet]
+        [HttpOptions]
+        [Route("get-report")]
+        public ActionResult GetReportPost(string facultyId, int fromYear, int toYear)
+        {
+            dynamic res = new ExpandoObject();
+            res.Data = new ExpandoObject();
+            try
+            {
+                string userId = string.Empty;
+                if (HttpContext.Items["UserId"] == null)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = "Login Please!"
+                    };
+                    return new JsonResult(res);
+                }
+                userId = HttpContext.Items["UserId"].ToString();
+                var checkIsManager = uow.UserService.CheckIsMaanager(userId);
+                if (!checkIsManager.Item2)
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = "You can't get it!"
+                    };
+                    return new JsonResult(res);
+                }
+                else if (checkIsManager.Item2 && !uow.FacultyService.GetById(facultyId).Item2.ListAdmin.Contains(uow.UserService.GetUserById(userId).Item2))
+                {
+                    res.State = 0;
+                    res.Data = new
+                    {
+                        mess = "You can't get it!"
+                    };
+                    return new JsonResult(res);
+                }
+                var result = uow.FacultyService.GetReport(facultyId, fromYear, toYear);
+                if (result.Item2 == null)
+                {
+                    res.State = 0;
+                    res.Data.mess = result.Item1;
+                }
+                else
+                {
+                    res.State = 1;
+                    res.Data = result.Item2;
+                }
+                return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                res.State = -1;
+                res.Data.mess = e.Message;
                 return new JsonResult(res);
             }
         }

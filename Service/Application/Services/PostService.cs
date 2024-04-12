@@ -11,15 +11,17 @@ namespace Application.Services
     {
         Tuple<string, bool> ApprovePost(string iduser, string idPost);
         Tuple<string, Post?> Add(AddPostModel a);
-        Tuple<string, Post?> Update( string idUser,EditPostModel e);
+        Tuple<string, Post?> Update(string idUser, EditPostModel e);
         Tuple<string, bool> Remove(string idUser, string idPost);
         Tuple<string, Post?> GetById(string id);
         Tuple<string, List<Post?>> GetPostOfFaculty(string userId, string facultyId);
-        Tuple<string, List<Post?>?> GetAll(string userId);
+        Tuple<string, List<Post?>?> GetAll();
         Tuple<string, List<Post?>?> GetPublic();
         void CheckPost(string id);
+        int GetMaxYearValue();
+        int GetMinYearValue();
     }
-    public class PostService:IPostService
+    public class PostService : IPostService
     {
         private readonly IUnitOfWork unitOfWork;
         public PostService(UserDbContext context, IMemoryCache cache)
@@ -63,12 +65,8 @@ namespace Application.Services
             return new Tuple<string, Post?>("Add Successful", newPost);
         }
 
-        public Tuple<string, List<Post?>?> GetAll(string userId)
+        public Tuple<string, List<Post?>?> GetAll()
         {
-            if (userId.IsNullOrEmpty()) return new Tuple<string, List<Post?>?> ("userId not null", null);
-            var user = unitOfWork.userRepository.GetById(userId);
-            if (user == null) return new Tuple<string, List<Post?>?>($"not found with userId: {userId}", null);
-            if (user.Role.Name != "ADMIN") return new Tuple<string, List<Post?>?>("you cant do this", null);
             var allPost = unitOfWork.postRepository.GetAll();
             if (allPost.IsNullOrEmpty()) return new Tuple<string, List<Post?>?>("no post", null);
             return new Tuple<string, List<Post?>?>("", allPost);
@@ -129,6 +127,20 @@ namespace Application.Services
             post.IsChecked = true;
             unitOfWork.postRepository.Update(post);
             unitOfWork.SaveChange();
+        }
+
+        public int GetMaxYearValue()
+        {
+            var posts = unitOfWork.postRepository.GetAll();
+            if (posts.IsNullOrEmpty()) return 0;
+            return posts.Max(p => p.DatePost.Year);
+        }
+
+        public int GetMinYearValue()
+        {
+            var posts = unitOfWork.postRepository.GetAll();
+            if (posts.IsNullOrEmpty()) return 0;
+            return posts.Min(p => p.DatePost.Year);
         }
     }
 }

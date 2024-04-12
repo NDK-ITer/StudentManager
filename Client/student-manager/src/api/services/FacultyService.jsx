@@ -42,6 +42,10 @@ const SetStateFaculty = (idFaculty, deadlineValue) =>{
     return Root.put(`${managerController}/state-faculty/?idFaculty=${idFaculty}&deadlineValue=${deadlineValue}`)
 }
 
+const GetReportAllFaculty = () => {
+    return Root.get(`${adminController}/get-report-faculty`)
+}
+
 export {
     CreateFaculty,
     DeleteFaculty,
@@ -50,5 +54,6 @@ export {
     GetAllFaculty,
     GetFacultyPublic,
     GetFacultyById,
-    SetStateFaculty
+    SetStateFaculty,
+    GetReportAllFaculty
 }
