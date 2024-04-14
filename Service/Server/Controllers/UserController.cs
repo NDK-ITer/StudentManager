@@ -183,7 +183,7 @@ namespace Server.Controllers
                     return new JsonResult(res);
                 }
                 var checkFacultyOpen = uow.FacultyService.GetById(data.FacultyId);
-                if (checkFacultyOpen.Item2.EndTimePost >= DateTime.Now)
+                if (!(checkFacultyOpen.Item2.EndTimePost >= DateTime.Now))
                 {
                     res.State = 0;
                     res.Data.mess = $"{checkFacultyOpen.Item2.Name} is not open!";
