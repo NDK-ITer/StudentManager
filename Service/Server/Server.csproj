@@ -27,6 +27,8 @@
 
   <ItemGroup>
     <Folder Include="TempImages\" />
+    <Folder Include="PublicFile\" />
+    <Folder Include="TempImages\" />
   </ItemGroup>
 
 </Project>

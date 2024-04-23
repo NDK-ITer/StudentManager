@@ -5,6 +5,8 @@ import { toast } from "react-toastify"
 import { GetReportFaculty } from '../../api/services/PostService';
 import { GetDateValue } from '../../api/services/PostService';
 import { Form, Button } from 'react-bootstrap';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+
 
 const Home = () => {
     const { user } = useContext(UserContext)
@@ -13,6 +15,12 @@ const Home = () => {
     const [toYear, setToYear] = useState();
     const [selectedFromYear, setSelectedFromYear] = useState(0);
     const [selectedToYear, setSelectedToYear] = useState(0);
+    const [transformedData, setTransformedData] = useState([])
+
+    const chartData = Object.keys(dataReport).map(key => ({
+        name: key,
+        postNumber: dataReport[key]
+    }));
 
     const handleFromYearChange = (event) => {
         const selectedYear = parseInt(event.target.value);
@@ -51,6 +59,11 @@ const Home = () => {
             const res = await GetReportFaculty(user.facultyId, fromYear, toYear)
             if (res.State === 1) {
                 setDataReport(res.Data)
+                setTransformedData(Object.keys(dataReport.approved).map(year => ({
+                    name: year,
+                    approved: dataReport.approved[year],
+                    nonApproved: dataReport.nonApproved ? dataReport.nonApproved[year] : 0 // Xử lý giá trị null
+                })))
             } else {
                 toast.warning(res.data.mess)
             }
@@ -87,7 +100,23 @@ const Home = () => {
     return (
         <div className='manager-home-content'>
             <div className='manager-chart'>
-                <ReactApexChart options={state.options} series={state.series} type="line" height={620} width={900} />
+                {/* <ReactApexChart options={state.options} series={state.series} type="bar" height={620} width={900} /> */}
+                <BarChart
+                    width={1300}
+                    height={800}
+                    data={transformedData}
+                    margin={{
+                        top: 5, right: 30, left: 20, bottom: 5,
+                    }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="approved" fill="#8884d8" />
+                    <Bar dataKey="nonApproved" fill="#010101" />
+                </BarChart>
             </div>
             <div className='manager-chart-controller' style={{ color: 'black' }}>
                 <div>

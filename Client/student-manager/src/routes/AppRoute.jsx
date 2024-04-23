@@ -10,20 +10,22 @@ import StaffPage from '../pages/StaffPage';
 const AppRoute = () => {
     return (<>
         <Routes>
-            <Route path='/*' element={<UserPage/>} />
+            <Route path='/*' element={
+                <UserPage />
+            } />
             <Route path='/admin/*' element={
                 <CheckAdminRoute>
-                    <AdminPage/>
+                    <AdminPage />
                 </CheckAdminRoute>
             } />
             <Route path='/manager/*' element={
                 <CheckManagerRoute>
-                    <ManagerPage/>
+                    <ManagerPage />
                 </CheckManagerRoute>
             } />
             <Route path='/staff/*' element={
                 <CheckStaffRoute>
-                    <StaffPage/>
+                    <StaffPage />
                 </CheckStaffRoute>
             } />
         </Routes>

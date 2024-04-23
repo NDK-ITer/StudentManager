@@ -363,17 +363,22 @@ namespace Server.Controllers
                     };
                     return new JsonResult(res);
                 }
-                var result = uow.FacultyService.GetReport(facultyId, fromYear, toYear);
-                if (result.Item2 == null)
-                {
-                    res.State = 0;
-                    res.Data.mess = result.Item1;
-                }
-                else
-                {
-                    res.State = 1;
-                    res.Data = result.Item2;
-                }
+                var resultApproved = uow.FacultyService.GetReportApproved(facultyId, fromYear, toYear);
+                var resultNonApproved = uow.FacultyService.GetReportNonApproved(facultyId, fromYear, toYear);
+                //if (resultApproved.Item2 == null || resultNonApproved.Item2 == null)
+                //{
+                //    res.State = 0;
+                //    res.Data.mess = resultApproved.Item1;
+                //}
+                //else
+                //{
+                //    res.State = 1;
+                //    res.Data.approved = resultApproved.Item2;
+                //    res.Data.nonApproved = resultNonApproved.Item2;
+                //}
+                res.State = 1;
+                res.Data.approved = resultApproved.Item2;
+                res.Data.nonApproved = resultNonApproved.Item2;
                 return new JsonResult(res);
             }
             catch (Exception e)
