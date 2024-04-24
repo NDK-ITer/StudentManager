@@ -9,7 +9,7 @@ import DetailPost from '../../components/post/DetailPost';
 const UserRoute = () => {
     return (<>
         <Routes>
-            <Route path='/' element={<Home />} />
+            <Route path='/' element={<Home/>} />
             <Route path='/auth' element={<Auth />} />
             <Route path='/user-information' element={
                 <AuthRoute>

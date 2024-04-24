@@ -7,7 +7,6 @@ import { GetDateValue } from '../../api/services/PostService';
 import { Form, Button } from 'react-bootstrap';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
-
 const Home = () => {
     const { user } = useContext(UserContext)
     const [dataReport, setDataReport] = useState({})
@@ -16,11 +15,9 @@ const Home = () => {
     const [selectedFromYear, setSelectedFromYear] = useState(0);
     const [selectedToYear, setSelectedToYear] = useState(0);
     const [transformedData, setTransformedData] = useState([])
+    // let transformedData = []
 
-    const chartData = Object.keys(dataReport).map(key => ({
-        name: key,
-        postNumber: dataReport[key]
-    }));
+    // console.log(transformedData)
 
     const handleFromYearChange = (event) => {
         const selectedYear = parseInt(event.target.value);
@@ -64,6 +61,7 @@ const Home = () => {
                     approved: dataReport.approved[year],
                     nonApproved: dataReport.nonApproved ? dataReport.nonApproved[year] : 0 // Xử lý giá trị null
                 })))
+                console.log(res.Data)
             } else {
                 toast.warning(res.data.mess)
             }
@@ -94,8 +92,8 @@ const Home = () => {
         ]
     };
     useEffect(() => {
-        getDateValue().then(getDataReport(fromYear, toYear))
-        setToYear(selectedFromYear);
+        getDateValue()
+        // setToYear(selectedFromYear);
     }, []);
     return (
         <div className='manager-home-content'>
